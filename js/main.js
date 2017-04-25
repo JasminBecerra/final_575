@@ -1,12 +1,6 @@
 //main js script for 575 Final Project
 
-<<<<<<< HEAD
-
-//testing out branches here!
-=======
 //topojson for CPS networks included in data folder
-
-
 
 //anonymous function to move variables to local scope
 (function(){
@@ -97,4 +91,3 @@ function setEnumerationUnits(chicagoNets, ourmap, path){
 
 
 })(); //last line of main.js
->>>>>>> master
