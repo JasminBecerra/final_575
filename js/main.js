@@ -1,6 +1,9 @@
 //main js script for 575 Final Project
+//main js script for 575 Final Project
 
 //topojson for CPS networks included in data folder
+
+
 
 //anonymous function to move variables to local scope
 (function(){
@@ -19,17 +22,17 @@ window.onload = setMap();
 //set up choropleth map
 function setMap(){
     //map frame dimensions
-    var width = 600,
-        height = 590;
+    var width = 700,
+        height = 680;
 
-	//container for map
-	var ourmap = d3.select("body")
-		.append("svg")
-		.attr("class", "ourmap")
-		.attr("width", width)
-		.attr("height", height);
+    //container for map
+    var ourmap = d3.select("body")
+        .append("svg")
+        .attr("class", "ourmap")
+        .attr("width", width)
+        .attr("height", height);
 
-	//create Albers equal area conic projection centered on Chicago
+    //create Albers equal area conic projection centered on Chicago
     // try geo.albers or geoAlbers
     var projection = d3.geoAlbers()
         .center([0, 41.835])
@@ -38,23 +41,25 @@ function setMap(){
         .scale(80000.00)
         .translate([width / 2, height / 2]);
 
-	//create path generator for ourmap
-	var path = d3.geoPath()
-    	.projection(projection);
+    //create path generator for ourmap
+    var path = d3.geoPath()
+        .projection(projection);
 
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
-        .defer(d3.csv, "GradDropout2016Network.csv") //load attributes from CPS data
+        .defer(d3.csv, "data/GradDropout_2016Networks.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
 
 
 //function to populate the dom with topojson data
-    function callback(error, chicago){
+    function callback(error, csvData, chicago){
 
-    	//translate chicago comm areas to topojson
-    	var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
+        setGraticule(ourmap, path);
+        
+        //translate chicago comm areas to topojson
+        var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
 
 
@@ -64,10 +69,10 @@ function setMap(){
         // // check
         // console.log(illinois);
         console.log(chicago);
+        console.log(csvData);
     };
 
 };
-
 
 function joinData (chicagoNets, csvdata){
     //testing dropout and grad data
@@ -101,6 +106,7 @@ function joinData (chicagoNets, csvdata){
     return chicagoNets;
 };
 
+
 function setEnumerationUnits(chicagoNets, ourmap, path){
         //adding chicago community areas/neighborhoods to ourmap
         var networks = ourmap.selectAll(".networks")
@@ -108,14 +114,34 @@ function setEnumerationUnits(chicagoNets, ourmap, path){
             .enter()
             .append("path")
             .attr("class", function(d){
-                return "netowrks " + d.properties.networks;
+                return "networks " + d.properties.network_num;
             })
             .attr("d", path)
 
         var desc = networks.append("desc")
-            .text('{"stroke": "#000", "stroke-width": "0.5px"}');
+            .text('{"stroke": "#000", "stroke-width": "1px"}');
 
 
+};
+
+function setGraticule(ourmap, path){
+    //...GRATICULE BLOCKS FROM MODULE 8
+        var graticule = d3.geoGraticule()
+            .step([0.5, 0.5]); //place graticule lines every 5 degrees of longitude and latitude
+            
+        //create graticule background
+        var gratBackground = ourmap.append("path")
+            .datum(graticule.outline()) //bind graticule background
+            .attr("class", "gratBackground") //assign class for styling
+            .attr("d", path) //project graticule
+            
+        //create graticule lines
+        var gratLines = ourmap.selectAll(".gratLines") //select graticule elements that will be created
+            .data(graticule.lines()) //bind graticule lines to each element to be created
+            .enter() //create an element for each datum
+            .append("path") //append each element to the svg as a path element
+            .attr("class", "gratLines") //assign class for styling
+            .attr("d", path); //project graticule lines
 };
 
 
