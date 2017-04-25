@@ -74,7 +74,7 @@ function setMap(){
 
 };
 
-function joinData (chicagoNets, csvdata){
+function joinData (chicagoNets, csvData){
     //testing dropout and grad data
     //using two attributes: dropoutr rates 2016, and gradaution rates 2016
     var attArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]
