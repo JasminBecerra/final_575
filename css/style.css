@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 /*style sheet for 575 final project*/
 .ourmap {
 	border: medium solid #999;
 	background-color: white;
 	margin: 10px 0 0 20px;
-	/*position:absolute;*/
+/*	position:absolute;*/
 	display: block;
     margin: auto;
     width: 40%;
@@ -48,7 +47,7 @@
 }
 
 /* Change the color of links on hover */
-.topnav a:hover {
+.topnav a.hover {
     background-color: #ddd;
     color: black;
 }
@@ -57,12 +56,3 @@
 .topnav a.active {
     background-color: #4CAF50;
     color: white;
-=======
-/*/*style sheet for 575 final project*/
-
-.ourmap {
-	border: medium solid #999;
-	background-color: white;
-	margin: 10px 0 0 20px;
->>>>>>> master
-}
