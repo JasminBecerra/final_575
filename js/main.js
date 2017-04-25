@@ -45,7 +45,7 @@ function setMap(){
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
-        // .defer(d3.csv, "") //load attributes from CPS data
+        .defer(d3.csv, "GradDropout2016Network.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
 
@@ -68,6 +68,38 @@ function setMap(){
 
 };
 
+
+function joinData (chicagoNets, csvdata){
+    //testing dropout and grad data
+    //using two attributes: dropoutr rates 2016, and gradaution rates 2016
+    var attArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]
+
+    //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
+    for (var i=0; i<csvData.length; i++){
+        var csvRegion = csvData[i]; //network regions
+        var csvKey = csvRegion.networks.replace(/ /g, '_'); //replace spaces with underscores
+
+
+        // loop through geojson network regions to find the linked region
+        for (var a=0; a<chicagoNets.length; a++){
+
+            var geojsonProps = chicagoNets[a].properties; //geo properties
+            var geojsonKey = geojsonProps.networks.replace(/ /g, '_'); //geojson key
+
+
+            //match the keys! transfer the data over to enumeration unit
+            if (geojsonKey == csvKey){
+
+                //assign attributes and values
+                attArray.forEach(function(attr){
+                    var val = parseFloat(csvRegion[attr]);
+                    geojsonProps[attr] = val;
+                });
+            };
+        };
+    };
+    return chicagoNets;
+};
 
 function setEnumerationUnits(chicagoNets, ourmap, path){
         //adding chicago community areas/neighborhoods to ourmap
