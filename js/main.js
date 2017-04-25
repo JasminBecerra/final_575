@@ -9,7 +9,8 @@
 (function(){
 
 // //pseudo-global variables
-// var attrArray = []; 
+	var attrArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]; 
+	var expressed = attrArray[0]; //initial attribute
 
 
 // //list of attributes up there
@@ -48,14 +49,14 @@ function setMap(){
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
-        // .defer(d3.csv, "") //load attributes from CPS data
+        .defer(d3.csv, "data/GradDropout_2016Networks.csv") //load attributes from CPS data
 		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
 
 
 //function to populate the dom with topojson data
-    function callback(error, us, chicago){
+    function callback(error, csvData, us, chicago){
 
 		setGraticule(ourmap, path);
 		
@@ -67,33 +68,112 @@ function setMap(){
             .datum(usStates)
             .attr("class", "unitedStates")
             .attr("d", path);
+			
+		//join csv data to GeoJSON enumeration units
+        chicagoNets = joinData(chicagoNets, csvData);
+		
+		//create the color scale
+        var colorScale = makeColorScale(csvData);
 
         //add enumeration units to ourmap
-        setEnumerationUnits(chicagoNets, ourmap, path);
+        setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 
         // // check
         // console.log(illinois);
         console.log(chicago);
+		console.log(csvData);
     };
 
 };
 
+function joinData (chicagoNets, csvData){
+    //testing dropout and grad data
+    //using two attributes: dropoutr rates 2016, and gradaution rates 2016
 
-function setEnumerationUnits(chicagoNets, ourmap, path){
+    //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
+    for (var i=0; i<csvData.length; i++){
+        var csvRegion = csvData[i]; //network regions
+        var csvKey = csvRegion.network_num.replace(/ /g, '-'); //replace spaces with dashes
+
+
+        // loop through geojson network regions to find the linked region
+        for (var a=0; a<chicagoNets.length; a++){
+
+            var geojsonProps = chicagoNets[a].properties; //geo properties
+            var geojsonKey = geojsonProps.network_num.replace(/ /g, '-'); //geojson key
+
+
+            //match the keys! transfer the data over to enumeration unit
+            if (geojsonKey == csvKey){
+
+                //assign attributes and values
+                attrArray.forEach(function(attr){
+                    var val = parseFloat(csvRegion[attr]);
+                    geojsonProps[attr] = val;
+                });
+            };
+        };
+    };
+    return chicagoNets;
+};
+
+
+function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
         //adding chicago community areas/neighborhoods to ourmap
         var networks = ourmap.selectAll(".networks")
             .data(chicagoNets)
             .enter()
             .append("path")
             .attr("class", function(d){
-                return "networks " + d.properties.network_num;
+                return "networks " + d.properties.network_num.replace(/ /g, '-');
             })
             .attr("d", path)
+			.style("fill", function(d){
+            return choropleth(d.properties, colorScale);
+			})
 
         var desc = networks.append("desc")
             .text('{"stroke": "#000", "stroke-width": "1px"}');
 
 
+};
+
+//function to create color scale generator
+function makeColorScale(data){
+    var colorClasses = [
+        "#99d8c9",
+        "#66c2a4",
+        "#41ae76",
+        "#238b45",
+        "#005824"
+    ];
+
+    //create color scale generator
+    var colorScale = d3.scaleQuantile()
+        .range(colorClasses);
+
+    //build array of all values of the expressed attribute
+    var domainArray = [];
+    for (var i=0; i<data.length; i++){
+        var val = parseFloat(data[i][expressed]);
+        domainArray.push(val);
+    };
+
+    //assign array of expressed values as scale domain
+    colorScale.domain(domainArray);
+    return colorScale;
+};
+
+//function to test for data value and return color
+function choropleth(props, colorScale){
+    //make sure attribute value is a number
+    var val = parseFloat(props[expressed]);
+    //if attribute value exists, assign a color; otherwise assign gray
+    if (typeof val == 'number' && !isNaN(val)){
+        return colorScale(val);
+    } else {
+        return "#8e8e8e";
+    };
 };
 
 function setGraticule(ourmap, path){
