@@ -82,7 +82,7 @@ function joinData (chicagoNets, csvdata){
     //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
     for (var i=0; i<csvData.length; i++){
         var csvRegion = csvData[i]; //network regions
-        var csvKey = csvRegion.networks.replace(/ /g, '_'); //replace spaces with underscores
+        var csvKey = csvRegion.network_num.replace(/ /g, '_'); //replace spaces with underscores
 
 
         // loop through geojson network regions to find the linked region
