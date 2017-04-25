@@ -10,7 +10,8 @@
 
 // //pseudo-global variables
 // var attrArray = [];
-
+var attrArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]; //list of attributes
+var expressed = attrArray[0]; //initial attribute
 
 // //list of attributes up there
 // var expressed = attrArray[0]; //initial attribute
@@ -61,10 +62,11 @@ function setMap(){
         //translate chicago comm areas to topojson
         var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-
+        //create the color scale
+        var colorScale = makeColorScale(csvData);
 
         //add enumeration units to ourmap
-        setEnumerationUnits(chicagoNets, ourmap, path);
+        setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 
         // // check
         // console.log(illinois);
@@ -74,22 +76,22 @@ function setMap(){
 
 };
 
-function joinData (chicagoNets, csvdata){
+function joinData (chicagoNets, csvData){
     //testing dropout and grad data
     //using two attributes: dropoutr rates 2016, and gradaution rates 2016
-    var attArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]
+
 
     //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
     for (var i=0; i<csvData.length; i++){
         var csvRegion = csvData[i]; //network regions
-        var csvKey = csvRegion.networks.replace(/ /g, '_'); //replace spaces with underscores
+        var csvKey = csvRegion.network_num.replace(/ /g, '_'); //replace spaces with underscores
 
 
         // loop through geojson network regions to find the linked region
         for (var a=0; a<chicagoNets.length; a++){
 
             var geojsonProps = chicagoNets[a].properties; //geo properties
-            var geojsonKey = geojsonProps.networks.replace(/ /g, '_'); //geojson key
+            var geojsonKey = geojsonProps.network_num.replace(/ /g, '_'); //geojson key
 
 
             //match the keys! transfer the data over to enumeration unit
@@ -107,7 +109,7 @@ function joinData (chicagoNets, csvdata){
 };
 
 
-function setEnumerationUnits(chicagoNets, ourmap, path, colorscale){
+function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
         //adding chicago community areas/neighborhoods to ourmap
         var networks = ourmap.selectAll(".networks")
             .data(chicagoNets)
@@ -117,11 +119,21 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorscale){
                 return "networks " + d.properties.network_num;
             })
             .attr("d", path)
+            .style("fill", function(d){
+                return choropleth(d.properties, colorScale);
+    });
 
-        var desc = networks.append("desc")
-            .text('{"stroke": "#000", "stroke-width": "1px"}');
+};
 
-
+function choropleth(props, colorScale){
+    //make sure attribute value is a number
+    var val = parseFloat(props[expressed]);
+    //if attribute value exists, assign a color; otherwise assign gray
+    if (val && val != NaN){
+    	return colorScale(val);
+    } else {
+    	return "#CCC";
+    };
 };
 
 function setGraticule(ourmap, path){
@@ -147,11 +159,11 @@ function setGraticule(ourmap, path){
 //function to create color scale generator
 function makeColorScale(data){
     var colorClasses = [
-        "#D4B9DA",
-        "#C994C7",
-        "#DF65B0",
-        "#DD1C77",
-        "#980043"
+        "#edf8e9",
+        "#bae4b3",
+        "#74c476",
+        "#31a354",
+        "#006d2c"
     ];
 
     //create color scale generator
