@@ -9,7 +9,7 @@
 (function(){
 
 // //pseudo-global variables
-// var attrArray = []; 
+// var attrArray = [];
 
 
 // //list of attributes up there
@@ -57,7 +57,7 @@ function setMap(){
     function callback(error, csvData, chicago){
 
         setGraticule(ourmap, path);
-        
+
         //translate chicago comm areas to topojson
         var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
@@ -107,7 +107,7 @@ function joinData (chicagoNets, csvdata){
 };
 
 
-function setEnumerationUnits(chicagoNets, ourmap, path){
+function setEnumerationUnits(chicagoNets, ourmap, path, colorscale){
         //adding chicago community areas/neighborhoods to ourmap
         var networks = ourmap.selectAll(".networks")
             .data(chicagoNets)
@@ -128,13 +128,13 @@ function setGraticule(ourmap, path){
     //...GRATICULE BLOCKS FROM MODULE 8
         var graticule = d3.geoGraticule()
             .step([0.5, 0.5]); //place graticule lines every 5 degrees of longitude and latitude
-            
+
         //create graticule background
         var gratBackground = ourmap.append("path")
             .datum(graticule.outline()) //bind graticule background
             .attr("class", "gratBackground") //assign class for styling
             .attr("d", path) //project graticule
-            
+
         //create graticule lines
         var gratLines = ourmap.selectAll(".gratLines") //select graticule elements that will be created
             .data(graticule.lines()) //bind graticule lines to each element to be created
@@ -144,7 +144,41 @@ function setGraticule(ourmap, path){
             .attr("d", path); //project graticule lines
 };
 
+//function to create color scale generator
+function makeColorScale(data){
+    var colorClasses = [
+        "#D4B9DA",
+        "#C994C7",
+        "#DF65B0",
+        "#DD1C77",
+        "#980043"
+    ];
 
+    //create color scale generator
+    var colorScale = d3.scaleThreshold()
+        .range(colorClasses);
+
+    //build array of all values of the expressed attribute
+    var domainArray = [];
+    for (var i=0; i<data.length; i++){
+        var val = parseFloat(data[i][expressed]);
+        domainArray.push(val);
+    };
+
+    //cluster data using ckmeans clustering algorithm to create natural breaks
+    var clusters = ss.ckmeans(domainArray, 5);
+    //reset domain array to cluster minimums
+    domainArray = clusters.map(function(d){
+        return d3.min(d);
+    });
+    //remove first value from domain array to create class breakpoints
+    domainArray.shift();
+
+    //assign array of last 4 cluster minimums as domain
+    colorScale.domain(domainArray);
+
+    return colorScale;
+};
 
 
 
