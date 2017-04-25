@@ -19,6 +19,12 @@
 	fill:gray;
 }
 
+.unitedStates{
+	fill: teal;
+    stroke: #CCC;
+    stroke-width: 2px;
+}
+
 .gratLines {
     fill: none;
     stroke: white;

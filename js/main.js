@@ -48,20 +48,25 @@ function setMap(){
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
-        .defer(d3.csv, "data/GradDropout_2016Networks.csv") //load attributes from CPS data
+        // .defer(d3.csv, "") //load attributes from CPS data
+		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
 
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, chicago){
+    function callback(error, us, chicago){
 
 		setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
-    	var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
+    	var usStates = topojson.feature(us, us.objects.USStates),
+		chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-
+		var unitedStates = ourmap.append("path")
+            .datum(usStates)
+            .attr("class", "unitedStates")
+            .attr("d", path);
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path);
@@ -69,41 +74,8 @@ function setMap(){
         // // check
         // console.log(illinois);
         console.log(chicago);
-        console.log(csvData);
     };
 
-};
-
-function joinData (chicagoNets, csvdata){
-    //testing dropout and grad data
-    //using two attributes: dropoutr rates 2016, and gradaution rates 2016
-    var attArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]
-
-    //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
-    for (var i=0; i<csvData.length; i++){
-        var csvRegion = csvData[i]; //network regions
-        var csvKey = csvRegion.networks.replace(/ /g, '_'); //replace spaces with underscores
-
-
-        // loop through geojson network regions to find the linked region
-        for (var a=0; a<chicagoNets.length; a++){
-
-            var geojsonProps = chicagoNets[a].properties; //geo properties
-            var geojsonKey = geojsonProps.networks.replace(/ /g, '_'); //geojson key
-
-
-            //match the keys! transfer the data over to enumeration unit
-            if (geojsonKey == csvKey){
-
-                //assign attributes and values
-                attArray.forEach(function(attr){
-                    var val = parseFloat(csvRegion[attr]);
-                    geojsonProps[attr] = val;
-                });
-            };
-        };
-    };
-    return chicagoNets;
 };
 
 
@@ -143,6 +115,8 @@ function setGraticule(ourmap, path){
             .attr("class", "gratLines") //assign class for styling
             .attr("d", path); //project graticule lines
 };
+
+
 
 
 
