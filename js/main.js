@@ -1,9 +1,6 @@
 //main js script for 575 Final Project
-//main js script for 575 Final Project
 
 //topojson for CPS networks included in data folder
-
-
 
 //anonymous function to move variables to local scope
 (function(){
@@ -23,7 +20,7 @@ window.onload = setMap();
 //set up choropleth map
 function setMap(){
     //map frame dimensions
-    var width = 700,
+    var width = window.innerWidth * 0.45,
         height = 680;
 
 	//container for map
