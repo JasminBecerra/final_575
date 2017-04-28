@@ -10,7 +10,7 @@
 	box-shadow: 2px 2px 1px gray;
 	border-radius: 8px;
 	position: relative;
-	top: -360px;
+	top:-1150px;
 	left:-25px;
 }
 
@@ -43,6 +43,24 @@
     overflow: hidden;
 }
 
+.map-section{
+	position: relative;
+	top:-265px;
+	text-align: center;
+}
+
+.about-section{
+	position: relative;
+	bottom:-400px;
+	text-align:center;
+}
+
+.content-section{
+	position: relative;
+	bottom:-400px;
+	text-align:center;
+}
+
 /* Style the links inside the navigation bar */
 .topnav a {
     float: left;
@@ -71,7 +89,7 @@
 	font-size: 18px;
 	padding: 4px;
 	position:relative;
-	top:-20px;
+	top:100px;
 	left:5px;
 }
 
@@ -98,10 +116,10 @@
 	color:black;
 }
 
-h2{
+h3{
 	margin-top: 20px;
 	position:relative;
-	top:-20px;
+	top:100px;
 	left:5px;
 	font-size: 80px;
 }
@@ -113,11 +131,44 @@ h2{
 	position:relative;
 	left: 1130px;
 	width:25%;
-	top: -280px;
+	top: -180px;
 }
 
 .nav-tabs>li>a {
   background-color: white; 
   border-color: white;
   color:black;
+}
+
+#content {
+    padding-top:0px;
+}
+
+.content{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.navbar-custom .navbar-brand {
+    color: rgba(119, 119, 119, 1);
+	font-size: 20px;
+    font-family: Open Sans, sans-serif;
+}
+
+.navbar-custom{
+	font-size: 16px;
+    font-family: Open Sans, sans-serif;
+	border-bottom-width: 2px;
+}
+
+.navbar-custom .navbar-nav>li>a {
+    color: rgba(119, 119, 119, 1);
+    background-color: rgba(225, 225, 225, 1);
+}
+
+.navbar-custom .navbar-nav>li>a:hover,
+.navbar-custom .navbar-nav>li>a:focus {
+    color: rgba(255, 255, 255, 1);
+    background-color: #BEBEBE;
+	border-radius:1px;
 }
