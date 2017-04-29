@@ -15,7 +15,8 @@
 		<script type="text/javascript" src="js/bootstrap.min.js"> </script>
 		
 		<!-- Custom CSS -->
-		<link href="css/scrolling-nav.css" rel="stylesheet">
+		<!--<link href="css/scrolling-nav.css" rel="stylesheet">-->
+		
 		<!--[if IE<9]>
 			<link rel="stylesheet" href="css/style.ie.css">
 		<![endif]-->
@@ -24,10 +25,10 @@
 	<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
 		<!-- Navigation -->
-		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation" style="background-color:#e1e1e1;">
-			<div class="container">
+		<div id= "custom-bootstrap-menu" class="navbar navbar-custom navbar-fixed-top" role="navigation" style="background-color:#e1e1e1;">
+			<div class="container-fluid">
 				<div class="navbar-header page-scroll"> <a class="navbar-brand navbar-left" href="index.html"><strong>Chicago College Readiness</strong></a>
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -35,8 +36,8 @@
 					</button>
 				</div>
 
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				
+				<div class="collapse navbar-collapse navbar-menubuilder">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
 							<a class="page-scroll" href="#map">Map</a>
@@ -49,13 +50,12 @@
 						</li>
 					</ul>
 				</div>
-				<!-- /.navbar-collapse -->
-			</div>
-			<!-- /.container -->
-		</nav>
+			</div> 
+		</div>
+		
 
 		<!--sidepanel-->
-		<div class="banner">
+		<!--<div class="banner">
 			<div class="col-md-3">
 				<h3>Select an attribute:</h3>
 					<ul class="nav nav-pills nav-stacked nav-filter">
@@ -66,17 +66,9 @@
 						<li><a href="#"><b>Closed Schools</b></a></li>
 					</ul>
 			</div>
-		</div>	
+		</div>	-->
 	
 		<!--infobox-->
-		<div class="infobox">
-				<ul class="nav nav-tabs">
-					<li class="active"><a href="#"><b>Race</b></a></li>
-					<li><a href="#"><b>Budget</b></a></li>
-					<li><a href="#"><b>Menu 2</b></a></li>
-					<li><a href="#"><b>Menu 3</b></a></li>
-				</ul>
-		</div>
 
 		
 		<!-- Map Section -->
@@ -84,7 +76,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
-						<h1>Map Section</h1>
+						<h1></h1>
 					</div>
 				</div>
 			</div>
