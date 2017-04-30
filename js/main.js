@@ -6,7 +6,7 @@
 (function(){
 
 // //pseudo-global variables
-	var attrArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]; 
+	var attrArray = ["ACT_Average", "Lunch total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget"]; 
 	var expressed = attrArray[0]; //initial attribute
 
 
@@ -46,7 +46,7 @@ function setMap(){
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
-        .defer(d3.csv, "data/GradDropout_2016Networks.csv") //load attributes from CPS data
+        .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
 		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
