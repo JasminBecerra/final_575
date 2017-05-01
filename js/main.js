@@ -244,6 +244,26 @@ function changeAttribute(attribute, csvData){
         })
 };
 
+
+function setInfoBox(csvData){
+        var width = window.innerWidth * 0.45,
+        height = 680;
+
+
+    var box = d3.select("info-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height")
+        .attr("class", "box");
+
+
+
+
+
+
+
+};
+
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
