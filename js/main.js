@@ -38,7 +38,7 @@ function setMap(){
     // try geo.albers or geoAlbers
     var projection = d3.geoAlbers()
         .center([0, 41.835])
-        .rotate([87.75, 0, 0])
+        .rotate([87.6, 0, 0])
         .parallels([41.79, 41.88])
         .scale(80000.00)
         .translate([width / 2, height / 2]);
