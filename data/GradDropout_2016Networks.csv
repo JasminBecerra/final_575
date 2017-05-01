@@ -1,1 +1,18 @@
+<<<<<<< HEAD
 network_num,Cohort Dropout Rates 2016,Cohort Graduation Rates 2016Network 1,11.2,80.0Network 10,9.9,78.0Network 11,20.5,65.1Network 12,23.3,59.0Network 13,18.9,63.7Network 2,16.6,72.0Network 3,17.4,68.9Network 4,11.7,76.5Network 5,18.7,70.2Network 6,12.0,81.5Network 7,15.0,77.1Network 8,21.7,66.7Network 9,16.0,72.1
+=======
+network_num,Cohort Dropout Rates 2016,Cohort Graduation Rates 2016
+Network 1,11.20%,80.00%
+Network 10,9.90%,78.00%
+Network 11,20.50%,65.10%
+Network 12,23.30%,59.00%
+Network 13,18.90%,63.70%
+Network 2,16.60%,72.00%
+Network 3,17.40%,68.90%
+Network 4,11.70%,76.50%
+Network 5,18.70%,70.20%
+Network 6,12.00%,81.50%
+Network 7,15.00%,77.10%
+Network 8,21.70%,66.70%
+Network 9,16.00%,72.10%
+>>>>>>> master

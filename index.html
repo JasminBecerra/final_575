@@ -7,31 +7,135 @@
 
 		<!--put your external stylesheet links here-->
 		<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> -->
-<!-- 		<link rel="stylesheet" href="lib/Leaflet.markercluster-1.0.3/dist/MarkerCluster.css"> -->
+		<!-- <link rel="stylesheet" href="lib/Leaflet.markercluster-1.0.3/dist/MarkerCluster.css"> -->
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"> </script>
 		<script type="text/javascript" src="js/bootstrap.min.js"> </script>
+		
+		<!-- Custom CSS -->
+		<!--<link href="css/scrolling-nav.css" rel="stylesheet">-->
+		
 		<!--[if IE<9]>
 			<link rel="stylesheet" href="css/style.ie.css">
 		<![endif]-->
 	</head>
-
-	<body>
 	
-	<!--navbar -->
-		<div class="topnav" id="myTopnav">
-				<a href="index.html">Home</a></li>
-				<a href="about.asp">About</a></li>
-				<a href="contact.asp">Content</a></li>
+	<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+		<!-- Navigation -->
+		<div id= "custom-bootstrap-menu" class="navbar navbar-custom navbar-fixed-top" role="navigation" style="background-color:#e1e1e1;">
+			<div class="container-fluid">
+				<div class="navbar-header page-scroll"> <a class="navbar-brand navbar-left" href="index.html"><strong>Chicago College Readiness</strong></a>
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+
+				
+				<div class="collapse navbar-collapse navbar-menubuilder">
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a class="page-scroll" href="#map">Map</a>
+						</li>
+						<li>
+							<a class="page-scroll" href="#about">About</a>
+						</li>
+						<li>
+							<a class="page-scroll" href="#content">Content</a>
+						</li>
+					</ul>
+				</div>
+			</div> 
 		</div>
-		<!--put your initial page content here-->
+		
 
-<!-- 		<div id="mapid"></div> -->
+		<!--sidepanel-->
+		<!--<div class="banner">
+			<div class="col-md-3">
+				<h3>Select an attribute:</h3>
+					<ul class="nav nav-pills nav-stacked nav-filter">
+						<li><a href="#"><b>ACT Test Scores</b></a></li>
+						<li><a href="#"><b>Free/Reduced Lunch</b></a></li>
+						<li><a href="#"><b>Graduation Rate</b></a></li>
+						<li><a href="#"><b>Dropout Rate</b></a></li>
+						<li><a href="#"><b>Closed Schools</b></a></li>
+					</ul>
+			</div>
+		</div>	-->
+	
+		<!--infobox-->
+		<!--<div class="main-menu">
+            <div class="menu-inset" style="width:200px;height:318px;">
+            </div>
+            <div class="menu-options">
+                <div class="Overview" style="width:125px;height:53px;">
+                    Report Card</div>
+                <div class="Prohibited" style="width:125px;height:53px;">
+                    Prohibited At</div>
+                <div class="Counseling" style="width:125px;height:53px;">
+                    Mandated<br>Counseling</div>
+                <div class="Waiting" style="width:125px;height:53px;">
+                    Waiting<br>Period</div>
+                <div class="Parental" style="width:125px;height:53px;">
+                    Parental<br>Consent</div>
+                <div class="Ultrasound" style="width:125px;height:53px;">
+                    Mandatory<br>Ultrasound</div>
+            </div>
+		</div>-->
+		
+		
+		<fieldset>
+				<div>
+					<input type="checkbox" id="allschools" name="interest" value="allschools">
+					<label id="allschools" for="totschools">All Schools</label>
+				</div>
+				<div>
+					<input type="checkbox" id="magnetschools" name="interest" value="magnetschools">
+					<label id="magnetschools" for="magschools">Magnet Schools</label>
+				</div>
+		</fieldset>
+		
+		<!-- Map Section -->
+		<section id="map" class="map-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1></h1>
+					</div>
+				</div>
+			</div>
+		</section>
 
+		<!-- About Section -->
+		<section id="about" class="about-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1>About Section</h1>
+					</div>
+				</div>
+			</div>
+		</section>
 
-  
+		<!-- Content Section -->
+		<section id="content" class="content-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1>Content Section</h1>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Scrolling Nav JavaScript -->
+		<script src="js/jquery.easing.min.js"></script>
+		<script src="js/scrolling-nav.js"></script>
 
 
 

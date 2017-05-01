@@ -1,5 +1,6 @@
 /*style sheet for 575 final project*/
 .ourmap {
+<<<<<<< HEAD
     border: medium solid #999;
     background-color: white;
     margin: 10px 0 0 20px;
@@ -10,13 +11,36 @@
     margin-top: 20px;
     box-shadow: 2px 2px 1px gray;
     border-radius: 8px;
+=======
+	border: medium solid #999;
+	background-color: white;
+	/*margin: 10px 0 0 20px;*/
+	display: block;
+	box-shadow: 2px 2px 1px gray;
+	border-radius: 8px;
+	position: absolute;
+	top:10%;
+	left:28%;
+	width: 40%;
+>>>>>>> master
 }
 
 .networks{
     stroke: white;
     stroke-width: 1px;
+<<<<<<< HEAD
     stroke-linecap: round;
     fill:gray;
+=======
+	stroke-linecap: round;
+	/*fill:gray;*/
+}
+
+.unitedStates{
+	fill: teal;
+    stroke: #CCC;
+    stroke-width: 2px;
+>>>>>>> master
 }
 
 .gratLines {
@@ -29,30 +53,336 @@
     fill: lightblue;
 }
 
-/* Add a black background color to the top navigation */
-.topnav {
-    background-color: #333;
-    overflow: hidden;
+.map-section{
+	position: relative;
+	top:-265px;
+	text-align: center;
 }
 
-/* Style the links inside the navigation bar */
-.topnav a {
-    float: left;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 10px 16px;
-    text-decoration: none;
-    font-size: 17px;
+.about-section{
+	position: absolute;
+	width:100%;
+	top: 100%;
+	text-align:center;
+	background-color:#e1e1e1;
+	height:60%;
 }
 
-/* Change the color of links on hover */
-.topnav a.hover {
-    background-color: #ddd;
-    color: black;
+.content-section{
+	position: absolute;
+	width:100%;
+	top:150%;
+	text-align:center;
+	background-color:white;
+	height:60%;
 }
 
-/* Add a color to the active/current link */
-.topnav a.active {
+h3{
+	margin-top: 20px;
+	position:relative;
+	top:100px;
+	left:5px;
+	font-size: 80px;
+}
+
+h1{
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+#content {
+    padding-top:0px;
+}
+
+.content{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+#custom-bootstrap-menu.navbar-left{
+	position: absolute;
+    width: 100%;
+    left: 3%;
+    text-align: left;
+}
+
+#custom-bootstrap-menu.navbar-right{
+	position: absolute;
+    width: 100%;
+    left: 85%;
+    text-align: left;
+}
+
+#custom-bootstrap-menu.navbar-toggle {
+    z-index:3;
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-brand {
+    color: rgba(119, 119, 119, 1);
+	font-size: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+	height: 10%;
+}
+
+#custom-bootstrap-menu.navbar-custom{
+	font-size: 16px;
+    font-family: Verdana, Geneva, sans-serif;
+	border-bottom-width: 2px;
+	border-color: #D3D3D3;
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-nav>li>a {
+    color: rgba(119, 119, 119, 1);
+    background-color: rgba(225, 225, 225, 1);
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:hover,
+#custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:focus {
+    color: rgba(255, 255, 255, 1);
+    background-color: #BEBEBE;
+	border-radius:1px;
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a,
+#custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:hover,
+#custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:focus {
+    color: white;
+    background-color: rgba(204, 204, 204, 1);
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle {
+    border-color: #cccccc;
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:hover,
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:focus {
+    background-color: #cccccc;
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle .icon-bar {
+    background-color: #cccccc;
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:hover .icon-bar,
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:focus .icon-bar {
+    background-color: #e1e1e1;
+}
+
+.dropbtn {
     background-color: #4CAF50;
     color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: absolute;
+    top: 60px;
+    left: 40px;
+    z-index: 10;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 2px;
+    border: 1px solid #999;
+    box-shadow: 2px 2px 4px #999;
+	border-radius: 4px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+	opacity:0.6;
+}
+
+option {
+    font-weight: normal;
+}
+
+.infolabel {
+    position: absolute;
+    height: 60px;
+    min-width: 100px;
+    color: #fff;
+    background-color: #000;
+    border: solid thin #000;
+	border-radius: 10px;
+	opacity: 0.88;
+    padding: 5px 7px;
+    top: -75px;
+	font-family: verdana;
+}
+
+.infolabel h1 {
+    margin: 0 5px 0 0;
+    padding: 0;
+    display: inline-block;
+    line-height: 1.4em;
+	font-size: 25px;
+}
+
+/*  Menu CSS */
+/*  ------ */
+.main-menu { 
+    position: absolute;
+    margin-left: 0% !important;
+    color: #969696;
+}
+
+.menu-options {
+    float: left;
+    background-color:  #e1e1e1;
+    cursor: pointer;
+    font-family: Open Sans, sans-serif;
+}
+
+.menu-inset {
+    float: right;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #CCCCCC;
+}
+
+.Overview {
+    text-align: center;
+    padding: 13%;
+}
+
+.Overview:hover {
+    color: #333333;
+    background-color: #CCCCCC;
+}
+
+.Prohibited {
+    text-align: center;
+    padding: 13%;
+}
+
+.Prohibited:hover {
+    color: #333333;
+    background-color: #CCCCCC;
+}
+
+.Counseling {
+    text-align: center;
+    padding: 8%;
+}
+
+.Counseling:hover {
+    color: #333333;
+    background-color: #CCCCCC;
+}
+
+.Waiting {
+    text-align: center;
+    padding: 8%;
+}
+
+.Waiting:hover {
+    color: #333333;
+    background-color: #CCCCCC;
+}
+
+.Parental {
+    text-align: center;
+    padding: 8%;
+}
+
+.Parental:hover {
+    color: #333333;
+    background-color: #CCCCCC;
+}
+
+.Ultrasound {
+    text-align: center;
+    padding: 8%;
+}
+
+.Ultrasound:hover {
+    color: #333333;
+    background-color: #CCCCCC;
+}
+
+.overlay-menu {
+    margin-top: 325px;
+    font-size: 12px;
+    font-family: Open Sans, sans-serif;
+    cursor: pointer;
+}
+
+.cpc {
+    float: left;
+    background-color: rgba(250, 110, 57, 1);
+    color: #fff;
+    text-align: center;
+    padding: 1.5%;
+}
+
+.cpc:hover {
+    color: #fff;
+    background-color: #f95618;
+}
+
+#cpc-inset {
+    float: right;
+    background-color: #fff;
+    visibility: hidden;
+}
+
+.abortion {
+    float: left;
+    color: #fff;
+    background-color:  rgba(55, 196, 171, 1);
+    text-align: center;
+    padding: 3%;
+}
+
+.abortion:hover {
+    color:  #fff;
+    background-color: #248271;
+}
+
+#abortion-inset {
+    float: right;
+    background-color: #fff;
+    visibility: hidden;
+}
+
+.title {
+    font-family: 'Roboto Slab', sans-serif;
+}
+
+input#allschools{
+	position:absolute;
+	left:40%;
+	top:85%;
+	width:15px;
+	height:15px;
+}
+
+label#allschools{
+	position:absolute;
+	left:41%;
+	top: 85%;
+	font-size: 17px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+input#magnetschools{
+	position:absolute;
+	left:52%;
+	top: 85%;
+	width:15px;
+	height:15px;
+}
+
+label#magnetschools{
+	position:absolute;
+	left:53%;
+	top: 85%;
+	font-size: 17px;
+    font-family: Verdana, Geneva, sans-serif;
+}
