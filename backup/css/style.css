@@ -1,5 +1,17 @@
 /*style sheet for 575 final project*/
 .ourmap {
+<<<<<<< HEAD
+    border: medium solid #999;
+    background-color: white;
+    margin: 10px 0 0 20px;
+/*  position:absolute;*/
+    display: block;
+    margin: auto;
+    width: 40%;
+    margin-top: 20px;
+    box-shadow: 2px 2px 1px gray;
+    border-radius: 8px;
+=======
 	border: medium solid #999;
 	background-color: white;
 	/*margin: 10px 0 0 20px;*/
@@ -10,11 +22,16 @@
 	top:10%;
 	left:28%;
 	width: 40%;
+>>>>>>> master
 }
 
 .networks{
-	stroke: white;
+    stroke: white;
     stroke-width: 1px;
+<<<<<<< HEAD
+    stroke-linecap: round;
+    fill:gray;
+=======
 	stroke-linecap: round;
 	/*fill:gray;*/
 }
@@ -23,6 +40,7 @@
 	fill: teal;
     stroke: #CCC;
     stroke-width: 2px;
+>>>>>>> master
 }
 
 .gratLines {
