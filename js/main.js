@@ -4,6 +4,10 @@
 
 //anonymous function to move variables to local scope
 (function(){
+	
+	$("#intro-panel").show(); //splash screen on start
+	$("#help-info").hide(); //splash screen on start
+	$("#help-text").hide(); //splash screen on start
 
 // //pseudo-global variables
 	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
@@ -29,7 +33,7 @@ window.onload = setMap();
 function setMap(){
     //map frame dimensions
     var width = window.innerWidth * 0.30,
-        height = 650;
+        height = 700;
 
 	//container for map
 	var ourmap = d3.select("body")
@@ -44,7 +48,7 @@ function setMap(){
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
         .parallels([41.79, 41.88])
-        .scale(80000.00)
+        .scale(100000.00)
         .translate([width / 2, height / 2]);
 
 	//create path generator for ourmap
@@ -64,16 +68,16 @@ function setMap(){
 //function to populate the dom with topojson data
     function callback(error, csvData, us, chicago){
 
-		setGraticule(ourmap, path);
+		//setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
     	var usStates = topojson.feature(us, us.objects.USStates),
 		chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		var unitedStates = ourmap.append("path")
+		/*var unitedStates = ourmap.append("path")
             .datum(usStates)
             .attr("class", "unitedStates")
-            .attr("d", path);
+            .attr("d", path);*/
 			
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
@@ -88,7 +92,7 @@ function setMap(){
 		createDropdown(csvData);
 		
 		//add menu panel to map
-		createMenu();
+		createMenu(csvData);
 		
 		
         // // check
@@ -236,7 +240,7 @@ function createDropdown(csvData){
 //dropdown change listener handler
 function changeAttribute(attribute, csvData){
 //change the expressed attribute
-    expressed = attribute;
+    //expressed = attribute;
 
     //recreate the color scale
     var colorScale = makeColorScale(csvData);
@@ -380,86 +384,81 @@ function moveLabel(){
 
 
 //menu items function
-function createMenu(){
+function createMenu(csvData){
 	$(".ACTaverage").click(function(){ 
         expressed = attrArray[0];
 
-        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
-        d3.selectAll(".networks").style("fill", function(d){
-                return choropleth(d, colorize);
-            })
+        d3.selectAll(".networks").on("change", function(){
+					changeAttribute(this.value, csvData)
+			})
             .select("desc")
                 .text(function(d) {
-                    return choropleth(d, colorize);
+                    changeAttribute(this.value, csvData);
             });
     });
 	
 	$(".Lunch").click(function(){ 
         expressed = attrArray[2];
 
-        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
-        d3.selectAll(".networks").style("fill", function(d){
-                return choropleth(d, colorize);
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
             })
             .select("desc")
                 .text(function(d) {
-                    return choropleth(d, colorize);
+                    changeAttribute(this.value, csvData);
             });
     });
 	
 	$(".Dropout").click(function(){ 
         expressed = attrArray[3];
 
-        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
-        d3.selectAll(".networks").style("fill", function(d){
-                return choropleth(d, colorize);
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
             })
             .select("desc")
                 .text(function(d) {
-                    return choropleth(d, colorize);
+                    changeAttribute(this.value, csvData);
             });
     });
 	
 	$(".Graduation").click(function(){ 
         expressed = attrArray[4];
 
-        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
-        d3.selectAll(".networks").style("fill", function(d){
-                return choropleth(d, colorize);
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
             })
             .select("desc")
                 .text(function(d) {
-                    return choropleth(d, colorize);
+                    changeAttribute(this.value, csvData);
             });
     });
 	
 	$(".Budget").click(function(){ 
         expressed = attrArray[5];
 
-        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
-        d3.selectAll(".networks").style("fill", function(d){
-                return choropleth(d, colorize);
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
             })
             .select("desc")
                 .text(function(d) {
-                    return choropleth(d, colorize);
+                    changeAttribute(this.value, csvData);
             });
     });
 	
 	$(".Closings").click(function(){ 
         expressed = attrArray[6];
 
-        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
-        d3.selectAll(".networks").style("fill", function(d){
-                return choropleth(d, colorize);
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
             })
             .select("desc")
                 .text(function(d) {
-                    return choropleth(d, colorize);
+                    changeAttribute(this.value, csvData);
             });
     });
 	
 };
+
 
 
 })(); //last line of main.js

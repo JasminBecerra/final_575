@@ -1,13 +1,13 @@
 /*style sheet for 575 final project*/
 .ourmap {
-	border: medium solid #999;
-	background-color: white;
+	/*border: medium solid #999;*/
+	/*background-color: white;*/
 	/*margin: 10px 0 0 20px;*/
 	display: block;
-	box-shadow: 2px 2px 1px gray;
+	/*box-shadow: 2px 2px 1px gray;*/
 	border-radius: 8px;
 	position: absolute;
-	top:10%;
+	top:12%;
 	left:25%;
 	width: 35%;
 	/*height: 70%;*/
@@ -25,6 +25,15 @@
 	height: 75%;
     width: 35%;
 }
+
+.intro-panel{
+	background-color:white;
+	border: medium solid #999;
+	display: block;
+	height: 20px;
+	width:30px;
+}
+
 
 .networks{
 	stroke: white;
@@ -233,12 +242,13 @@ option {
 
 .menu-options {
     float: left;
-    background-color:  #3b1261;
+    background-color: #7A378B;
     cursor: pointer;
     font-family: Verdana, Geneva, sans-serif;
 	border-radius: 6px;
 	color:white;
 	font-size:15px;
+	box-shadow: 1px 1px 0.5px #C8C8C8;
 }
 
 .menu-inset {
@@ -314,4 +324,36 @@ option {
 	border-radius: 6px;
 }
 
+#intro-panel{
+	height: 90%;
+	position: absolute;
+	width: 68%;
+	background-color: white;
+	z-index: 9999999999999999999999;
+	top: 0px;
+	left: 70px;
+	display: none;
+	padding: 50px;
+}
 
+.container-background {
+    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #F0F0F0;
+}
+
+.ground {
+    width: 50%;
+    height: 50%;
+    background: #1abcb9;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
