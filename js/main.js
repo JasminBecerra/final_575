@@ -80,7 +80,7 @@ function setMap(){
 
         // // check
         // console.log(illinois);
-        console.log(chicago);
+  //       console.log(chicago);
 		console.log(csvData);
     };
 
@@ -141,8 +141,8 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
         var desc = networks.append("desc")
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
-
 };
+
 
 //function to create color scale generator
 function makeColorScale(data){
@@ -226,14 +226,13 @@ function changeAttribute(attribute, csvData){
 };
 
 
-function setInfoBox(){
-        var width = window.innerWidth * 0.45,
-        height = 650;
-
+function setInfoBox(csvData){
+        var chartWidth = window.innerWidth * 0.45,
+        chartHeight = 650;
 
     var box = d3.select("info-box")
         .append("svg")
-        .attr("width", width)
+        .attr("width", chartWidth)
         .attr("height")
         .attr("class", "box");
 
@@ -242,20 +241,37 @@ function setInfoBox(){
 
     var chart = d3.select("info-box")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", chartWidth)
+        .attr("height", chartHeight)
         .attr("class", "chart");
 
+    //set bars for each province
+    var bars = chart.selectAll(".bars")
+        .data(csvData)
+        .enter()
+        .append("rect")
+        .attr("class", function(d){
+            return "bars " + d.network_num.replace(/ /g, '-');
+        })
+        .attr("width", chartWidth / csvData.length - 1)
+        .attr("x", function(d, i){
+            return i * (chartWidth / csvData.length);
+        })
+        .attr("height", 460)
+        .attr("y", 0);
 
-
+        console.log(bars);
 };
+// console.log(setInfoBox);
+
+
 
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", "lime")
         .style("stroke-width", "3");
-		console.log(props.network_num);
+		// console.log(props.network_num);
 	setLabel(props);
 };
 
@@ -346,7 +362,6 @@ function moveLabel(){
         .style("left", x + "px")
         .style("top", y + "px");
 };
-
 
 
 })(); //last line of main.js
