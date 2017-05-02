@@ -8,8 +8,22 @@
 	border-radius: 8px;
 	position: absolute;
 	top:10%;
-	left:28%;
-	width: 40%;
+	left:25%;
+	width: 35%;
+	/*height: 70%;*/
+}
+
+.info-box{
+    border: medium solid #999;
+    background-color: white;
+    display: block;
+    box-shadow: 2px 2px 1px gray;
+    border-radius: 8px;
+    position: absolute;
+    top:10%;
+    left:62%;
+	height: 75%;
+    width: 35%;
 }
 
 .networks{
@@ -195,7 +209,7 @@ option {
 	opacity: 0.88;
     padding: 5px 7px;
     top: -75px;
-	font-family: verdana;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 .infolabel h1 {
@@ -210,15 +224,21 @@ option {
 /*  ------ */
 .main-menu { 
     position: absolute;
+	top: 20%;
+	left:5%;
     margin-left: 0% !important;
-    color: #969696;
+    color: black;
+	border-radius: 4px;
 }
 
 .menu-options {
     float: left;
-    background-color:  #e1e1e1;
+    background-color:  #3b1261;
     cursor: pointer;
-    font-family: Open Sans, sans-serif;
+    font-family: Verdana, Geneva, sans-serif;
+	border-radius: 6px;
+	color:white;
+	font-size:15px;
 }
 
 .menu-inset {
@@ -228,112 +248,70 @@ option {
     border-color: #CCCCCC;
 }
 
-.Overview {
+.ACTaverage {
     text-align: center;
-    padding: 13%;
+    padding: 6%;
 }
 
-.Overview:hover {
-    color: #333333;
-    background-color: #CCCCCC;
+.ACTaverage:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
 }
 
-.Prohibited {
+.Lunch {
     text-align: center;
-    padding: 13%;
+    padding: 6%;
 }
 
-.Prohibited:hover {
-    color: #333333;
-    background-color: #CCCCCC;
+.Lunch:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
 }
 
-.Counseling {
+.Dropout {
     text-align: center;
-    padding: 8%;
+    padding: 6%;
 }
 
-.Counseling:hover {
-    color: #333333;
-    background-color: #CCCCCC;
+.Dropout:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
 }
 
-.Waiting {
+.Graduation {
     text-align: center;
-    padding: 8%;
+    padding: 6%;
 }
 
-.Waiting:hover {
-    color: #333333;
-    background-color: #CCCCCC;
+.Graduation:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
 }
 
-.Parental {
+.Budget {
     text-align: center;
-    padding: 8%;
+    padding: 11%;
 }
 
-.Parental:hover {
-    color: #333333;
-    background-color: #CCCCCC;
+.Budget:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
 }
 
-.Ultrasound {
+.Closings {
     text-align: center;
-    padding: 8%;
+    padding: 6%;
 }
 
-.Ultrasound:hover {
-    color: #333333;
-    background-color: #CCCCCC;
+.Closings:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
 }
 
-.overlay-menu {
-    margin-top: 325px;
-    font-size: 12px;
-    font-family: Open Sans, sans-serif;
-    cursor: pointer;
-}
-
-.cpc {
-    float: left;
-    background-color: rgba(250, 110, 57, 1);
-    color: #fff;
-    text-align: center;
-    padding: 1.5%;
-}
-
-.cpc:hover {
-    color: #fff;
-    background-color: #f95618;
-}
-
-#cpc-inset {
-    float: right;
-    background-color: #fff;
-    visibility: hidden;
-}
-
-.abortion {
-    float: left;
-    color: #fff;
-    background-color:  rgba(55, 196, 171, 1);
-    text-align: center;
-    padding: 3%;
-}
-
-.abortion:hover {
-    color:  #fff;
-    background-color: #248271;
-}
-
-#abortion-inset {
-    float: right;
-    background-color: #fff;
-    visibility: hidden;
-}
-
-.title {
-    font-family: 'Roboto Slab', sans-serif;
-}
 

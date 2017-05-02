@@ -8,6 +8,14 @@
 // //pseudo-global variables
 	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
 	var expressed = attrArray[0]; //initial attribute
+	
+	var colorClasses = [
+        "#dadaeb",
+        "#bcbddc",
+        "#9e9ac8",
+        "#756bb1",
+        "#54278f"
+    ];
 
 
 // //list of attributes up there
@@ -20,8 +28,8 @@ window.onload = setMap();
 //set up choropleth map
 function setMap(){
     //map frame dimensions
-    var width = window.innerWidth * 0.45,
-        height = 680;
+    var width = window.innerWidth * 0.30,
+        height = 650;
 
 	//container for map
 	var ourmap = d3.select("body")
@@ -50,6 +58,7 @@ function setMap(){
 		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
+		
 
 
 //function to populate the dom with topojson data
@@ -77,7 +86,11 @@ function setMap(){
 		
 		//add dropdown menu to the map
 		createDropdown(csvData);
-
+		
+		//add menu panel to map
+		createMenu();
+		
+		
         // // check
         // console.log(illinois);
         console.log(chicago);
@@ -146,13 +159,6 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
 
 //function to create color scale generator
 function makeColorScale(data){
-    var colorClasses = [
-        "#dadaeb",
-        "#bcbddc",
-        "#9e9ac8",
-        "#756bb1",
-        "#54278f"
-    ];
 
     //create color scale generator
     var colorScale = d3.scaleQuantile()
@@ -244,6 +250,17 @@ function changeAttribute(attribute, csvData){
         })
 };
 
+function setInfoBox(csvData){
+        var width = window.innerWidth * 0.30,
+        height = 650;
+
+    var box = d3.select("info-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "box");
+};
+
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
@@ -255,13 +272,14 @@ function highlight(props){
 
 //function to reset the element style on mouseout
 function dehighlight(props){
+	
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", function(){
             return getStyle(this, "stroke")
         })
-        .style("stroke-width", function(){
+       .style("stroke-width", function(){
             return getStyle(this, "stroke-width") 
-        });
+        });  
 		
     function getStyle(element, styleName){
         var styleText = d3.select(element)
@@ -359,6 +377,89 @@ function moveLabel(){
         .style("top", y + "px");
 };
 
+
+
+//menu items function
+function createMenu(){
+	$(".ACTaverage").click(function(){ 
+        expressed = attrArray[0];
+
+        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
+        d3.selectAll(".networks").style("fill", function(d){
+                return choropleth(d, colorize);
+            })
+            .select("desc")
+                .text(function(d) {
+                    return choropleth(d, colorize);
+            });
+    });
+	
+	$(".Lunch").click(function(){ 
+        expressed = attrArray[2];
+
+        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
+        d3.selectAll(".networks").style("fill", function(d){
+                return choropleth(d, colorize);
+            })
+            .select("desc")
+                .text(function(d) {
+                    return choropleth(d, colorize);
+            });
+    });
+	
+	$(".Dropout").click(function(){ 
+        expressed = attrArray[3];
+
+        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
+        d3.selectAll(".networks").style("fill", function(d){
+                return choropleth(d, colorize);
+            })
+            .select("desc")
+                .text(function(d) {
+                    return choropleth(d, colorize);
+            });
+    });
+	
+	$(".Graduation").click(function(){ 
+        expressed = attrArray[4];
+
+        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
+        d3.selectAll(".networks").style("fill", function(d){
+                return choropleth(d, colorize);
+            })
+            .select("desc")
+                .text(function(d) {
+                    return choropleth(d, colorize);
+            });
+    });
+	
+	$(".Budget").click(function(){ 
+        expressed = attrArray[5];
+
+        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
+        d3.selectAll(".networks").style("fill", function(d){
+                return choropleth(d, colorize);
+            })
+            .select("desc")
+                .text(function(d) {
+                    return choropleth(d, colorize);
+            });
+    });
+	
+	$(".Closings").click(function(){ 
+        expressed = attrArray[6];
+
+        d3.selectAll(".menu-options div").style({'background-color': '#e1e1e1','color': '#969696'});
+        d3.selectAll(".networks").style("fill", function(d){
+                return choropleth(d, colorize);
+            })
+            .select("desc")
+                .text(function(d) {
+                    return choropleth(d, colorize);
+            });
+    });
+	
+};
 
 
 })(); //last line of main.js
