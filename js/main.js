@@ -5,16 +5,22 @@
 //anonymous function to move variables to local scope
 (function(){
 
+	$("#intro-panel").show(); //splash screen on start
+	$("#help-info").hide(); //splash screen on start
+	$("#help-text").hide(); //splash screen on start
+
 // //pseudo-global variables
-<<<<<<< HEAD
-// var attrArray = [];
-var attrArray = ["Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016"]; //list of attributes
-var expressed = attrArray[0]; //initial attribute
-=======
-	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget"]; 
+	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"];
 	var expressed = attrArray[0]; //initial attribute
 
->>>>>>> refs/remotes/origin/master
+	var colorClasses = [
+        "#dadaeb",
+        "#bcbddc",
+        "#9e9ac8",
+        "#756bb1",
+        "#54278f"
+    ];
+
 
 // //list of attributes up there
 // var expressed = attrArray[0]; //initial attribute
@@ -26,8 +32,8 @@ window.onload = setMap();
 //set up choropleth map
 function setMap(){
     //map frame dimensions
-    var width = window.innerWidth * 0.45,
-        height = 680;
+    var width = window.innerWidth * 0.30,
+        height = 700;
 
 	//container for map
 	var ourmap = d3.select("body")
@@ -42,7 +48,7 @@ function setMap(){
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
         .parallels([41.79, 41.88])
-        .scale(80000.00)
+        .scale(100000.00)
         .translate([width / 2, height / 2]);
 
 	//create path generator for ourmap
@@ -58,81 +64,173 @@ function setMap(){
         .await(callback); //send data to callback function
 
 
+
 //function to populate the dom with topojson data
-<<<<<<< HEAD
-    function callback(error, csvData, chicago){
-
-        setGraticule(ourmap, path);
-
-        //translate chicago comm areas to topojson
-        var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
-
-        //create the color scale
-=======
     function callback(error, csvData, us, chicago){
 
-		setGraticule(ourmap, path);
-		
+		//setGraticule(ourmap, path);
+
     	//translate chicago comm areas to topojson
     	var usStates = topojson.feature(us, us.objects.USStates),
 		chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		var unitedStates = ourmap.append("path")
+		/*var unitedStates = ourmap.append("path")
             .datum(usStates)
             .attr("class", "unitedStates")
-            .attr("d", path);
-			
+            .attr("d", path);*/
+
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
-		
+
 		//create the color scale
->>>>>>> refs/remotes/origin/master
         var colorScale = makeColorScale(csvData);
 
         //add enumeration units to ourmap
-        setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
-<<<<<<< HEAD
-=======
-		
-		//add dropdown menu to the map
-		createDropdown(csvData);
->>>>>>> refs/remotes/origin/master
 
+		//add dropdown menu to the map
+		setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+
+
+		//add menu panel to map
+		createMenu(csvData);
+
+		setChart(csvData, colorScale);
         // // check
-        // console.log(illinois);
-        console.log(chicago);
-		console.log(csvData);
+
     };
 
 };
 
+function setChart(csvData, colorScale){
+    //chart frame dimensions
+    var chartWidth = 550,
+        chartHeight = 460;
+
+    //create a second svg element to hold the bar chart
+    var chart = d3.select("body")
+        .append("svg")
+        .attr("width", chartWidth)
+        .attr("height", chartHeight)
+        .attr("class", "chart");
+
+
+				var yScale = d3.scaleLinear()
+		        .range([0, chartHeight])
+		        .domain([0, 105]);
+
+
+
+						var bars = chart.selectAll(".bars")
+				        .data(csvData)
+				        .enter()
+				        .append("rect")
+								.sort(function(a, b){
+		return a[expressed]-b[expressed]
+})
+
+				        .attr("class", function(d){
+				            return "bars " + d.network_num;
+				        })
+				        .attr("width", chartWidth / csvData.length - 1)
+				        .attr("x", function(d, i){
+				            return i * (chartWidth / csvData.length);
+				        })
+				        .attr("height", function(d){
+				            return yScale(parseFloat(d[expressed]));
+				        })
+				        .attr("y", function(d){
+				            return chartHeight - yScale(parseFloat(d[expressed]));
+				        })
+								.style("fill", function(d){
+		return choropleth(d, colorScale);
+});
+
+
+};
+
+
+
+
+
+
+
+
+function createMenu(csvData){
+	$(".ACTaverage").click(function(){
+		expressed = attrArray[0];
+
+		d3.selectAll(".menu-options div");
+		d3.selectAll(".networks").style("fill", function(d){
+			changeAttribute(this.value, csvData);
+
+		});
+});
+
+	$(".Lunch").click(function(){
+        expressed = attrArray[2];
+
+				d3.selectAll(".menu-options div");
+				d3.selectAll(".networks").style("fill", function(d){
+					changeAttribute(this.value, csvData);
+
+				});
+		});
+
+	$(".Dropout").click(function(){
+        expressed = attrArray[3];
+
+				d3.selectAll(".menu-options div");
+				d3.selectAll(".networks").style("fill", function(d){
+					changeAttribute(this.value, csvData);
+
+				});
+		});
+
+	$(".Graduation").click(function(){
+        expressed = attrArray[4];
+
+						d3.selectAll(".menu-options div");
+						d3.selectAll(".networks").style("fill", function(d){
+							changeAttribute(this.value, csvData);
+
+						});
+				});
+	$(".Budget").click(function(){
+        expressed = attrArray[5];
+
+				d3.selectAll(".menu-options div");
+				d3.selectAll(".networks").style("fill", function(d){
+					changeAttribute(this.value, csvData);
+
+				});
+		});
+
+	$(".Closings").click(function(){
+        expressed = attrArray[6];
+
+				d3.selectAll(".menu-options div");
+				d3.selectAll(".networks").style("fill", function(d){
+					changeAttribute(this.value, csvData);
+
+				});
+		});
+
+};
 function joinData (chicagoNets, csvData){
     //testing dropout and grad data
     //using two attributes: dropoutr rates 2016, and gradaution rates 2016
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/master
 
     //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
     for (var i=0; i<csvData.length; i++){
         var csvRegion = csvData[i]; //network regions
-<<<<<<< HEAD
-        var csvKey = csvRegion.network_num.replace(/ /g, '_'); //replace spaces with underscores
-=======
         var csvKey = csvRegion.network_num.replace(/ /g, '-'); //replace spaces with dashes
->>>>>>> refs/remotes/origin/master
 
 
         // loop through geojson network regions to find the linked region
         for (var a=0; a<chicagoNets.length; a++){
 
             var geojsonProps = chicagoNets[a].properties; //geo properties
-<<<<<<< HEAD
-            var geojsonKey = geojsonProps.network_num.replace(/ /g, '_'); //geojson key
-=======
             var geojsonKey = geojsonProps.network_num.replace(/ /g, '-'); //geojson key
->>>>>>> refs/remotes/origin/master
 
 
             //match the keys! transfer the data over to enumeration unit
@@ -160,15 +258,8 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
                 return "networks " + d.properties.network_num.replace(/ /g, '-');
             })
             .attr("d", path)
-<<<<<<< HEAD
-            .style("fill", function(d){
-                return choropleth(d.properties, colorScale);
-    });
-
-};
-=======
 			.style("fill", function(d){
-            return choropleth(d.properties, colorScale);
+            return colorScale(d.properties[expressed]);
 			})
 			.on("mouseover", function(d){
             highlight(d.properties);
@@ -180,28 +271,11 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
         var desc = networks.append("desc")
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
->>>>>>> refs/remotes/origin/master
 
-function choropleth(props, colorScale){
-    //make sure attribute value is a number
-    var val = parseFloat(props[expressed]);
-    //if attribute value exists, assign a color; otherwise assign gray
-    if (val && val != NaN){
-    	return colorScale(val);
-    } else {
-    	return "#CCC";
-    };
 };
 
 //function to create color scale generator
 function makeColorScale(data){
-    var colorClasses = [
-        "#99d8c9",
-        "#66c2a4",
-        "#41ae76",
-        "#238b45",
-        "#005824"
-    ];
 
     //create color scale generator
     var colorScale = d3.scaleQuantile()
@@ -227,7 +301,7 @@ function choropleth(props, colorScale){
     if (typeof val == 'number' && !isNaN(val)){
         return colorScale(val);
     } else {
-        return "#8e8e8e";
+        return "#f2f0f7";
     };
 };
 
@@ -235,24 +309,14 @@ function setGraticule(ourmap, path){
     //...GRATICULE BLOCKS FROM MODULE 8
 		var graticule = d3.geoGraticule()
             .step([0.5, 0.5]); //place graticule lines every 5 degrees of longitude and latitude
-<<<<<<< HEAD
 
-        //create graticule background
-=======
-			
 		//create graticule background
->>>>>>> refs/remotes/origin/master
         var gratBackground = ourmap.append("path")
             .datum(graticule.outline()) //bind graticule background
             .attr("class", "gratBackground") //assign class for styling
             .attr("d", path) //project graticule
-<<<<<<< HEAD
 
-        //create graticule lines
-=======
-			
 		//create graticule lines
->>>>>>> refs/remotes/origin/master
         var gratLines = ourmap.selectAll(".gratLines") //select graticule elements that will be created
             .data(graticule.lines()) //bind graticule lines to each element to be created
             .enter() //create an element for each datum
@@ -261,103 +325,99 @@ function setGraticule(ourmap, path){
             .attr("d", path); //project graticule lines
 };
 
-<<<<<<< HEAD
-//function to create color scale generator
-function makeColorScale(data){
-    var colorClasses = [
-        "#edf8e9",
-        "#bae4b3",
-        "#74c476",
-        "#31a354",
-        "#006d2c"
-    ];
 
-    //create color scale generator
-    var colorScale = d3.scaleThreshold()
-        .range(colorClasses);
 
-    //build array of all values of the expressed attribute
-    var domainArray = [];
-    for (var i=0; i<data.length; i++){
-        var val = parseFloat(data[i][expressed]);
-        domainArray.push(val);
-    };
-
-    //cluster data using ckmeans clustering algorithm to create natural breaks
-    var clusters = ss.ckmeans(domainArray, 5);
-    //reset domain array to cluster minimums
-    domainArray = clusters.map(function(d){
-        return d3.min(d);
-    });
-    //remove first value from domain array to create class breakpoints
-    domainArray.shift();
-
-    //assign array of last 4 cluster minimums as domain
-    colorScale.domain(domainArray);
-
-    return colorScale;
-=======
-//function to create a dropdown menu for attribute selection
-function createDropdown(csvData){
-   //add select element
-    var dropdown = d3.select("body")
-        .append("select")
-        .attr("class", "dropdown")
-        .on("change", function(){
-            changeAttribute(this.value, csvData)
-        });
-
-    //add initial option
-    var titleOption = dropdown.append("option")
-        .attr("class", "titleOption")
-        .attr("disabled", "true")
-        .text("Select Attribute");
-
-    //add attribute name options
-    var attrOptions = dropdown.selectAll("attrOptions")
-        .data(attrArray)
-        .enter()
-        .append("option")
-        .attr("value", function(d){ return d })
-        .text(function(d){ return d });
-};
 
 //dropdown change listener handler
 function changeAttribute(attribute, csvData){
 //change the expressed attribute
-    expressed = attribute;
+    //expressed = attribute;
 
     //recreate the color scale
     var colorScale = makeColorScale(csvData);
 
+
     //recolor enumeration units
     var networks = d3.selectAll(".networks")
-        .transition()
-        .duration(800)
-        .style("fill", function(d){
+        .transition(400)
+
+        .style("fill",  function(d){
             return choropleth(d.properties, colorScale)
-        })
+        });
+
+				//re-sort, resize, and recolor bars
+var bars = d3.selectAll(".bar")
+		//re-sort bars
+		.sort(function(a, b){
+				return b[expressed] - a[expressed];
+		})
+		.attr("x", function(d, i){
+				return i * (chartInnerWidth / csvData.length) + leftPadding;
+		})
+		//resize bars
+		.attr("height", function(d, i){
+				return 463 - yScale(parseFloat(d[expressed]));
+		})
+		.attr("y", function(d, i){
+				return yScale(parseFloat(d[expressed])) + topBottomPadding;
+		})
+		//recolor bars
+		.style("fill", function(d){
+				return choropleth(d, colorScale);
+		});
+
 };
+
+
+function updateChart(bars, n, colorScale){
+    //position bars
+    bars.attr("x", function(d, i){
+            return i * (chartInnerWidth / n) + leftPadding;
+        })
+        //size/resize bars
+        .attr("height", function(d, i){
+            return 463 - yScale(parseFloat(d[expressed]));
+        })
+        .attr("y", function(d, i){
+            return yScale(parseFloat(d[expressed])) + topBottomPadding;
+        })
+        //color/recolor bars
+        .style("fill", function(d){
+            return choropleth(d, colorScale);
+        });
+};
+
+/*function setInfoBox(csvData){
+        var width = window.innerWidth * 0.30,
+        height = 650;
+
+    var box = d3.select("info-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "box");
+}; */
 
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
-        .style("stroke", "lime")
-        .style("stroke-width", "3");
-		console.log(props.network_num);
+        .style("stroke", "#FF66FF")
+        .style("stroke-width", "4");
+
 	setLabel(props);
 };
 
 //function to reset the element style on mouseout
 function dehighlight(props){
+
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", function(){
             return getStyle(this, "stroke")
         })
-        .style("stroke-width", function(){
-            return getStyle(this, "stroke-width") 
+       .style("stroke-width", function(){
+            return getStyle(this, "stroke-width")
         });
-		
+
     function getStyle(element, styleName){
         var styleText = d3.select(element)
             .select("desc")
@@ -366,7 +426,7 @@ function dehighlight(props){
         var styleObject = JSON.parse(styleText);
 
         return styleObject[styleName];
-		
+
     };
 	d3.select(".infolabel")
         .remove();
@@ -376,29 +436,47 @@ function setLabel(props){
     //label content
     var labelAttribute = "<h1>" + props[expressed] +
         "</h1><b>" + expressed + "</b>";
-		
+
 	if (Boolean(props[expressed]) == true) {
-        if (expressed == "Average ACT Score") {
+        if (expressed == attrArray[0]) {
             labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-        } else if (expressed == "Lunch Total") {
+        } else if (expressed == attrArray[1]) {
             labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == "Lunch Percent") {
+        } else if (expressed == attrArray[2]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == "Cohort Dropout Rates 2016") {
+        } else if (expressed == attrArray[3]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-        } else if (expressed == "Cohort Graduation Rates 2016") {
+        } else if (expressed == attrArray[4]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == "Personnel") {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == "Non-Personnel") {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == "FY16 Budget") {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "in budget"
-        };
+		} else if (expressed == attrArray[5]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
+		} else if (expressed == attrArray[6]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
+		} else if (expressed == attrArray[7]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
+		} else if (expressed == attrArray[8]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
+        } else if (expressed == attrArray[9]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
+		} else if (expressed == attrArray[10]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
+		} else if (expressed == attrArray[11]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
+		} else if (expressed == attrArray[12]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
+		} else if (expressed == attrArray[13]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
+        } else if (expressed == attrArray[14]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
+		} else if (expressed == attrArray[15]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
+		} else if (expressed == attrArray[16]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+		};
     } else { //if no data associated with selection, display "No data"
         labelAttribute = "<h1>No Data</h1>";
     };
-		
+
 
     //create info label div
     var infolabel = d3.select("body")
@@ -427,15 +505,19 @@ function moveLabel(){
         y2 = d3.event.clientY + 25;
 
     //horizontal label coordinate, testing for overflow
-    var x = d3.event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1; 
+    var x = d3.event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1;
     //vertical label coordinate, testing for overflow
-    var y = d3.event.clientY < 75 ? y2 : y1; 
+    var y = d3.event.clientY < 75 ? y2 : y1;
 
     d3.select(".infolabel")
         .style("left", x + "px")
         .style("top", y + "px");
->>>>>>> refs/remotes/origin/master
 };
+
+
+
+//menu items function
+
 
 
 
