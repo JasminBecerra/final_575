@@ -20,7 +20,7 @@
 }
 
 .unitedStates{
-	fill: teal;
+	fill: #707070;
     stroke: #CCC;
     stroke-width: 2px;
 }
@@ -337,34 +337,3 @@ option {
     font-family: 'Roboto Slab', sans-serif;
 }
 
-input#allschools{
-	position:absolute;
-	left:40%;
-	top:85%;
-	width:15px;
-	height:15px;
-}
-
-label#allschools{
-	position:absolute;
-	left:41%;
-	top: 85%;
-	font-size: 17px;
-    font-family: Verdana, Geneva, sans-serif;
-}
-
-input#magnetschools{
-	position:absolute;
-	left:52%;
-	top: 85%;
-	width:15px;
-	height:15px;
-}
-
-label#magnetschools{
-	position:absolute;
-	left:53%;
-	top: 85%;
-	font-size: 17px;
-    font-family: Verdana, Geneva, sans-serif;
-}

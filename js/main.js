@@ -6,7 +6,7 @@
 (function(){
 
 // //pseudo-global variables
-	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget"]; 
+	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
 	var expressed = attrArray[0]; //initial attribute
 
 
@@ -147,11 +147,11 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
 //function to create color scale generator
 function makeColorScale(data){
     var colorClasses = [
-        "#99d8c9",
-        "#66c2a4",
-        "#41ae76",
-        "#238b45",
-        "#005824"
+        "#dadaeb",
+        "#bcbddc",
+        "#9e9ac8",
+        "#756bb1",
+        "#54278f"
     ];
 
     //create color scale generator
@@ -178,7 +178,7 @@ function choropleth(props, colorScale){
     if (typeof val == 'number' && !isNaN(val)){
         return colorScale(val);
     } else {
-        return "#8e8e8e";
+        return "#f2f0f7";
     };
 };
 
@@ -247,8 +247,8 @@ function changeAttribute(attribute, csvData){
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
-        .style("stroke", "lime")
-        .style("stroke-width", "3");
+        .style("stroke", "#FF66FF")
+        .style("stroke-width", "4");
 		console.log(props.network_num);
 	setLabel(props);
 };
@@ -283,23 +283,41 @@ function setLabel(props){
         "</h1><b>" + expressed + "</b>";
 		
 	if (Boolean(props[expressed]) == true) {
-        if (expressed == "Average ACT Score") {
+        if (expressed == attrArray[0]) {
             labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-        } else if (expressed == "Lunch Total") {
+        } else if (expressed == attrArray[1]) {
             labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == "Lunch Percent") {
+        } else if (expressed == attrArray[2]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == "Cohort Dropout Rates 2016") {
+        } else if (expressed == attrArray[3]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-        } else if (expressed == "Cohort Graduation Rates 2016") {
+        } else if (expressed == attrArray[4]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == "Personnel") {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == "Non-Personnel") {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == "FY16 Budget") {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "in budget"
-        };
+		} else if (expressed == attrArray[5]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
+		} else if (expressed == attrArray[6]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
+		} else if (expressed == attrArray[7]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
+		} else if (expressed == attrArray[8]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
+        } else if (expressed == attrArray[9]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
+		} else if (expressed == attrArray[10]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
+		} else if (expressed == attrArray[11]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
+		} else if (expressed == attrArray[12]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
+		} else if (expressed == attrArray[13]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
+        } else if (expressed == attrArray[14]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
+		} else if (expressed == attrArray[15]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
+		} else if (expressed == attrArray[16]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+		};
     } else { //if no data associated with selection, display "No data"
         labelAttribute = "<h1>No Data</h1>";
     };
