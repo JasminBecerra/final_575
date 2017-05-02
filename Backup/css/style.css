@@ -1,0 +1,15 @@
+/*/*style sheet for 575 final project*/
+
+.ourmap {
+	border: medium solid #999;
+	background-color: white;
+	margin: 10px 0 0 20px;
+}
+
+
+.networks {
+	stroke: #000;
+	fill: #B5C8C9;
+	stroke-width:2px;
+	stroke-linecap: round;
+}
