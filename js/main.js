@@ -55,7 +55,6 @@ function setMap(){
 //function to populate the dom with topojson data
     function callback(error, csvData, us, chicago){
 
-		setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
     	var usStates = topojson.feature(us, us.objects.USStates),
@@ -182,25 +181,6 @@ function choropleth(props, colorScale){
     };
 };
 
-function setGraticule(ourmap, path){
-    //...GRATICULE BLOCKS FROM MODULE 8
-		var graticule = d3.geoGraticule()
-            .step([0.5, 0.5]); //place graticule lines every 5 degrees of longitude and latitude
-			
-		//create graticule background
-        var gratBackground = ourmap.append("path")
-            .datum(graticule.outline()) //bind graticule background
-            .attr("class", "gratBackground") //assign class for styling
-            .attr("d", path) //project graticule
-			
-		//create graticule lines
-        var gratLines = ourmap.selectAll(".gratLines") //select graticule elements that will be created
-            .data(graticule.lines()) //bind graticule lines to each element to be created
-            .enter() //create an element for each datum
-            .append("path") //append each element to the svg as a path element
-            .attr("class", "gratLines") //assign class for styling
-            .attr("d", path); //project graticule lines
-};
 
 //function to create a dropdown menu for attribute selection
 function createDropdown(csvData){
@@ -245,7 +225,9 @@ function changeAttribute(attribute, csvData){
 };
 
 
-function setInfoBox(csvData){
+function setInfoBox(){
+
+
         var width = window.innerWidth * 0.45,
         height = 650;
 
@@ -255,6 +237,16 @@ function setInfoBox(csvData){
         .attr("width", width)
         .attr("height")
         .attr("class", "box");
+
+    d3.queue()
+        .defer(d3.csv, "data/averageSchoolACT.csv") //load attributes from CPS data
+
+    var chart = d3.select("info-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "chart");
+
 
 
 
