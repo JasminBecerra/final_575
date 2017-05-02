@@ -1,11 +1,11 @@
 /*style sheet for 575 final project*/
 .ourmap {
-	border: medium solid #999;
+/*	border: medium solid #999;*/
 	background-color: white;
 	/*margin: 10px 0 0 20px;*/
 	display: block;
-	box-shadow: 2px 2px 1px gray;
-	border-radius: 8px;
+/*	box-shadow: 2px 2px 1px gray;
+	border-radius: 8px;*/
 	position: absolute;
 	top:10%;
 	left:20%;
@@ -20,8 +20,8 @@
     border-radius: 8px;
     position: absolute;
     top:10%;
-    left:65%;
-    height: 625px;
+    left:60%;
+    height: 600px;
     width: 39%;
 }
 
@@ -33,19 +33,18 @@
 }
 
 .unitedStates{
-	fill: teal;
-    stroke: #CCC;
-    stroke-width: 2px;
-}
-
-.gratLines {
-    fill: none;
+	fill: white;
     stroke: white;
     stroke-width: 2px;
 }
 
+.gratLines {
+    fill: white;
+    stroke: white;
+}
+
 .gratBackground {
-    fill: lightblue;
+    fill: white;
 }
 
 .map-section{
@@ -350,7 +349,7 @@ option {
     font-family: 'Roboto Slab', sans-serif;
 }
 
-input#allschools{
+/*input#allschools{
 	position:absolute;
 	left:40%;
 	top:85%;
@@ -380,4 +379,4 @@ label#magnetschools{
 	top: 85%;
 	font-size: 17px;
     font-family: Verdana, Geneva, sans-serif;
-}
+}*/

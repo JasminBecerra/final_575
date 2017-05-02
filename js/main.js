@@ -20,8 +20,8 @@ window.onload = setMap();
 //set up choropleth map
 function setMap(){
     //map frame dimensions
-    var width = window.innerWidth * 0.45,
-        height = 625;
+    var width = window.innerWidth * 0.40,
+        height = 600;
 
 	//container for map
 	var ourmap = d3.select("body")
@@ -34,7 +34,7 @@ function setMap(){
     // try geo.albers or geoAlbers
     var projection = d3.geoAlbers()
         .center([0, 41.835])
-        .rotate([87.63, 0, 0])
+        .rotate([87.7, 0, 0])
         .parallels([41.79, 41.88])
         .scale(80000.00)
         .translate([width / 2, height / 2]);
