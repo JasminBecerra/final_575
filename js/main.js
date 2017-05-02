@@ -4,10 +4,22 @@
 
 //anonymous function to move variables to local scope
 (function(){
+	
+	$(document).ready(function(){
+		$("#myModal").modal('show');
+	});
 
 // //pseudo-global variables
-	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget"]; 
+	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
 	var expressed = attrArray[0]; //initial attribute
+	
+	var colorClasses = [
+        "#dadaeb",
+        "#bcbddc",
+        "#9e9ac8",
+        "#756bb1",
+        "#54278f"
+    ];
 
 
 // //list of attributes up there
@@ -20,8 +32,8 @@ window.onload = setMap();
 //set up choropleth map
 function setMap(){
     //map frame dimensions
-    var width = window.innerWidth * 0.45,
-        height = 680;
+    var width = window.innerWidth * 0.30,
+        height = 700;
 
 	//container for map
 	var ourmap = d3.select("body")
@@ -36,7 +48,7 @@ function setMap(){
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
         .parallels([41.79, 41.88])
-        .scale(80000.00)
+        .scale(100000.00)
         .translate([width / 2, height / 2]);
 
 	//create path generator for ourmap
@@ -50,21 +62,22 @@ function setMap(){
 		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
+		
 
 
 //function to populate the dom with topojson data
     function callback(error, csvData, us, chicago){
 
-		setGraticule(ourmap, path);
+		//setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
     	var usStates = topojson.feature(us, us.objects.USStates),
 		chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		var unitedStates = ourmap.append("path")
+		/*var unitedStates = ourmap.append("path")
             .datum(usStates)
             .attr("class", "unitedStates")
-            .attr("d", path);
+            .attr("d", path);*/
 			
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
@@ -76,8 +89,12 @@ function setMap(){
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 		
 		//add dropdown menu to the map
-		createDropdown(csvData);
-
+		//createDropdown(csvData);
+		
+		//add menu panel to map
+		createMenu(csvData, csvData, chicagoNets, path, colorScale);
+		
+		
         // // check
         // console.log(illinois);
         console.log(chicago);
@@ -146,13 +163,6 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
 
 //function to create color scale generator
 function makeColorScale(data){
-    var colorClasses = [
-        "#99d8c9",
-        "#66c2a4",
-        "#41ae76",
-        "#238b45",
-        "#005824"
-    ];
 
     //create color scale generator
     var colorScale = d3.scaleQuantile()
@@ -178,7 +188,7 @@ function choropleth(props, colorScale){
     if (typeof val == 'number' && !isNaN(val)){
         return colorScale(val);
     } else {
-        return "#8e8e8e";
+        return "#f2f0f7";
     };
 };
 
@@ -230,7 +240,7 @@ function createDropdown(csvData){
 //dropdown change listener handler
 function changeAttribute(attribute, csvData){
 //change the expressed attribute
-    expressed = attribute;
+    //expressed = attribute;
 
     //recreate the color scale
     var colorScale = makeColorScale(csvData);
@@ -244,24 +254,36 @@ function changeAttribute(attribute, csvData){
         })
 };
 
+function setInfoBox(csvData){
+        var width = window.innerWidth * 0.30,
+        height = 650;
+
+    var box = d3.select("info-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "box");
+};
+
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
-        .style("stroke", "lime")
-        .style("stroke-width", "3");
+        .style("stroke", "#FF66FF")
+        .style("stroke-width", "4");
 		console.log(props.network_num);
 	setLabel(props);
 };
 
 //function to reset the element style on mouseout
 function dehighlight(props){
+	
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", function(){
             return getStyle(this, "stroke")
         })
-        .style("stroke-width", function(){
+       .style("stroke-width", function(){
             return getStyle(this, "stroke-width") 
-        });
+        });  
 		
     function getStyle(element, styleName){
         var styleText = d3.select(element)
@@ -283,23 +305,41 @@ function setLabel(props){
         "</h1><b>" + expressed + "</b>";
 		
 	if (Boolean(props[expressed]) == true) {
-        if (expressed == "Average ACT Score") {
+        if (expressed == attrArray[0]) {
             labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-        } else if (expressed == "Lunch Total") {
+        } else if (expressed == attrArray[1]) {
             labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == "Lunch Percent") {
+        } else if (expressed == attrArray[2]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == "Cohort Dropout Rates 2016") {
+        } else if (expressed == attrArray[3]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-        } else if (expressed == "Cohort Graduation Rates 2016") {
+        } else if (expressed == attrArray[4]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == "Personnel") {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == "Non-Personnel") {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == "FY16 Budget") {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "in budget"
-        };
+		} else if (expressed == attrArray[5]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
+		} else if (expressed == attrArray[6]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
+		} else if (expressed == attrArray[7]) {
+            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
+		} else if (expressed == attrArray[8]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
+        } else if (expressed == attrArray[9]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
+		} else if (expressed == attrArray[10]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
+		} else if (expressed == attrArray[11]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
+		} else if (expressed == attrArray[12]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
+		} else if (expressed == attrArray[13]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
+        } else if (expressed == attrArray[14]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
+		} else if (expressed == attrArray[15]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
+		} else if (expressed == attrArray[16]) {
+            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+		};
     } else { //if no data associated with selection, display "No data"
         labelAttribute = "<h1>No Data</h1>";
     };
@@ -339,6 +379,94 @@ function moveLabel(){
     d3.select(".infolabel")
         .style("left", x + "px")
         .style("top", y + "px");
+};
+
+
+
+//menu items function
+function createMenu(csvData, chicagoNets, path, colorScale){
+	$(".ACTaverage").click(function(){ 
+        expressed = attrArray[0];
+
+        d3.selectAll(".networks").on("change", function(){
+					changeAttribute(this.value, csvData)
+			})
+			.select("desc")
+                .text(function(d) {
+					changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+			
+
+    });
+	
+	$(".Lunch").click(function(){ 
+        expressed = attrArray[2];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+			.select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+
+
+    });
+	
+	$(".Dropout").click(function(){ 
+        expressed = attrArray[3];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+	
+	$(".Graduation").click(function(){ 
+        expressed = attrArray[4];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+	
+	$(".Budget").click(function(){ 
+        expressed = attrArray[5];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+	
+	$(".Closings").click(function(){ 
+        expressed = attrArray[6];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+	
 };
 
 
