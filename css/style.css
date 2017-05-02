@@ -41,6 +41,16 @@
     margin: 10px 20px 0 0;
 }
 
+.chartFrame {
+    fill: none;
+    stroke: #999;
+    stroke-width: 3px;
+    shape-rendering: crispEdges;
+}
+
+.chartBackground {
+    fill: rgba(128,128,128,.2);
+}
 
 .networks{
 	stroke: white;
