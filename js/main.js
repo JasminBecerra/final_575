@@ -49,6 +49,7 @@ function setMap(){
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
 		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
+        .defer(d3.csv, "data/averageSchoolACT.csv") //load school ACT data by network
         .await(callback); //send data to callback function
 
 
@@ -226,8 +227,6 @@ function changeAttribute(attribute, csvData){
 
 
 function setInfoBox(){
-
-
         var width = window.innerWidth * 0.45,
         height = 650;
 
@@ -239,18 +238,13 @@ function setInfoBox(){
         .attr("class", "box");
 
     d3.queue()
-        .defer(d3.csv, "data/averageSchoolACT.csv") //load attributes from CPS data
+        .defer(d3.csv, "data/averageSchoolACT.csv") //load school ACT data by network
 
     var chart = d3.select("info-box")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "chart");
-
-
-
-
-
 
 
 
