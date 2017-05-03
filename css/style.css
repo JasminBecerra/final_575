@@ -370,7 +370,7 @@ option {
 }
 
 .modal-footer {
-	height:40px;
+	height:60px;
 	border-top-left-radius : 0;
 	border-top-right-radius : 0;
 	border: none;
