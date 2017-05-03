@@ -5,9 +5,11 @@
 //anonymous function to move variables to local scope
 (function(){
 	
-	$("#intro-panel").show(); //splash screen on start
-	$("#help-info").hide(); //splash screen on start
-	$("#help-text").hide(); //splash screen on start
+	$(document).ready(function(){
+		$("#myModal").modal('show');
+		$("#contact").modal('show');
+	});
+	
 
 // //pseudo-global variables
 	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
@@ -28,6 +30,7 @@
 
 //begin script when window loads
 window.onload = setMap();
+
 
 //set up choropleth map
 function setMap(){
@@ -89,11 +92,10 @@ function setMap(){
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 		
 		//add dropdown menu to the map
-		createDropdown(csvData);
+		//createDropdown(csvData);
 		
 		//add menu panel to map
-		createMenu(csvData);
-		
+		createMenu(csvData, csvData, chicagoNets, path, colorScale);
 		
         // // check
         // console.log(illinois);
@@ -384,17 +386,20 @@ function moveLabel(){
 
 
 //menu items function
-function createMenu(csvData){
+function createMenu(csvData, chicagoNets, path, colorScale){
 	$(".ACTaverage").click(function(){ 
         expressed = attrArray[0];
 
         d3.selectAll(".networks").on("change", function(){
 					changeAttribute(this.value, csvData)
 			})
-            .select("desc")
+			.select("desc")
                 .text(function(d) {
-                    changeAttribute(this.value, csvData);
+					changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
+			
+
     });
 	
 	$(".Lunch").click(function(){ 
@@ -403,10 +408,13 @@ function createMenu(csvData){
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
             })
-            .select("desc")
+			.select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
+
+
     });
 	
 	$(".Dropout").click(function(){ 
@@ -418,6 +426,7 @@ function createMenu(csvData){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
 	
@@ -430,6 +439,7 @@ function createMenu(csvData){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
 	
@@ -442,11 +452,12 @@ function createMenu(csvData){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
 	
 	$(".Closings").click(function(){ 
-        expressed = attrArray[6];
+        expressed = attrArray[20];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
@@ -454,6 +465,7 @@ function createMenu(csvData){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
 	

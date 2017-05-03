@@ -34,6 +34,24 @@
 	width:30px;
 }
 
+.chart {
+    background-color: rgba(128,128,128,.2);
+    border: medium solid #999;
+    float: right;
+    margin: 10px 20px 0 0;
+}
+
+.chartFrame {
+    fill: none;
+    stroke: #999;
+    stroke-width: 3px;
+    shape-rendering: crispEdges;
+}
+
+.chartBackground {
+    fill: rgba(128,128,128,.2);
+}
+
 
 .networks{
 	stroke: white;
@@ -123,7 +141,7 @@ h1{
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-brand {
-    color: rgba(119, 119, 119, 1);
+    color: #756bb1;
 	font-size: 20px;
     font-family: Verdana, Geneva, sans-serif;
 	height: 10%;
@@ -137,21 +155,21 @@ h1{
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-nav>li>a {
-    color: rgba(119, 119, 119, 1);
+    color: #756bb1;
     background-color: rgba(225, 225, 225, 1);
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:hover,
 #custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:focus {
     color: rgba(255, 255, 255, 1);
-    background-color: #BEBEBE;
+    background-color: #756bb1;
 	border-radius:1px;
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a,
 #custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:hover,
 #custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:focus {
-    color: white;
+    color: #756bb1;
     background-color: rgba(204, 204, 204, 1);
 }
 #custom-bootstrap-menu.navbar-custom .navbar-toggle {
@@ -209,13 +227,13 @@ option {
 
 .infolabel {
     position: absolute;
-    height: 60px;
+    height: 70px;
     min-width: 100px;
     color: #fff;
-    background-color: #000;
-    border: solid thin #000;
-	border-radius: 10px;
-	opacity: 0.88;
+    background-color: #181818;
+    border: solid thin #181818;
+	border-radius: 5px;
+	opacity: 0.92;
     padding: 5px 7px;
     top: -75px;
 	font-family: Verdana, Geneva, sans-serif;
@@ -225,8 +243,9 @@ option {
     margin: 0 5px 0 0;
     padding: 0;
     display: inline-block;
-    line-height: 1.4em;
-	font-size: 25px;
+    line-height: 1.3em;
+	font-size: 30px;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 /*  Menu CSS */
@@ -264,6 +283,12 @@ option {
 }
 
 .ACTaverage:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
+}
+
+.ACTaverage>.active>:hover {
     color: white;
     background-color: #9975b9;
 	border-radius: 6px;
@@ -357,3 +382,110 @@ option {
     left: 0;
     margin: auto;
 }
+
+
+#myModal.modal-content{
+	border: medium solid #999;
+	background: white;
+	color:black;
+	position:absolute;	
+}
+#myModal.modal-dialog{
+	
+}
+
+.modal-body {
+	height:650px;
+	width: 100%;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
+}
+
+.modal-title{
+	height:50px;
+	width: 100%;
+	padding: 10px;
+	font-family:verdana;
+	font-size: 20px;
+	text-align:center;
+}
+
+.modal-header{
+     padding:9px 15px;
+     /*border-bottom:1px solid #eee;*/
+     background-color: #756bb1;
+	 /*border-radius: 5px;*/
+	 color:white;
+ }
+ 
+ /* The Close Button */
+button.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+	
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mem-name{
+	font-family:verdana;
+	font-size: 16px;
+}
+
+p{
+	font-family: verdana;
+	font-size:16px;
+}
+h4{
+	font-family: verdana;
+}
+small{
+	color:white;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+}
+
+.container {
+    padding: 0 16px;
+}
+
+button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+}
+
+button:hover, a:hover {
+    opacity: 0.7;
+}
+
+h2{
+	font-family: verdana;
+	font-size: 8px;
+}
+
+i.fa{
+	display:block;
+	text-align:center;
+}
+
