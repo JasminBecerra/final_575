@@ -5,15 +5,15 @@
 //anonymous function to move variables to local scope
 (function(){
 	
-	$(document).ready(function(){
-		$("#myModal").modal('show');
-	});
+$("#intro-panel").show(); //splash screen on start
+$("#help-info").hide(); //splash screen on start
+$("#help-text").hide(); //splash screen on start
 
 // //pseudo-global variables
-	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
-	var expressed = attrArray[0]; //initial attribute
-	
-	var colorClasses = [
+var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"];
+var expressed = attrArray[0]; //initial attribute
+
+var colorClasses = [
         "#dadaeb",
         "#bcbddc",
         "#9e9ac8",
@@ -21,6 +21,20 @@
         "#54278f"
     ];
 
+//Chart frame
+var chartWidth = window.innerWidth * 0.4,
+   chartHeight = 473,
+   leftPadding = 25,
+   rightPadding = 2,
+   topBottomPadding = 5,
+   chartInnerWidth = chartWidth - leftPadding - rightPadding,
+   chartInnerHeight = chartHeight - topBottomPadding * 2,
+   translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
+
+//a scale to size bars proportionally to frame and for axis
+var yScale = d3.scaleLinear()
+   .range([463, 0])
+   .domain([0, 25]);
 
 // //list of attributes up there
 // var expressed = attrArray[0]; //initial attribute
@@ -92,13 +106,15 @@ function setMap(){
 		//createDropdown(csvData);
 		
 		//add menu panel to map
-		createMenu(csvData, csvData, chicagoNets, path, colorScale);
+		createMenu(csvData);
+
+        setChart(csvData, colorScale);
 		
 		
         // // check
         // console.log(illinois);
-        console.log(chicago);
-		console.log(csvData);
+  //       console.log(chicago);
+		// console.log(csvData);
     };
 
 };
@@ -381,10 +397,73 @@ function moveLabel(){
         .style("top", y + "px");
 };
 
+function setChart(csvData, colorScale){
+//create a second svg element to hold the bar chart
+var chart = d3.select("body")
+.append("svg")
+.attr("width", chartWidth)
+.attr("height", chartHeight)
+.attr("class", "chart");
+
+//create a rectangle for chart background fill
+var chartBackground = chart.append("rect")
+.attr("class", "chartBackground")
+.attr("width", chartInnerWidth)
+.attr("height", chartInnerHeight)
+.attr("transform", translate);
+//set bars for each province
+   var bars = chart.selectAll(".bar")
+       .data(csvData)
+       .enter()
+       .append("rect")
+       .sort(function(a, b){
+           return b[expressed]-a[expressed]
+       })
+       .attr("class", function(d){
+           return "bar " + d.name;
+       })
+       .attr("width", chartInnerWidth / csvData.length - 1)
+
+       //Highlights / dehighlights / labels depending on users mouse location
+       .on("mouseover", highlight)
+       .on("mouseout", dehighlight)
+       .on("mousemove", moveLabel)
+       //bar highlight style
+       var desc = bars.append("desc")
+           .text('{"stroke": "none", "stroke-width": "0px"}');
+
+
+       //text element for the chart title
+       var chartTitle = chart.append("text")
+           .attr("x", 200)
+           .attr("y", 40)
+           .attr("class", "chartTitle")
+           .text( attrArray[0] + expressed[3] + " in each country");
+
+       //create vertical axis generator
+       var yAxis = d3.axisLeft()
+           .scale(yScale);
+
+       //place axis
+       var axis = chart.append("g")
+           .attr("class", "axis")
+           .attr("transform", translate)
+           .call(yAxis);
+
+       //create frame for chart border
+       var chartFrame = chart.append("rect")
+           .attr("class", "chartFrame")
+           .attr("width", chartInnerWidth)
+           .attr("height", chartInnerHeight)
+           .attr("transform", translate);
+
+       updateChart(bars, csvData.length, colorScale);
+
+};
 
 
 //menu items function
-function createMenu(csvData, chicagoNets, path, colorScale){
+function createMenu(csvData){
 	$(".ACTaverage").click(function(){ 
         expressed = attrArray[0];
 
