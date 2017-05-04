@@ -55,9 +55,10 @@
 
 .networks{
 	stroke: white;
-    stroke-width: 1px;
+    stroke-width: 1.75px;
 	stroke-linecap: round;
 	/*fill:gray;*/
+	
 }
 
 .unitedStates{
@@ -267,7 +268,7 @@ option {
 	border-radius: 6px;
 	color:white;
 	font-size:15px;
-	box-shadow: 1px 1px 0.5px #C8C8C8;
+	box-shadow: 1.6px 1.6px 0.8px #bcbddc;
 }
 
 .menu-inset {
@@ -447,6 +448,7 @@ p{
 }
 h4{
 	font-family: verdana;
+	text-shadow: 1px 1px 2px #bcbddc;
 }
 small{
 	color:white;
@@ -487,5 +489,10 @@ h2{
 i.fa{
 	display:block;
 	text-align:center;
+}
+
+.jumbotron{
+	height: 820px;
+	opacity:0.8;
 }
 

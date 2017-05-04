@@ -7,7 +7,6 @@
 	
 	$(document).ready(function(){
 		$("#myModal").modal('show');
-		$("#contact").modal('show');
 	});
 	
 
