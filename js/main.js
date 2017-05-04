@@ -5,9 +5,9 @@
 //anonymous function to move variables to local scope
 (function(){
 
-	$("#intro-panel").show(); //splash screen on start
-	$("#help-info").hide(); //splash screen on start
-	$("#help-text").hide(); //splash screen on start
+	$(document).ready(function(){
+		$("#myModal").modal('show');
+	});
 
 // //pseudo-global variables
 	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"];
@@ -20,22 +20,6 @@
         "#756bb1",
         "#54278f"
     ];
-
-		//Chart frame
-		var chartWidth = window.innerWidth * 0.85,
-		    chartHeight = 473,
-		    leftPadding = 25,
-		    rightPadding = 2,
-		    topBottomPadding = 5,
-		    chartInnerWidth = chartWidth - leftPadding - rightPadding,
-		    chartInnerHeight = chartHeight - topBottomPadding * 2,
-		    translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
-
-		//a scale to size bars proportionally to frame and for axis
-		var yScale = d3.scaleLinear()
-		    .range([463, 0])
-		    .domain([0, 25]);
-
 
 
 // //list of attributes up there
@@ -102,153 +86,23 @@ function setMap(){
         var colorScale = makeColorScale(csvData);
 
         //add enumeration units to ourmap
+        setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 
 		//add dropdown menu to the map
-		setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
-
+		//createDropdown(csvData);
 
 		//add menu panel to map
-		createMenu(csvData);
+		createMenu(csvData, csvData, chicagoNets, path, colorScale);
 
-		setChart(csvData, colorScale);
+
         // // check
-
+        // console.log(illinois);
+        console.log(chicago);
+		console.log(csvData);
     };
 
 };
 
-function setChart(csvData, colorScale){
-	//create a second svg element to hold the bar chart
-	var chart = d3.select("body")
-			.append("svg")
-			.attr("width", chartWidth)
-			.attr("height", chartHeight)
-			.attr("class", "chart");
-
-	//create a rectangle for chart background fill
-	var chartBackground = chart.append("rect")
-			.attr("class", "chartBackground")
-			.attr("width", chartInnerWidth)
-			.attr("height", chartInnerHeight)
-			.attr("transform", translate);
-			//set bars for each province
-	    var bars = chart.selectAll(".bar")
-	        .data(csvData)
-	        .enter()
-	        .append("rect")
-	        .sort(function(a, b){
-	            return b[expressed]-a[expressed]
-	        })
-	        .attr("class", function(d){
-	            return "bar " + d.name;
-	        })
-	        .attr("width", chartInnerWidth / csvData.length - 1)
-
-	        //Highlights / dehighlights / labels depending on users mouse location
-	        .on("mouseover", highlight)
-	        .on("mouseout", dehighlight)
-	        .on("mousemove", moveLabel)
-	        //bar highlight style
-	        var desc = bars.append("desc")
-	            .text('{"stroke": "none", "stroke-width": "0px"}');
-
-
-	        //text element for the chart title
-	        var chartTitle = chart.append("text")
-	            .attr("x", 200)
-	            .attr("y", 40)
-	            .attr("class", "chartTitle")
-	            .text( attrArray[0] + expressed[3] + " in each country");
-
-	        //create vertical axis generator
-	        var yAxis = d3.axisLeft()
-	            .scale(yScale);
-
-	        //place axis
-	        var axis = chart.append("g")
-	            .attr("class", "axis")
-	            .attr("transform", translate)
-	            .call(yAxis);
-
-	        //create frame for chart border
-	        var chartFrame = chart.append("rect")
-	            .attr("class", "chartFrame")
-	            .attr("width", chartInnerWidth)
-	            .attr("height", chartInnerHeight)
-	            .attr("transform", translate);
-
-	        updateChart(bars, csvData.length, colorScale);
-
-};
-
-
-
-
-
-
-
-
-function createMenu(csvData){
-	$(".ACTaverage").click(function(){
-		expressed = attrArray[0];
-
-		d3.selectAll(".menu-options div");
-		d3.selectAll(".networks").style("fill", function(d){
-			changeAttribute(this.value, csvData);
-
-		});
-});
-
-	$(".Lunch").click(function(){
-        expressed = attrArray[2];
-
-				d3.selectAll(".menu-options div");
-				d3.selectAll(".networks").style("fill", function(d){
-					changeAttribute(this.value, csvData);
-
-				});
-		});
-
-	$(".Dropout").click(function(){
-        expressed = attrArray[3];
-
-				d3.selectAll(".menu-options div");
-				d3.selectAll(".networks").style("fill", function(d){
-					changeAttribute(this.value, csvData);
-
-				});
-		});
-
-	$(".Graduation").click(function(){
-        expressed = attrArray[4];
-
-						d3.selectAll(".menu-options div");
-						d3.selectAll(".networks").style("fill", function(d){
-							changeAttribute(this.value, csvData);
-
-						});
-				});
-	$(".Budget").click(function(){
-        expressed = attrArray[5];
-
-				d3.selectAll(".menu-options div");
-				d3.selectAll(".networks").style("fill", function(d){
-					changeAttribute(this.value, csvData);
-
-				});
-		});
-
-	$(".Closings").click(function(){
-        expressed = attrArray[6];
-
-				d3.selectAll(".menu-options div");
-				d3.selectAll(".networks").style("fill", function(d){
-					changeAttribute(this.value, csvData);
-
-				});
-		});
-
-};
 function joinData (chicagoNets, csvData){
     //testing dropout and grad data
     //using two attributes: dropoutr rates 2016, and gradaution rates 2016
@@ -292,7 +146,7 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
             })
             .attr("d", path)
 			.style("fill", function(d){
-            return colorScale(d.properties[expressed]);
+            return choropleth(d.properties, colorScale);
 			})
 			.on("mouseover", function(d){
             highlight(d.properties);
@@ -358,8 +212,30 @@ function setGraticule(ourmap, path){
             .attr("d", path); //project graticule lines
 };
 
+//function to create a dropdown menu for attribute selection
+function createDropdown(csvData){
+   //add select element
+    var dropdown = d3.select("body")
+        .append("select")
+        .attr("class", "dropdown")
+        .on("change", function(){
+            changeAttribute(this.value, csvData)
+        });
 
+    //add initial option
+    var titleOption = dropdown.append("option")
+        .attr("class", "titleOption")
+        .attr("disabled", "true")
+        .text("Select Attribute");
 
+    //add attribute name options
+    var attrOptions = dropdown.selectAll("attrOptions")
+        .data(attrArray)
+        .enter()
+        .append("option")
+        .attr("value", function(d){ return d })
+        .text(function(d){ return d });
+};
 
 //dropdown change listener handler
 function changeAttribute(attribute, csvData){
@@ -369,62 +245,16 @@ function changeAttribute(attribute, csvData){
     //recreate the color scale
     var colorScale = makeColorScale(csvData);
 
-
     //recolor enumeration units
     var networks = d3.selectAll(".networks")
-        .transition(400)
-
-        .style("fill",  function(d){
-            return choropleth(d.properties, colorScale)
-        });
-
-				//re-sort, resize, and recolor bars
-var bars = d3.selectAll(".bar")
-		//re-sort bars
-		.sort(function(a, b){
-				return b[expressed] - a[expressed];
-		})
-		.attr("x", function(d, i){
-				return i * (chartInnerWidth / csvData.length) + leftPadding;
-		})
-		//resize bars
-		.attr("height", function(d, i){
-				return 463 - yScale(parseFloat(d[expressed]));
-		})
-		.attr("y", function(d, i){
-				return yScale(parseFloat(d[expressed])) + topBottomPadding;
-		})
-		//recolor bars
-		.style("fill", function(d){
-				return choropleth(d, colorScale);
-		});
-
-};
-
-
-function updateChart(bars, n, colorScale){
-    //position bars
-		bars.attr("x", function(d, i){
-            return i * (chartInnerWidth / n) + leftPadding;
-        })
-        //size/resize bars
-        .attr("height", function(d, i){
-            return 463 - yScale(parseFloat(d[expressed]));
-        })
-        .attr("y", function(d, i){
-            return yScale(parseFloat(d[expressed])) + topBottomPadding;
-        })
-        //color/recolor bars
+        .transition()
+        .duration(800)
         .style("fill", function(d){
-            return choropleth(d, colorScale);
-        });
-
-        var chartTitle = d3.select(".chartTitle")
-    .text(expressed + " in each country");
-
+            return choropleth(d.properties, colorScale)
+        })
 };
 
-/*function setInfoBox(csvData){
+function setInfoBox(csvData){
         var width = window.innerWidth * 0.30,
         height = 650;
 
@@ -433,14 +263,37 @@ function updateChart(bars, n, colorScale){
         .attr("width", width)
         .attr("height", height)
         .attr("class", "box");
-}; */
+};
+
+
+function setNetworkBox(csvData){
+        var width = window.innerWidth * 0.50,
+        height = 650;
+
+console.log("networks");
+
+
+
+    var box = d3.select("network-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "box");
+};
+
+
+
+
+
+
+
 
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", "#FF66FF")
         .style("stroke-width", "4");
-
+		console.log(props.network_num);
 	setLabel(props);
 };
 
@@ -468,6 +321,71 @@ function dehighlight(props){
 	d3.select(".infolabel")
         .remove();
 };
+
+
+
+
+function setPanel(props) {
+
+	var labelAttribute = "<h1>" + props[expressed] +
+			"</h1><b>" + expressed + "</b>";
+
+if (Boolean(props[expressed]) == true) {
+			if (expressed == attrArray[0]) {
+					labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
+			} else if (expressed == attrArray[1]) {
+					labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
+			} else if (expressed == attrArray[2]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
+			} else if (expressed == attrArray[3]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
+			} else if (expressed == attrArray[4]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
+	} else if (expressed == attrArray[5]) {
+					labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
+	} else if (expressed == attrArray[6]) {
+					labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
+	} else if (expressed == attrArray[7]) {
+					labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
+	} else if (expressed == attrArray[8]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
+			} else if (expressed == attrArray[9]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
+	} else if (expressed == attrArray[10]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
+	} else if (expressed == attrArray[11]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
+	} else if (expressed == attrArray[12]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
+	} else if (expressed == attrArray[13]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
+			} else if (expressed == attrArray[14]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
+	} else if (expressed == attrArray[15]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
+	} else if (expressed == attrArray[16]) {
+					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+	};
+	} else { //if no data associated with selection, display "No data"
+			labelAttribute = "<h1>No Data</h1>";
+	};
+
+
+	//create info label div
+	var infolabel = d3.select("body")
+			.append("div")
+			.attr("class", "networklabel")
+			.attr("id", props.network_num + "_label")
+			.html(labelAttribute);
+
+	var countryName = infolabel.append("div")
+			.attr("class", "networklabelname")
+			.html(props.network_num);
+
+
+};
+
+
 
 function setLabel(props){
     //label content
@@ -516,7 +434,7 @@ function setLabel(props){
 
 
     //create info label div
-    var infolabel = d3.select("body")
+    var networklabel = d3.select("body")
         .append("div")
         .attr("class", "infolabel")
         .attr("id", props.network_num + "_label")
@@ -526,6 +444,20 @@ function setLabel(props){
         .attr("class", "labelname")
         .html(props.network_num);
 };
+
+
+function moveNetworkLabel() {
+
+var networkLabelWidth = d3.select("networkLabel");
+
+
+
+};
+
+
+
+
+
 
 //function to move info label with mouse
 function moveLabel(){
@@ -554,7 +486,90 @@ function moveLabel(){
 
 
 //menu items function
+function createMenu(csvData, chicagoNets, path, colorScale){
+	$(".ACTaverage").click(function(){
+        expressed = attrArray[0];
 
+        d3.selectAll(".networks").on("change", function(){
+					changeAttribute(this.value, csvData)
+			})
+			.select("desc")
+                .text(function(d) {
+					changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+
+
+    });
+
+	$(".Lunch").click(function(){
+        expressed = attrArray[2];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+			.select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+
+
+    });
+
+	$(".Dropout").click(function(){
+        expressed = attrArray[3];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+
+	$(".Graduation").click(function(){
+        expressed = attrArray[4];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+
+	$(".Budget").click(function(){
+        expressed = attrArray[5];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+
+	$(".Closings").click(function(){
+        expressed = attrArray[6];
+
+        d3.selectAll(".networks").on("change", function(d){
+                changeAttribute(this.value, csvData);
+            })
+            .select("desc")
+                .text(function(d) {
+                    changeAttribute(this.value, csvData);
+					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+            });
+    });
+
+};
 
 
 

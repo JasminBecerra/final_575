@@ -26,19 +26,30 @@
     width: 35%;
 }
 
+
+
+
+.network-box{
+
+background-color: white;
+border: medium solid #999;
+display: block;
+position: absolute;
+left: 72%;
+top: 10%;
+height: 80%;
+width: 15%;
+text-align: center;
+
+
+}
+
 .intro-panel{
 	background-color:white;
 	border: medium solid #999;
 	display: block;
 	height: 20px;
 	width:30px;
-}
-
-.chart {
-    background-color: rgba(128,128,128,.2);
-    border: medium solid #999;
-    float: right;
-    margin: 10px 20px 0 0;
 }
 
 .chartFrame {
@@ -56,7 +67,7 @@
 	stroke: white;
     stroke-width: 1px;
 	stroke-linecap: round;
-	fill: white;
+	/*fill:gray;*/
 }
 
 .unitedStates{
@@ -246,6 +257,26 @@ option {
 	font-size: 25px;
 }
 
+.networklabel {
+	position: absolute;
+	height: 60px;
+	min-width: 100px;
+	color: #fff;
+	background-color: #000;
+	border: solid thin #000;
+border-radius: 10px;
+opacity: 0.88;
+	padding: 5px 7px;
+	top: -75px;
+font-family: Verdana, Geneva, sans-serif;
+
+
+
+}
+
+
+
+
 /*  Menu CSS */
 /*  ------ */
 .main-menu {
@@ -373,4 +404,23 @@ option {
     bottom: 0;
     left: 0;
     margin: auto;
+}
+
+
+#myModal.modal-content{
+	border: medium solid #999;
+	background-color: white;
+	color:black;
+	position:absolute;
+}
+#myModal.modal-dialog{
+
+}
+
+.modal-footer {
+	height:60px;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
 }
