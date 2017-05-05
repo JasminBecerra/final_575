@@ -1,0 +1,378 @@
+/*style sheet for 575 final project*/
+.ourmap {
+    /*border: medium solid #999;*/
+    /*background-color: white;*/
+    /*margin: 10px 0 0 20px;*/
+    display: block;
+    /*box-shadow: 2px 2px 1px gray;*/
+    border-radius: 8px;
+    position: absolute;
+    top:12%;
+    left:25%;
+    width: 35%;
+    /*height: 70%;*/
+}
+
+.info-box{
+    border: medium solid #999;
+    background-color: white;
+    display: block;
+    box-shadow: 2px 2px 1px gray;
+    border-radius: 8px;
+    position: absolute;
+    top:10%;
+    left:62%;
+    height: 75%;
+    width: 35%;
+}
+
+.intro-panel{
+    background-color:white;
+    border: medium solid #999;
+    display: block;
+    height: 20px;
+    width:30px;
+}
+
+
+.networks{
+    stroke: white;
+    stroke-width: 1px;
+    stroke-linecap: round;
+    /*fill:gray;*/
+}
+
+.unitedStates{
+    fill: #707070;
+    stroke: #CCC;
+    stroke-width: 2px;
+}
+
+.gratLines {
+    fill: none;
+    stroke: white;
+    stroke-width: 2px;
+}
+
+.gratBackground {
+    fill: lightblue;
+}
+
+.map-section{
+    position: relative;
+    top:-265px;
+    text-align: center;
+}
+
+.about-section{
+    position: absolute;
+    width:100%;
+    top: 100%;
+    text-align:center;
+    background-color:#e1e1e1;
+    height:60%;
+}
+
+.content-section{
+    position: absolute;
+    width:100%;
+    top:150%;
+    text-align:center;
+    background-color:white;
+    height:60%;
+}
+
+h3{
+    margin-top: 20px;
+    position:relative;
+    top:100px;
+    left:5px;
+    font-size: 80px;
+}
+
+h1{
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+#content {
+    padding-top:0px;
+}
+
+.content{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+#custom-bootstrap-menu.navbar-left{
+    position: absolute;
+    width: 100%;
+    left: 3%;
+    text-align: left;
+}
+
+#custom-bootstrap-menu.navbar-right{
+    position: absolute;
+    width: 100%;
+    left: 85%;
+    text-align: left;
+}
+
+#custom-bootstrap-menu.navbar-toggle {
+    z-index:3;
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-brand {
+    color: rgba(119, 119, 119, 1);
+    font-size: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+    height: 10%;
+}
+
+#custom-bootstrap-menu.navbar-custom{
+    font-size: 16px;
+    font-family: Verdana, Geneva, sans-serif;
+    border-bottom-width: 2px;
+    border-color: #D3D3D3;
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-nav>li>a {
+    color: rgba(119, 119, 119, 1);
+    background-color: rgba(225, 225, 225, 1);
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:hover,
+#custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:focus {
+    color: rgba(255, 255, 255, 1);
+    background-color: #BEBEBE;
+    border-radius:1px;
+}
+
+#custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a,
+#custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:hover,
+#custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:focus {
+    color: white;
+    background-color: rgba(204, 204, 204, 1);
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle {
+    border-color: #cccccc;
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:hover,
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:focus {
+    background-color: #cccccc;
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle .icon-bar {
+    background-color: #cccccc;
+}
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:hover .icon-bar,
+#custom-bootstrap-menu.navbar-custom .navbar-toggle:focus .icon-bar {
+    background-color: #e1e1e1;
+}
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: absolute;
+    top: 60px;
+    left: 40px;
+    z-index: 10;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 2px;
+    border: 1px solid #999;
+    box-shadow: 2px 2px 4px #999;
+    border-radius: 4px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    opacity:0.6;
+}
+
+option {
+    font-weight: normal;
+}
+
+.infolabel {
+    position: absolute;
+    height: 60px;
+    min-width: 100px;
+    color: #fff;
+    background-color: #000;
+    border: solid thin #000;
+    border-radius: 10px;
+    opacity: 0.88;
+    padding: 5px 7px;
+    top: -75px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.infolabel h1 {
+    margin: 0 5px 0 0;
+    padding: 0;
+    display: inline-block;
+    line-height: 1.4em;
+    font-size: 25px;
+}
+
+/*  Menu CSS */
+/*  ------ */
+.main-menu { 
+    position: absolute;
+    top: 20%;
+    left:5%;
+    margin-left: 0% !important;
+    color: black;
+    border-radius: 4px;
+}
+
+.menu-options {
+    float: left;
+    background-color: #7A378B;
+    cursor: pointer;
+    font-family: Verdana, Geneva, sans-serif;
+    border-radius: 6px;
+    color:white;
+    font-size:15px;
+    box-shadow: 1px 1px 0.5px #C8C8C8;
+}
+
+.menu-inset {
+    float: right;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #CCCCCC;
+}
+
+.ACTaverage {
+    text-align: center;
+    padding: 6%;
+}
+
+.ACTaverage:hover {
+    color: white;
+    background-color: #9975b9;
+    border-radius: 6px;
+}
+
+.Lunch {
+    text-align: center;
+    padding: 6%;
+}
+
+.Lunch:hover {
+    color: white;
+    background-color: #9975b9;
+    border-radius: 6px;
+}
+
+.Dropout {
+    text-align: center;
+    padding: 6%;
+}
+
+.Dropout:hover {
+    color: white;
+    background-color: #9975b9;
+    border-radius: 6px;
+}
+
+.Graduation {
+    text-align: center;
+    padding: 6%;
+}
+
+.Graduation:hover {
+    color: white;
+    background-color: #9975b9;
+    border-radius: 6px;
+}
+
+.Budget {
+    text-align: center;
+    padding: 11%;
+}
+
+.Budget:hover {
+    color: white;
+    background-color: #9975b9;
+    border-radius: 6px;
+}
+
+.Closings {
+    text-align: center;
+    padding: 6%;
+}
+
+.Closings:hover {
+    color: white;
+    background-color: #9975b9;
+    border-radius: 6px;
+}
+
+#intro-panel{
+    height: 90%;
+    position: absolute;
+    width: 68%;
+    background-color: white;
+    z-index: 9999999999999999999999;
+    top: 0px;
+    left: 70px;
+    display: none;
+    padding: 50px;
+}
+
+.container-background {
+    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #F0F0F0;
+}
+
+.ground {
+    width: 50%;
+    height: 50%;
+    background: #1abcb9;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+
+
+#myModal.modal-content{
+    border: medium solid #999;
+    background-color: white;
+    color:black;
+    position:absolute;  
+}
+#myModal.modal-dialog{
+    
+}
+
+.modal-footer {
+    height:40px;
+    border-top-left-radius : 0;
+    border-top-right-radius : 0;
+    border: none;
+    border-right: 1px solid #ddd;
+}

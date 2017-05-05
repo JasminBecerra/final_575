@@ -4,17 +4,16 @@
 
 //anonymous function to move variables to local scope
 (function(){
-	
-	$(document).ready(function(){
-		$("#myModal").modal('show');
-	});
-	
+    
+    $(document).ready(function(){
+        $("#myModal").modal('show');
+    });
 
 // //pseudo-global variables
-	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
-	var expressed = attrArray[0]; //initial attribute
-	
-	var colorClasses = [
+    var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
+    var expressed = attrArray[0]; //initial attribute
+    
+    var colorClasses = [
         "#dadaeb",
         "#bcbddc",
         "#9e9ac8",
@@ -30,20 +29,21 @@
 //begin script when window loads
 window.onload = setMap();
 
-
 //set up choropleth map
 function setMap(){
     //map frame dimensions
     var width = window.innerWidth * 0.30,
         height = 700;
 
-	//container for map
-	var ourmap = d3.select("body")
-		.append("svg")
-		.attr("class", "ourmap")
-		.attr("width", width)
-		.attr("height", height);
-	
+    //container for map
+    var ourmap = d3.select("body")
+        .append("svg")
+        .attr("class", "ourmap")
+        .attr("width", width)
+        .attr("height", height);
+
+    //create Albers equal area conic projection centered on Chicago
+    // try geo.albers or geoAlbers
     var projection = d3.geoAlbers()
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
@@ -51,56 +51,54 @@ function setMap(){
         .scale(100000.00)
         .translate([width / 2, height / 2]);
 
-	//create path generator for ourmap
-	var path = d3.geoPath()
-    	.projection(projection);
+    //create path generator for ourmap
+    var path = d3.geoPath()
+        .projection(projection);
+
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
+        .defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
-		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
         .await(callback); //send data to callback function
-		
+        
 
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, chicago){
+    function callback(error, csvData, us, chicago){
 
-		//setGraticule(ourmap, path);
-		
-    	//translate chicago comm areas to topojson
-		var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
-		//var cpsDistricts = topojson.feature(dis, dis.geometry).coordinates;
+        //setGraticule(ourmap, path);
+        
+        //translate chicago comm areas to topojson
+        var usStates = topojson.feature(us, us.objects.USStates),
+        chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		/*var chicagoDistricts = ourmap.append("path")
-            .datum(cpsDistricts)
-            .attr("class", "points")
+        /*var unitedStates = ourmap.append("path")
+            .datum(usStates)
+            .attr("class", "unitedStates")
             .attr("d", path);*/
-			
-		//join csv data to GeoJSON enumeration units
+            
+        //join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
-		
-		//create the color scale
+        
+        //create the color scale
         var colorScale = makeColorScale(csvData);
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
-		
-		//add dropdown menu to the map
-		//createDropdown(csvData);
-		
-		//add menu panel to map
-		createMenu(csvData, chicagoNets, path, colorScale);
-		
-		//overlay high school points
-		
+        
+        //add dropdown menu to the map
+        //createDropdown(csvData);
+        
+        //add menu panel to map
+        createMenu(csvData, csvData, chicagoNets, path, colorScale);
+        
+        
         // // check
         // console.log(illinois);
         console.log(chicago);
-		console.log(csvData);
-		
-		
+        console.log(csvData);
     };
 
 };
@@ -147,16 +145,16 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
                 return "networks " + d.properties.network_num.replace(/ /g, '-');
             })
             .attr("d", path)
-			.style("fill", function(d){
+            .style("fill", function(d){
             return choropleth(d.properties, colorScale);
-			})
-			.on("mouseover", function(d){
+            })
+            .on("mouseover", function(d){
             highlight(d.properties);
-			})
-			.on("mouseout", function(d){
+            })
+            .on("mouseout", function(d){
             dehighlight(d.properties);
-			})
-			.on("mousemove", moveLabel);
+            })
+            .on("mousemove", moveLabel);
         var desc = networks.append("desc")
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
@@ -196,16 +194,16 @@ function choropleth(props, colorScale){
 
 function setGraticule(ourmap, path){
     //...GRATICULE BLOCKS FROM MODULE 8
-		var graticule = d3.geoGraticule()
+        var graticule = d3.geoGraticule()
             .step([0.5, 0.5]); //place graticule lines every 5 degrees of longitude and latitude
-			
-		//create graticule background
+            
+        //create graticule background
         var gratBackground = ourmap.append("path")
             .datum(graticule.outline()) //bind graticule background
             .attr("class", "gratBackground") //assign class for styling
             .attr("d", path) //project graticule
-			
-		//create graticule lines
+            
+        //create graticule lines
         var gratLines = ourmap.selectAll(".gratLines") //select graticule elements that will be created
             .data(graticule.lines()) //bind graticule lines to each element to be created
             .enter() //create an element for each datum
@@ -257,8 +255,8 @@ function changeAttribute(attribute, csvData){
 };
 
 function setInfoBox(csvData){
-    var width = window.innerWidth * 0.30,
-		height = 650;
+        var width = window.innerWidth * 0.30,
+        height = 650;
 
     var box = d3.select("info-box")
         .append("svg")
@@ -267,81 +265,18 @@ function setInfoBox(csvData){
         .attr("class", "box");
 };
 
-function setNetworkBox(csvData){
-    var width = window.innerWidth * 0.50,
-		height = 650;
-
-console.log("networks");
-
-    var box = d3.select("network-box")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("class", "box");
-};
-
-function setPanel(props) {
-
-	var labelAttribute = "<h1>" + props[expressed] +
-			"</h1><b>" + expressed + "</b>";
-
-if (Boolean(props[expressed]) == true) {
-		if (expressed == attrArray[0]) {
-				labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-		} else if (expressed == attrArray[1]) {
-				labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-		} else if (expressed == attrArray[2]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-		} else if (expressed == attrArray[3]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-		} else if (expressed == attrArray[4]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == attrArray[5]) {
-				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == attrArray[6]) {
-				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == attrArray[7]) {
-				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
-		} else if (expressed == attrArray[8]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
-		} else if (expressed == attrArray[9]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
-		} else if (expressed == attrArray[10]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
-		} else if (expressed == attrArray[11]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
-		} else if (expressed == attrArray[12]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
-		} else if (expressed == attrArray[13]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
-		} else if (expressed == attrArray[14]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
-		} else if (expressed == attrArray[15]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
-		} else if (expressed == attrArray[16]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
-		};
-		} else { //if no data associated with selection, display "No data"
-			labelAttribute = "<h1>No Data</h1>";
-		};
-
-
-
-};
-
 function highlight(props){
     //change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", "#FF66FF")
         .style("stroke-width", "4");
-		console.log(props.network_num);
-	setLabel(props);
-	setPanel(props);
+        console.log(props.network_num);
+    setLabel(props);
 };
 
 //function to reset the element style on mouseout
 function dehighlight(props){
-	
+    
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", function(){
             return getStyle(this, "stroke")
@@ -349,7 +284,7 @@ function dehighlight(props){
        .style("stroke-width", function(){
             return getStyle(this, "stroke-width") 
         });  
-		
+        
     function getStyle(element, styleName){
         var styleText = d3.select(element)
             .select("desc")
@@ -358,9 +293,9 @@ function dehighlight(props){
         var styleObject = JSON.parse(styleText);
 
         return styleObject[styleName];
-		
+        
     };
-	d3.select(".infolabel")
+    d3.select(".infolabel")
         .remove();
 };
 
@@ -368,8 +303,8 @@ function setLabel(props){
     //label content
     var labelAttribute = "<h1>" + props[expressed] +
         "</h1><b>" + expressed + "</b>";
-		
-	if (Boolean(props[expressed]) == true) {
+        
+    if (Boolean(props[expressed]) == true) {
         if (expressed == attrArray[0]) {
             labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
         } else if (expressed == attrArray[1]) {
@@ -380,35 +315,35 @@ function setLabel(props){
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
         } else if (expressed == attrArray[4]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == attrArray[5]) {
+        } else if (expressed == attrArray[5]) {
             labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == attrArray[6]) {
+        } else if (expressed == attrArray[6]) {
             labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == attrArray[7]) {
+        } else if (expressed == attrArray[7]) {
             labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
-		} else if (expressed == attrArray[8]) {
+        } else if (expressed == attrArray[8]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
         } else if (expressed == attrArray[9]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
-		} else if (expressed == attrArray[10]) {
+        } else if (expressed == attrArray[10]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
-		} else if (expressed == attrArray[11]) {
+        } else if (expressed == attrArray[11]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
-		} else if (expressed == attrArray[12]) {
+        } else if (expressed == attrArray[12]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
-		} else if (expressed == attrArray[13]) {
+        } else if (expressed == attrArray[13]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
         } else if (expressed == attrArray[14]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
-		} else if (expressed == attrArray[15]) {
+        } else if (expressed == attrArray[15]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
-		} else if (expressed == attrArray[16]) {
+        } else if (expressed == attrArray[16]) {
             labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
-		};
+        };
     } else { //if no data associated with selection, display "No data"
         labelAttribute = "<h1>No Data</h1>";
     };
-		
+        
 
     //create info label div
     var infolabel = d3.select("body")
@@ -450,37 +385,37 @@ function moveLabel(){
 
 //menu items function
 function createMenu(csvData, chicagoNets, path, colorScale){
-	$(".ACTaverage").click(function(){ 
+    $(".ACTaverage").click(function(){ 
         expressed = attrArray[0];
 
         d3.selectAll(".networks").on("change", function(){
-					changeAttribute(this.value, csvData)
-			})
-			.select("desc")
+                    changeAttribute(this.value, csvData)
+            })
+            .select("desc")
                 .text(function(d) {
-					changeAttribute(this.value, csvData);
-					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+                    changeAttribute(this.value, csvData);
+                    setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
-			
+            
 
     });
-	
-	$(".Lunch").click(function(){ 
+    
+    $(".Lunch").click(function(){ 
         expressed = attrArray[2];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
             })
-			.select("desc")
+            .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
-					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+                    setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
 
 
     });
-	
-	$(".Dropout").click(function(){ 
+    
+    $(".Dropout").click(function(){ 
         expressed = attrArray[3];
 
         d3.selectAll(".networks").on("change", function(d){
@@ -489,11 +424,11 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
-					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+                    setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
-	
-	$(".Graduation").click(function(){ 
+    
+    $(".Graduation").click(function(){ 
         expressed = attrArray[4];
 
         d3.selectAll(".networks").on("change", function(d){
@@ -502,11 +437,11 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
-					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+                    setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
-	
-	$(".Budget").click(function(){ 
+    
+    $(".Budget").click(function(){ 
         expressed = attrArray[5];
 
         d3.selectAll(".networks").on("change", function(d){
@@ -515,12 +450,12 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
-					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+                    setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
-	
-	$(".Closings").click(function(){ 
-        expressed = attrArray[20];
+    
+    $(".Closings").click(function(){ 
+        expressed = attrArray[6];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
@@ -528,38 +463,11 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             .select("desc")
                 .text(function(d) {
                     changeAttribute(this.value, csvData);
-					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+                    setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
             });
     });
-	
-};
-
-//creates overlay of charter and district schools
-function overlay(){
-    $(".charter-section").click(function(){
-        var charterDiv = document.getElementById('charter-sch');
-        if (d3.selectAll(".charterLocations")[0].length > 0){
-            removeCharter = d3.selectAll(".charterLocations").remove();
-            removeCharterInfo = d3.selectAll(".charterMenuInfoBox").remove();
-            charterInsetDiv.style.visibility = "hidden";
-        } else {
-            charterPoints(map, cpc, path, cpcRadius);
-            charterInsetDiv.style.visibility = "visible";
-        }
-    });
     
-    $(".district-section").click(function(){  
-        var districtDiv = document.getElementById('district-sch');
-        if (d3.selectAll(".districtLocations")[0].length > 0){
-            removeDistrict = d3.selectAll(".districtLocations").remove();
-            removeDistrictInfo = d3.selectAll(".districtMenuInfoBox").remove();
-            insetDiv.style.visibility = "hidden";
-        } else {
-            districtPoints(map, abortionprovider, path, abortionRadius);
-            insetDiv.style.visibility = "visible";
-        }
-    }); 
-}; //end of overlay function
+};
 
 
 

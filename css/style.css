@@ -1,16 +1,17 @@
 /*style sheet for 575 final project*/
 .ourmap {
-    /*border: medium solid #999;*/
-    /*background-color: white;*/
-    /*margin: 10px 0 0 20px;*/
-    display: block;
-    /*box-shadow: 2px 2px 1px gray;*/
-    border-radius: 8px;
-    position: absolute;
-    top:12%;
-    left:25%;
-    width: 35%;
-    /*height: 70%;*/
+	/*border: medium solid #999;*/
+	/*background-color: white;*/
+	/*margin: 10px 0 0 20px;*/
+	display: block;
+	/*box-shadow: 2px 2px 1px gray;*/
+	border-radius: 8px;
+	position: absolute;
+	top:12%;
+	left:25%;
+	width: 35%;
+	/*height: 70%;*/
+	opacity:0.95;
 }
 
 .info-box{
@@ -22,28 +23,66 @@
     position: absolute;
     top:10%;
     left:62%;
-    height: 75%;
+	height: 75%;
     width: 35%;
 }
 
 .intro-panel{
-    background-color:white;
+	background-color:white;
+	border: medium solid #999;
+	display: block;
+	height: 20px;
+	width:30px;
+}
+
+.network-box{
+background-color: white;
+border: medium solid white;
+box-shadow: 2px 2px 1px #bcbddc;
+display: block;
+position: absolute;
+left: 72%;
+top: 10%;
+height: 80%;
+width: 25%;
+border-radius: 6px;
+opacity:0.85;
+}
+
+div.side-panel{
+	font-family: Verdana, Geneva, sans-serif;
+	text-align: center;
+}
+
+.chart {
+    background-color: rgba(128,128,128,.2);
     border: medium solid #999;
-    display: block;
-    height: 20px;
-    width:30px;
+    float: right;
+    margin: 10px 20px 0 0;
+}
+
+.chartFrame {
+    fill: none;
+    stroke: #999;
+    stroke-width: 3px;
+    shape-rendering: crispEdges;
+}
+
+.chartBackground {
+    fill: rgba(128,128,128,.2);
 }
 
 
 .networks{
-    stroke: white;
-    stroke-width: 1px;
-    stroke-linecap: round;
-    /*fill:gray;*/
+	stroke: white;
+    stroke-width: 1.75px;
+	stroke-linecap: round;
+	/*fill:gray;*/
+	
 }
 
 .unitedStates{
-    fill: #707070;
+	fill: #707070;
     stroke: #CCC;
     stroke-width: 2px;
 }
@@ -59,39 +98,32 @@
 }
 
 .map-section{
-    position: relative;
-    top:-265px;
-    text-align: center;
+	position: relative;
+	top:-265px;
+	text-align: center;
 }
 
-.about-section{
-    position: absolute;
-    width:100%;
-    top: 100%;
-    text-align:center;
-    background-color:#e1e1e1;
-    height:60%;
+.overview-section{
+	position: absolute;
+	width:100%;
+	top: 100%;
+	text-align:center;
+	background-color:#e1e1e1;
+	height:200%;
 }
 
 .content-section{
-    position: absolute;
-    width:100%;
-    top:150%;
-    text-align:center;
-    background-color:white;
-    height:60%;
+	position: absolute;
+	width:100%;
+	top:220%;
+	text-align:center;
+	background-color:white;
+	height:80%;
 }
 
-h3{
-    margin-top: 20px;
-    position:relative;
-    top:100px;
-    left:5px;
-    font-size: 80px;
-}
 
 h1{
-    font-family: Verdana, Geneva, sans-serif;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 #content {
@@ -105,14 +137,14 @@ h1{
 
 
 #custom-bootstrap-menu.navbar-left{
-    position: absolute;
+	position: absolute;
     width: 100%;
     left: 3%;
     text-align: left;
 }
 
 #custom-bootstrap-menu.navbar-right{
-    position: absolute;
+	position: absolute;
     width: 100%;
     left: 85%;
     text-align: left;
@@ -123,35 +155,35 @@ h1{
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-brand {
-    color: rgba(119, 119, 119, 1);
-    font-size: 20px;
+    color: #756bb1;
+	font-size: 20px;
     font-family: Verdana, Geneva, sans-serif;
-    height: 10%;
+	height: 10%;
 }
 
 #custom-bootstrap-menu.navbar-custom{
-    font-size: 16px;
+	font-size: 16px;
     font-family: Verdana, Geneva, sans-serif;
-    border-bottom-width: 2px;
-    border-color: #D3D3D3;
+	border-bottom-width: 2px;
+	border-color: #D3D3D3;
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-nav>li>a {
-    color: rgba(119, 119, 119, 1);
+    color: #756bb1;
     background-color: rgba(225, 225, 225, 1);
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:hover,
 #custom-bootstrap-menu.navbar-custom .navbar-nav>li>a:focus {
     color: rgba(255, 255, 255, 1);
-    background-color: #BEBEBE;
-    border-radius:1px;
+    background-color: #756bb1;
+	border-radius:1px;
 }
 
 #custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a,
 #custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:hover,
 #custom-bootstrap-menu.navbar-custom .navbar-nav>.active>a:focus {
-    color: white;
+    color: #756bb1;
     background-color: rgba(204, 204, 204, 1);
 }
 #custom-bootstrap-menu.navbar-custom .navbar-toggle {
@@ -189,7 +221,7 @@ h1{
     padding: 2px;
     border: 1px solid #999;
     box-shadow: 2px 2px 4px #999;
-    border-radius: 4px;
+	border-radius: 4px;
 }
 
 .dropdown-content {
@@ -200,7 +232,7 @@ h1{
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 12px 16px;
     z-index: 1;
-    opacity:0.6;
+	opacity:0.6;
 }
 
 option {
@@ -209,35 +241,36 @@ option {
 
 .infolabel {
     position: absolute;
-    height: 60px;
+    height: 70px;
     min-width: 100px;
     color: #fff;
-    background-color: #000;
-    border: solid thin #000;
-    border-radius: 10px;
-    opacity: 0.88;
+    background-color: #181818;
+    border: solid thin #181818;
+	border-radius: 5px;
+	opacity: 0.92;
     padding: 5px 7px;
     top: -75px;
-    font-family: Verdana, Geneva, sans-serif;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 .infolabel h1 {
     margin: 0 5px 0 0;
     padding: 0;
     display: inline-block;
-    line-height: 1.4em;
-    font-size: 25px;
+    line-height: 1.3em;
+	font-size: 30px;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 /*  Menu CSS */
 /*  ------ */
 .main-menu { 
     position: absolute;
-    top: 20%;
-    left:5%;
+	top: 15%;
+	left:5%;
     margin-left: 0% !important;
     color: black;
-    border-radius: 4px;
+	border-radius: 4px;
 }
 
 .menu-options {
@@ -245,10 +278,10 @@ option {
     background-color: #7A378B;
     cursor: pointer;
     font-family: Verdana, Geneva, sans-serif;
-    border-radius: 6px;
-    color:white;
-    font-size:15px;
-    box-shadow: 1px 1px 0.5px #C8C8C8;
+	border-radius: 6px;
+	color:white;
+	font-size:16px;
+	box-shadow: 2px 2px 1px #bcbddc;
 }
 
 .menu-inset {
@@ -266,7 +299,14 @@ option {
 .ACTaverage:hover {
     color: white;
     background-color: #9975b9;
-    border-radius: 6px;
+	border-radius: 6px;
+	opacity:0.9;
+}
+
+.ACTaverage>.active>:hover {
+    color: white;
+    background-color: #9975b9;
+	border-radius: 6px;
 }
 
 .Lunch {
@@ -277,7 +317,8 @@ option {
 .Lunch:hover {
     color: white;
     background-color: #9975b9;
-    border-radius: 6px;
+	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Dropout {
@@ -288,7 +329,8 @@ option {
 .Dropout:hover {
     color: white;
     background-color: #9975b9;
-    border-radius: 6px;
+	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Graduation {
@@ -299,7 +341,8 @@ option {
 .Graduation:hover {
     color: white;
     background-color: #9975b9;
-    border-radius: 6px;
+	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Budget {
@@ -310,7 +353,8 @@ option {
 .Budget:hover {
     color: white;
     background-color: #9975b9;
-    border-radius: 6px;
+	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Closings {
@@ -321,19 +365,20 @@ option {
 .Closings:hover {
     color: white;
     background-color: #9975b9;
-    border-radius: 6px;
+	border-radius: 6px;
+	opacity:0.9;
 }
 
 #intro-panel{
-    height: 90%;
-    position: absolute;
-    width: 68%;
-    background-color: white;
-    z-index: 9999999999999999999999;
-    top: 0px;
-    left: 70px;
-    display: none;
-    padding: 50px;
+	height: 90%;
+	position: absolute;
+	width: 68%;
+	background-color: white;
+	z-index: 9999999999999999999999;
+	top: 0px;
+	left: 70px;
+	display: none;
+	padding: 50px;
 }
 
 .container-background {
@@ -360,19 +405,176 @@ option {
 
 
 #myModal.modal-content{
-    border: medium solid #999;
-    background-color: white;
-    color:black;
-    position:absolute;  
+	border: medium solid #999;
+	background: white;
+	color:black;
+	position:absolute;
 }
 #myModal.modal-dialog{
-    
+	
 }
 
-.modal-footer {
-    height:40px;
-    border-top-left-radius : 0;
-    border-top-right-radius : 0;
-    border: none;
-    border-right: 1px solid #ddd;
+.modal-body {
+	height:610px;
+	width: 100%;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
 }
+
+.modal-title{
+	height:50px;
+	width: 100%;
+	padding: 10px;
+	font-family:verdana;
+	font-size: 20px;
+	text-align:center;
+}
+
+.modal-header{
+     padding:9px 15px;
+     /*border-bottom:1px solid #eee;*/
+     background-color: #756bb1;
+	 /*border-radius: 5px;*/
+	 color:white;
+ }
+
+ .modal-footer{
+	width: 100%;
+ }
+ 
+ /* The Close Button */
+button.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+	
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mem-name{
+	font-family:verdana;
+	font-size: 16px;
+}
+
+p{
+	font-family: verdana;
+	font-size:16px;
+}
+h4{
+	font-family: verdana;
+	text-shadow: 1px 1px 2px #bcbddc;
+}
+small{
+	color:white;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+}
+
+.container {
+    padding: 0 16px;
+}
+
+button .btn-block {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: black;
+    background-color: gray;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+}
+
+button .btn-block:hover, a:hover {
+    opacity: 0.9;
+}
+
+h2{
+	font-family: verdana;
+	font-size: 8px;
+}
+
+i.fa{
+	display:block;
+	text-align:center;
+}
+
+.jumbotron{
+	height: 820px;
+	opacity:0.7;
+}
+
+i.fa-info-circle{
+	font-size:22px;
+}
+
+i.fa-info-circle:hover{
+	opacity:0.8;
+}
+
+.school-overlay-menu {
+    position: absolute;
+	top: 66%;
+	left:5%;
+    margin-left: 0% !important;
+    color: black;
+	border-radius: 4px;
+}
+
+.charter {
+    float: left;
+    background-color: #062A78;
+    color: #fff;
+    text-align: center;
+    padding: 9%;
+	border-radius: 4px;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.charter:hover {
+    color: #fff;
+    background-color: rgb(78, 91, 178);
+	opacity:0.9;
+}
+
+.district {
+    float: left;
+    color: #fff;
+    background-color: #4997D0;
+    text-align: center;
+    padding: 8%;
+	border-radius:4px;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.district:hover {
+    color:  #fff;
+	opacity:0.9;
+	background-color: rgb(127, 187, 232);
+}
+hr.style-one {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+	/*border-top: 1px solid white;*/
+}
+
+
