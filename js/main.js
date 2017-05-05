@@ -57,28 +57,27 @@ function setMap(){
 	var path = d3.geoPath()
     	.projection(projection);
 
-
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
-		.defer(d3.json, "data/us_states.topojson") //load background spatial data
+		//.defer(d3.json, "data/cpsDistrictSchoolsTopo.topojson") //load districts spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
         .await(callback); //send data to callback function
 		
 
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, us, chicago){
+    function callback(error, csvData, chicago){
 
 		//setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
-    	var usStates = topojson.feature(us, us.objects.USStates),
-		chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
+    	//var cpsDistricts = topojson.feature(dis, dis.objects.cpsDistrictSchools);
+		var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		/*var unitedStates = ourmap.append("path")
-            .datum(usStates)
-            .attr("class", "unitedStates")
+		/*var chicagoDistricts = ourmap.append("path")
+            .datum(cpsDistricts)
+            .attr("class", "points")
             .attr("d", path);*/
 			
 		//join csv data to GeoJSON enumeration units
@@ -95,6 +94,8 @@ function setMap(){
 		
 		//add menu panel to map
 		createMenu(csvData, csvData, chicagoNets, path, colorScale);
+		
+		//overlay high school points
 		
         // // check
         // console.log(illinois);
@@ -469,6 +470,35 @@ function createMenu(csvData, chicagoNets, path, colorScale){
     });
 	
 };
+
+//creates overlay of charter and district schools
+function overlay(path, cpcRadius, abortionRadius, ourmap, cpc, abortionprovider){
+    $(".charter-section").click(function(){
+        var charterDiv = document.getElementById('charter-sch');
+        var charterInsetDiv = document.getElementById('cpc-inset');
+        if (d3.selectAll(".charterLocations")[0].length > 0){
+            removeCharter = d3.selectAll(".charterLocations").remove();
+            removeCharterInfo = d3.selectAll(".charterMenuInfoBox").remove();
+            charterInsetDiv.style.visibility = "hidden";
+        } else {
+            charterPoints(map, cpc, path, cpcRadius);
+            charterInsetDiv.style.visibility = "visible";
+        }
+    });
+    
+    $(".district-section").click(function(){  
+        var districtDiv = document.getElementById('district-sch');
+        var insetDiv = document.getElementById('abortion-inset');
+        if (d3.selectAll(".districtLocations")[0].length > 0){
+            removeDistrict = d3.selectAll(".districtLocations").remove();
+            removeDistrictInfo = d3.selectAll(".districtMenuInfoBox").remove();
+            insetDiv.style.visibility = "hidden";
+        } else {
+            districtPoints(map, abortionprovider, path, abortionRadius);
+            insetDiv.style.visibility = "visible";
+        }
+    }); 
+}; //end of overlay function
 
 
 

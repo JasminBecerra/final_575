@@ -11,6 +11,7 @@
 	left:25%;
 	width: 35%;
 	/*height: 70%;*/
+	opacity:0.5;
 }
 
 .info-box{
@@ -267,7 +268,7 @@ option {
     font-family: Verdana, Geneva, sans-serif;
 	border-radius: 6px;
 	color:white;
-	font-size:15px;
+	font-size:16px;
 	box-shadow: 1.6px 1.6px 0.8px #bcbddc;
 }
 
@@ -389,7 +390,7 @@ option {
 	border: medium solid #999;
 	background: white;
 	color:black;
-	position:absolute;	
+	position:absolute;
 }
 #myModal.modal-dialog{
 	
@@ -419,6 +420,10 @@ option {
      background-color: #756bb1;
 	 /*border-radius: 5px;*/
 	 color:white;
+ }
+
+ .modal-footer{
+	width: 100%;
  }
  
  /* The Close Button */
@@ -464,7 +469,7 @@ small{
     padding: 0 16px;
 }
 
-button {
+button .btn-default .btn-block {
     border: none;
     outline: 0;
     display: inline-block;
@@ -477,8 +482,8 @@ button {
     font-size: 18px;
 }
 
-button:hover, a:hover {
-    opacity: 0.7;
+button .btn-default .btn-block:hover, a:hover {
+    opacity: 0.9;
 }
 
 h2{
@@ -493,6 +498,57 @@ i.fa{
 
 .jumbotron{
 	height: 820px;
+	opacity:0.7;
+}
+
+i.fa-info-circle{
+	font-size:22px;
+}
+
+i.fa-info-circle:hover{
 	opacity:0.8;
+}
+
+.school-overlay-menu {
+    position: absolute;
+	top: 65%;
+	left:5%;
+    margin-left: 0% !important;
+    color: black;
+	border-radius: 4px;
+}
+
+.charter {
+    float: left;
+    background-color: #062A78;
+    color: #fff;
+    text-align: center;
+    padding: 9%;
+	border-radius: 4px;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.charter:hover {
+    color: #fff;
+    background-color: rgb(78, 91, 178);
+	opacity:0.9;
+}
+
+.district {
+    float: left;
+    color: #fff;
+    background-color: #4997D0;
+    text-align: center;
+    padding: 8%;
+	border-radius:4px;
+	font-size: 16px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.district:hover {
+    color:  #fff;
+	opacity:0.9;
+	background-color: rgb(127, 187, 232);
 }
 
