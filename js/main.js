@@ -43,9 +43,7 @@ function setMap(){
 		.attr("class", "ourmap")
 		.attr("width", width)
 		.attr("height", height);
-
-	//create Albers equal area conic projection centered on Chicago
-    // try geo.albers or geoAlbers
+	
     var projection = d3.geoAlbers()
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
@@ -60,8 +58,8 @@ function setMap(){
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
-		//.defer(d3.json, "data/cpsDistrictSchoolsTopo.topojson") //load districts spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
+		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
         .await(callback); //send data to callback function
 		
 
@@ -72,8 +70,8 @@ function setMap(){
 		//setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
-    	//var cpsDistricts = topojson.feature(dis, dis.objects.cpsDistrictSchools);
 		var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
+		//var cpsDistricts = topojson.feature(dis, dis.geometry).coordinates;
 
 		/*var chicagoDistricts = ourmap.append("path")
             .datum(cpsDistricts)
@@ -93,7 +91,7 @@ function setMap(){
 		//createDropdown(csvData);
 		
 		//add menu panel to map
-		createMenu(csvData, csvData, chicagoNets, path, colorScale);
+		createMenu(csvData, chicagoNets, path, colorScale);
 		
 		//overlay high school points
 		
@@ -101,6 +99,8 @@ function setMap(){
         // console.log(illinois);
         console.log(chicago);
 		console.log(csvData);
+		
+		
     };
 
 };
@@ -257,14 +257,76 @@ function changeAttribute(attribute, csvData){
 };
 
 function setInfoBox(csvData){
-        var width = window.innerWidth * 0.30,
-        height = 650;
+    var width = window.innerWidth * 0.30,
+		height = 650;
 
     var box = d3.select("info-box")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "box");
+};
+
+function setNetworkBox(csvData){
+    var width = window.innerWidth * 0.50,
+		height = 650;
+
+console.log("networks");
+
+    var box = d3.select("network-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "box");
+};
+
+function setPanel(props) {
+
+	var labelAttribute = "<h1>" + props[expressed] +
+			"</h1><b>" + expressed + "</b>";
+
+if (Boolean(props[expressed]) == true) {
+		if (expressed == attrArray[0]) {
+				labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
+		} else if (expressed == attrArray[1]) {
+				labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
+		} else if (expressed == attrArray[2]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
+		} else if (expressed == attrArray[3]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
+		} else if (expressed == attrArray[4]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
+		} else if (expressed == attrArray[5]) {
+				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
+		} else if (expressed == attrArray[6]) {
+				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
+		} else if (expressed == attrArray[7]) {
+				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
+		} else if (expressed == attrArray[8]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
+		} else if (expressed == attrArray[9]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
+		} else if (expressed == attrArray[10]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
+		} else if (expressed == attrArray[11]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
+		} else if (expressed == attrArray[12]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
+		} else if (expressed == attrArray[13]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
+		} else if (expressed == attrArray[14]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
+		} else if (expressed == attrArray[15]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
+		} else if (expressed == attrArray[16]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+		};
+		} else { //if no data associated with selection, display "No data"
+			labelAttribute = "<h1>No Data</h1>";
+		};
+
+
+
 };
 
 function highlight(props){
@@ -274,6 +336,7 @@ function highlight(props){
         .style("stroke-width", "4");
 		console.log(props.network_num);
 	setLabel(props);
+	setPanel(props);
 };
 
 //function to reset the element style on mouseout
@@ -472,10 +535,9 @@ function createMenu(csvData, chicagoNets, path, colorScale){
 };
 
 //creates overlay of charter and district schools
-function overlay(path, cpcRadius, abortionRadius, ourmap, cpc, abortionprovider){
+function overlay(){
     $(".charter-section").click(function(){
         var charterDiv = document.getElementById('charter-sch');
-        var charterInsetDiv = document.getElementById('cpc-inset');
         if (d3.selectAll(".charterLocations")[0].length > 0){
             removeCharter = d3.selectAll(".charterLocations").remove();
             removeCharterInfo = d3.selectAll(".charterMenuInfoBox").remove();
@@ -488,7 +550,6 @@ function overlay(path, cpcRadius, abortionRadius, ourmap, cpc, abortionprovider)
     
     $(".district-section").click(function(){  
         var districtDiv = document.getElementById('district-sch');
-        var insetDiv = document.getElementById('abortion-inset');
         if (d3.selectAll(".districtLocations")[0].length > 0){
             removeDistrict = d3.selectAll(".districtLocations").remove();
             removeDistrictInfo = d3.selectAll(".districtMenuInfoBox").remove();

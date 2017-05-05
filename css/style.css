@@ -11,7 +11,7 @@
 	left:25%;
 	width: 35%;
 	/*height: 70%;*/
-	opacity:0.5;
+	opacity:0.95;
 }
 
 .info-box{
@@ -33,6 +33,25 @@
 	display: block;
 	height: 20px;
 	width:30px;
+}
+
+.network-box{
+background-color: white;
+border: medium solid white;
+box-shadow: 2px 2px 1px #bcbddc;
+display: block;
+position: absolute;
+left: 72%;
+top: 10%;
+height: 80%;
+width: 25%;
+border-radius: 6px;
+opacity:0.85;
+}
+
+div.side-panel{
+	font-family: Verdana, Geneva, sans-serif;
+	text-align: center;
 }
 
 .chart {
@@ -84,31 +103,24 @@
 	text-align: center;
 }
 
-.about-section{
+.overview-section{
 	position: absolute;
 	width:100%;
 	top: 100%;
 	text-align:center;
 	background-color:#e1e1e1;
-	height:60%;
+	height:200%;
 }
 
 .content-section{
 	position: absolute;
 	width:100%;
-	top:150%;
+	top:220%;
 	text-align:center;
 	background-color:white;
-	height:60%;
+	height:80%;
 }
 
-h3{
-	margin-top: 20px;
-	position:relative;
-	top:100px;
-	left:5px;
-	font-size: 80px;
-}
 
 h1{
 	font-family: Verdana, Geneva, sans-serif;
@@ -254,7 +266,7 @@ option {
 /*  ------ */
 .main-menu { 
     position: absolute;
-	top: 20%;
+	top: 15%;
 	left:5%;
     margin-left: 0% !important;
     color: black;
@@ -269,7 +281,7 @@ option {
 	border-radius: 6px;
 	color:white;
 	font-size:16px;
-	box-shadow: 1.6px 1.6px 0.8px #bcbddc;
+	box-shadow: 2px 2px 1px #bcbddc;
 }
 
 .menu-inset {
@@ -288,6 +300,7 @@ option {
     color: white;
     background-color: #9975b9;
 	border-radius: 6px;
+	opacity:0.9;
 }
 
 .ACTaverage>.active>:hover {
@@ -305,6 +318,7 @@ option {
     color: white;
     background-color: #9975b9;
 	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Dropout {
@@ -316,6 +330,7 @@ option {
     color: white;
     background-color: #9975b9;
 	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Graduation {
@@ -327,6 +342,7 @@ option {
     color: white;
     background-color: #9975b9;
 	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Budget {
@@ -338,6 +354,7 @@ option {
     color: white;
     background-color: #9975b9;
 	border-radius: 6px;
+	opacity:0.9;
 }
 
 .Closings {
@@ -349,6 +366,7 @@ option {
     color: white;
     background-color: #9975b9;
 	border-radius: 6px;
+	opacity:0.9;
 }
 
 #intro-panel{
@@ -397,7 +415,7 @@ option {
 }
 
 .modal-body {
-	height:650px;
+	height:610px;
 	width: 100%;
 	border-top-left-radius : 0;
 	border-top-right-radius : 0;
@@ -469,20 +487,20 @@ small{
     padding: 0 16px;
 }
 
-button .btn-default .btn-block {
+button .btn-block {
     border: none;
     outline: 0;
     display: inline-block;
     padding: 8px;
-    color: white;
-    background-color: #000;
+    color: black;
+    background-color: gray;
     text-align: center;
     cursor: pointer;
     width: 100%;
     font-size: 18px;
 }
 
-button .btn-default .btn-block:hover, a:hover {
+button .btn-block:hover, a:hover {
     opacity: 0.9;
 }
 
@@ -511,7 +529,7 @@ i.fa-info-circle:hover{
 
 .school-overlay-menu {
     position: absolute;
-	top: 65%;
+	top: 66%;
 	left:5%;
     margin-left: 0% !important;
     color: black;
@@ -551,4 +569,12 @@ i.fa-info-circle:hover{
 	opacity:0.9;
 	background-color: rgb(127, 187, 232);
 }
+hr.style-one {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+	/*border-top: 1px solid white;*/
+}
+
 
