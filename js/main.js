@@ -5,36 +5,25 @@
 //anonymous function to move variables to local scope
 (function(){
 	
-$("#intro-panel").show(); //splash screen on start
-$("#help-info").hide(); //splash screen on start
-$("#help-text").hide(); //splash screen on start
+	$(document).ready(function(){
+		$("#myModal").modal('show');
+	});
+	
 
 // //pseudo-global variables
-var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"];
-var expressed = attrArray[0]; //initial attribute
-
-var colorClasses = [
+	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
+	var expressed = attrArray[0]; //initial attribute
+	
+	var colorClasses = [
         "#dadaeb",
         "#bcbddc",
         "#9e9ac8",
         "#756bb1",
         "#54278f"
     ];
+	
+	var schoolRadius = 10;
 
-//Chart frame
-var chartWidth = window.innerWidth * 0.4,
-   chartHeight = 473,
-   leftPadding = 25,
-   rightPadding = 2,
-   topBottomPadding = 5,
-   chartInnerWidth = chartWidth - leftPadding - rightPadding,
-   chartInnerHeight = chartHeight - topBottomPadding * 2,
-   translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
-
-//a scale to size bars proportionally to frame and for axis
-var yScale = d3.scaleLinear()
-   .range([463, 0])
-   .domain([0, 25]);
 
 // //list of attributes up there
 // var expressed = attrArray[0]; //initial attribute
@@ -42,6 +31,7 @@ var yScale = d3.scaleLinear()
 
 //begin script when window loads
 window.onload = setMap();
+
 
 //set up choropleth map
 function setMap(){
@@ -55,9 +45,7 @@ function setMap(){
 		.attr("class", "ourmap")
 		.attr("width", width)
 		.attr("height", height);
-
-	//create Albers equal area conic projection centered on Chicago
-    // try geo.albers or geoAlbers
+	
     var projection = d3.geoAlbers()
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
@@ -69,29 +57,30 @@ function setMap(){
 	var path = d3.geoPath()
     	.projection(projection);
 
-
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
-		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
+		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
         .await(callback); //send data to callback function
 		
 
+		
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, us, chicago){
+    function callback(error, csvData, chicago, dis){
 
 		//setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
-    	var usStates = topojson.feature(us, us.objects.USStates),
-		chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
+		var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		/*var unitedStates = ourmap.append("path")
-            .datum(usStates)
-            .attr("class", "unitedStates")
+		/*var chicagoDistricts = ourmap.append("path")
+            .datum(cpsDistricts)
+            .attr("class", "points")
             .attr("d", path);*/
+			
+			
 			
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
@@ -106,15 +95,18 @@ function setMap(){
 		//createDropdown(csvData);
 		
 		//add menu panel to map
-		createMenu(csvData);
-
-        setChart(csvData, colorScale);
+		createMenu(csvData, chicagoNets, path, colorScale);
 		
+		setNetworkBox();
+		
+		//overlay high school points
 		
         // // check
         // console.log(illinois);
-  //       console.log(chicago);
-		// console.log(csvData);
+        console.log(chicago);
+		console.log(csvData);
+		
+		
     };
 
 };
@@ -271,8 +263,8 @@ function changeAttribute(attribute, csvData){
 };
 
 function setInfoBox(csvData){
-        var width = window.innerWidth * 0.30,
-        height = 650;
+    var width = window.innerWidth * 0.30,
+		height = 650;
 
     var box = d3.select("info-box")
         .append("svg")
@@ -280,6 +272,28 @@ function setInfoBox(csvData){
         .attr("height", height)
         .attr("class", "box");
 };
+
+function setNetworkBox(){
+    var width = window.innerWidth * 0.50,
+		height = 650;
+
+console.log("networks");
+
+    var box = d3.select("network-box")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "box");
+		
+	var boxTitle = box.append("text")
+        .attr("x", 40)
+        .attr("y", 30)
+        .attr("class", "boxTitle")
+        .text(expressed + " in each country");
+	
+};
+
+
 
 function highlight(props){
     //change stroke
@@ -397,73 +411,10 @@ function moveLabel(){
         .style("top", y + "px");
 };
 
-function setChart(csvData, colorScale){
-//create a second svg element to hold the bar chart
-var chart = d3.select("body")
-.append("svg")
-.attr("width", chartWidth)
-.attr("height", chartHeight)
-.attr("class", "chart");
-
-//create a rectangle for chart background fill
-var chartBackground = chart.append("rect")
-.attr("class", "chartBackground")
-.attr("width", chartInnerWidth)
-.attr("height", chartInnerHeight)
-.attr("transform", translate);
-//set bars for each province
-   var bars = chart.selectAll(".bar")
-       .data(csvData)
-       .enter()
-       .append("rect")
-       .sort(function(a, b){
-           return b[expressed]-a[expressed]
-       })
-       .attr("class", function(d){
-           return "bar " + d.name;
-       })
-       .attr("width", chartInnerWidth / csvData.length - 1)
-
-       //Highlights / dehighlights / labels depending on users mouse location
-       .on("mouseover", highlight)
-       .on("mouseout", dehighlight)
-       .on("mousemove", moveLabel)
-       //bar highlight style
-       var desc = bars.append("desc")
-           .text('{"stroke": "none", "stroke-width": "0px"}');
-
-
-       //text element for the chart title
-       var chartTitle = chart.append("text")
-           .attr("x", 200)
-           .attr("y", 40)
-           .attr("class", "chartTitle")
-           .text( attrArray[0] + expressed[3] + " in each country");
-
-       //create vertical axis generator
-       var yAxis = d3.axisLeft()
-           .scale(yScale);
-
-       //place axis
-       var axis = chart.append("g")
-           .attr("class", "axis")
-           .attr("transform", translate)
-           .call(yAxis);
-
-       //create frame for chart border
-       var chartFrame = chart.append("rect")
-           .attr("class", "chartFrame")
-           .attr("width", chartInnerWidth)
-           .attr("height", chartInnerHeight)
-           .attr("transform", translate);
-
-       updateChart(bars, csvData.length, colorScale);
-
-};
 
 
 //menu items function
-function createMenu(csvData){
+function createMenu(csvData, chicagoNets, path, colorScale){
 	$(".ACTaverage").click(function(){ 
         expressed = attrArray[0];
 
@@ -534,7 +485,7 @@ function createMenu(csvData){
     });
 	
 	$(".Closings").click(function(){ 
-        expressed = attrArray[6];
+        expressed = attrArray[20];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
@@ -546,8 +497,44 @@ function createMenu(csvData){
             });
     });
 	
-};
+}; //end of create createMenu
 
+//creates overlay of charter and district schools
+function overlay(){
+    $(".charter-section").click(function(){
+        
+    });
+    
+    $(".district-section").click(function(){  
+        var districtDiv = document.getElementById('district-sch');
+		districtPoints(ourmap, dis, path, schoolRadius);
+    });
+}; //end of overlay function
 
+//creates district point data
+function districtPoints(ourmap, dis, path, schoolRadius){
+    //adds district locations
+    ourmap.selectAll(".districtLocations")
+        .data(dis.features)
+        .enter()
+        .append("path")
+        .attr("class", "districtLocations")
+        .attr('d', path.pointRadius(function(d){
+            return schoolRadius;
+        }));   
+}; //end districtPoints
+
+//creates charter point data
+function charterPoints(ourmap, chtr, path, schoolRadius){
+    //adds charter locations
+    ourmap.selectAll(".charterLocations")
+        .data(chtr.features)
+        .enter()
+        .append("path")
+        .attr("class", "charterLocations")
+        .attr('d', path.pointRadius(function(d){
+            return schoolRadius;
+        }));   
+}; //end charterPoints
 
 })(); //last line of main.js
