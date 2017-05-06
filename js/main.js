@@ -104,8 +104,6 @@ function setMap(){
 		
 
 
-
-
         //calling overlay function
         overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
 
@@ -535,44 +533,41 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             });
     });
 	
-	$(".Closings").click(function(){ 
-        expressed = attrArray[20];
+	// $(".Closings").click(function(){ 
+ //        expressed = attrArray[20];
 
-        d3.selectAll(".networks").on("change", function(d){
-                changeAttribute(this.value, csvData);
-            })
-            .select("desc")
-                .text(function(d) {
-                    changeAttribute(this.value, csvData);
-					setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
-            });
-    });
+ //        d3.selectAll(".networks").on("change", function(d){
+ //                changeAttribute(this.value, csvData);
+ //            })
+ //            .select("desc")
+ //                .text(function(d) {
+ //                    changeAttribute(this.value, csvData);
+	// 				setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+ //            });
+ //    });
 	
 };
 
 //creates overlay of charter and district schools
 function overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts){
-    $(".charter-section").click(function(){
-        var charterDiv = document.getElementById('charter-sch');
-        if (d3.selectAll(".charterLocations")[0].length > 0){
-            removeCharter = d3.selectAll(".charterLocations").remove();
-            removeCharterInfo = d3.selectAll(".charterMenuInfoBox").remove();
-            charterInsetDiv.style.visibility = "hidden";
-        } else {
-            cpsChartersPoints(ourmap, cpsCharters, path, cpsChartersRadius);
-            charterInsetDiv.style.visibility = "visible";
-        }
-    });
+    // $(".charter-section").click(function(){
+    //     var charterDiv = document.getElementById('charter-sch');
+    //     if (d3.selectAll(".charterLocations")[0].length > 0){
+    //         removeCharter = d3.selectAll(".charterLocations").remove();
+    //         removeCharterInfo = d3.selectAll(".charterMenuInfoBox").remove();
+    //     } else {
+    //         cpsChartersPoints(ourmap, cpsCharters, path, cpsChartersRadius);
+    //         charterInsetDiv.style.visibility = "visible";
+    //     }
+    // });
     
     $(".district-section").click(function(){  
         var districtDiv = document.getElementById('district-sch');
-        if (d3.selectAll(".districtLocations")[0].length > 0){
-            removeDistrict = d3.selectAll(".districtLocations").remove();
-            removeDistrictInfo = d3.selectAll(".districtMenuInfoBox").remove();
-            insetDiv.style.visibility = "hidden";
+        if (d3.selectAll(".cpsDistrictsLocations")[0].length > 0){
+            removeDistrict = d3.selectAll(".cpsDistrictsLocations").remove();
         } else {
             cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius);
-            insetDiv.style.visibility = "visible";
+
         }
     }); 
 }; //end of overlay function
@@ -581,12 +576,15 @@ function overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts){
 //function to create cps District HS points
 function cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius){
     //add the District shcool locations to the map
-    ourmap.selectAll(".districtLocations")
+    ourmap.selectAll(".cpsDistrictsLocations")
     .data(cpsDistricts.features)
     .enter()
     .append("path")
-    .attr("class", "districtLocations")
-    .attr('d', path.pointRadius(cpsDistricts));
+    .attr("class", "cpsDistrictsLocations")
+    .attr('d', path.pointRadius(function(d){
+        return cpsDistrictsRadius(d.properties);
+    }));
+
 
 };
 

@@ -87,16 +87,16 @@ div.side-panel{
     stroke-width: 2px;
 }
 
-
+/*
 .cpsDistricts {
     float:left;
     background-color: rgba(250, 110, 57, 1);
     color: #fff;
     text-align: center;
     padding: 1.5%;
-}
+}*/
 
-.districtLocations{
+.cpsDistrictLocations{
     fill: #FA6E39;
     fill-opacity:0.7;
 }
@@ -372,7 +372,7 @@ option {
 	opacity:0.9;
 }
 
-.Closings {
+/*.Closings {
     text-align: center;
     padding: 6%;
 }
@@ -382,7 +382,7 @@ option {
     background-color: #9975b9;
 	border-radius: 6px;
 	opacity:0.9;
-}
+}*/
 
 #intro-panel{
 	height: 90%;
@@ -568,7 +568,7 @@ i.fa-info-circle:hover{
 	opacity:0.9;
 }
 
-.district {
+.cpsDistricts{
     float: left;
     color: #fff;
     background-color: #4997D0;
@@ -579,7 +579,7 @@ i.fa-info-circle:hover{
 	font-family: Verdana, Geneva, sans-serif;
 }
 
-.district:hover {
+.cpsDistricts:hover {
     color:  #fff;
 	opacity:0.9;
 	background-color: rgb(127, 187, 232);
