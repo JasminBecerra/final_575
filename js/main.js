@@ -22,7 +22,8 @@
         "#54278f"
     ];
 
-    var schoolRadius = 10;
+    var cpsDistrictsRadius = d3.scaleSqrt(25)
+        .range([0,5]);
 
 
 // //list of attributes up there
@@ -67,7 +68,7 @@ function setMap(){
 
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, chicago){
+    function callback(error, csvData, chicago, cpsDistricts){
 
 		//setGraticule(ourmap, path);
 		
@@ -95,14 +96,27 @@ function setMap(){
 		//add menu panel to map
 		createMenu(csvData, chicagoNets, path, colorScale);
 		
-		//overlay high school points
+		//////////////overlay high school points
+
+        //variable for radius of discrtict high school points (constant)
+        var cpsDistrictsRadius = d3.scaleSqrt(25)
+            .range([0,5]);
 		
+
+
+
+
+        //calling overlay function
+        overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
+
+
         // // check
         // console.log(illinois);
         console.log(chicago);
 		console.log(csvData);
 		
-		
+
+
     };
 
 };
@@ -537,7 +551,7 @@ function createMenu(csvData, chicagoNets, path, colorScale){
 };
 
 //creates overlay of charter and district schools
-function overlay(){
+function overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts){
     $(".charter-section").click(function(){
         var charterDiv = document.getElementById('charter-sch');
         if (d3.selectAll(".charterLocations")[0].length > 0){
@@ -545,7 +559,7 @@ function overlay(){
             removeCharterInfo = d3.selectAll(".charterMenuInfoBox").remove();
             charterInsetDiv.style.visibility = "hidden";
         } else {
-            charterPoints(map, cpc, path, cpcRadius);
+            cpsChartersPoints(ourmap, cpsCharters, path, cpsChartersRadius);
             charterInsetDiv.style.visibility = "visible";
         }
     });
@@ -557,11 +571,26 @@ function overlay(){
             removeDistrictInfo = d3.selectAll(".districtMenuInfoBox").remove();
             insetDiv.style.visibility = "hidden";
         } else {
-            districtPoints(map, abortionprovider, path, abortionRadius);
+            cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius);
             insetDiv.style.visibility = "visible";
         }
     }); 
 }; //end of overlay function
+
+
+//function to create cps District HS points
+function cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius){
+    //add the District shcool locations to the map
+    ourmap.selectAll(".districtLocations")
+    .data(cpsDistricts.features)
+    .enter()
+    .append("path")
+    .attr("class", "districtLocations")
+    .attr('d', path.pointRadius(cpsDistricts));
+
+};
+
+//create circles
 
 
 

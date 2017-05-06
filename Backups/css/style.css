@@ -42,6 +42,20 @@
     /*fill:gray;*/
 }
 
+
+.cpsDistricts {
+    float:left;
+    background-color: rgba(250, 110, 57, 1);
+    color: #fff;
+    text-align: center;
+    padding: 1.5%;
+}
+
+.districtLocations{
+    fill: #FA6E39;
+    fill-opacity:0.7;
+}
+
 .unitedStates{
     fill: #707070;
     stroke: #CCC;
