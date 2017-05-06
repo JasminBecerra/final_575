@@ -112,6 +112,7 @@ function setMap(){
         // console.log(illinois);
         console.log(chicago);
 		console.log(csvData);
+        console.log(cpsDistricts);
 		
 
 
