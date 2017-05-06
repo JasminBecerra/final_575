@@ -22,6 +22,8 @@
         "#54278f"
     ];
 
+    var schoolRadius = 10;
+
 
 // //list of attributes up there
 // var expressed = attrArray[0]; //initial attribute
