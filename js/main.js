@@ -9,6 +9,7 @@
 		$("#myModal").modal('show');
 	});
 
+
 // //pseudo-global variables
 	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"];
 	var expressed = attrArray[0]; //initial attribute
@@ -21,6 +22,8 @@
         "#54278f"
     ];
 
+	var schoolRadius = 10;
+
 
 // //list of attributes up there
 // var expressed = attrArray[0]; //initial attribute
@@ -28,6 +31,7 @@
 
 //begin script when window loads
 window.onload = setMap();
+
 
 //set up choropleth map
 function setMap(){
@@ -42,8 +46,6 @@ function setMap(){
 		.attr("width", width)
 		.attr("height", height);
 
-	//create Albers equal area conic projection centered on Chicago
-    // try geo.albers or geoAlbers
     var projection = d3.geoAlbers()
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
@@ -55,35 +57,40 @@ function setMap(){
 	var path = d3.geoPath()
     	.projection(projection);
 
-
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
-		.defer(d3.json, "data/us_states.topojson") //load background spatial data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
+		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
         .await(callback); //send data to callback function
 
 
 
+
 //function to populate the dom with topojson data
-    function callback(error, csvData, us, chicago){
+    function callback(error, csvData, chicago, dis){
 
 		//setGraticule(ourmap, path);
 
     	//translate chicago comm areas to topojson
-    	var usStates = topojson.feature(us, us.objects.USStates),
-		chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
+		var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		/*var unitedStates = ourmap.append("path")
-            .datum(usStates)
-            .attr("class", "unitedStates")
+		/*var chicagoDistricts = ourmap.append("path")
+            .datum(cpsDistricts)
+            .attr("class", "points")
             .attr("d", path);*/
+
+
 
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
 
 		//create the color scale
         var colorScale = makeColorScale(csvData);
+
+
+
+
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
@@ -92,13 +99,19 @@ function setMap(){
 		//createDropdown(csvData);
 
 		//add menu panel to map
-		createMenu(csvData, csvData, chicagoNets, path, colorScale);
+		createMenu(csvData, chicagoNets, path, colorScale);
+
+		setNetworkBox();
+
+		//overlay high school points
 
 
         // // check
         // console.log(illinois);
         console.log(chicago);
 		console.log(csvData);
+
+
     };
 
 };
@@ -148,15 +161,18 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
 			.style("fill", function(d){
             return choropleth(d.properties, colorScale);
 			})
+
 			.on("mouseover", function(d){
-            highlight(d.properties);
-			})
-			.on("mouseout", function(d){
-            dehighlight(d.properties);
-			})
-			.on("mousemove", moveLabel);
-        var desc = networks.append("desc")
-            .text('{"stroke": "white", "stroke-width": "1px"}');
+		highlight(d.properties);
+})
+
+		.on("mouseout", function(d){
+		dehighlight(d.properties);
+})
+
+var desc = networks.append("desc")
+		.text('{"stroke": "#000", "stroke-width": "0.5px"}');
+
 
 
 };
@@ -255,8 +271,8 @@ function changeAttribute(attribute, csvData){
 };
 
 function setInfoBox(csvData){
-        var width = window.innerWidth * 0.30,
-        height = 650;
+    var width = window.innerWidth * 0.30,
+		height = 650;
 
     var box = d3.select("info-box")
         .append("svg")
@@ -265,46 +281,44 @@ function setInfoBox(csvData){
         .attr("class", "box");
 };
 
-
-function setNetworkBox(csvData){
-        var width = window.innerWidth * 0.50,
-        height = 650;
+function setNetworkBox(){
+    var width = window.innerWidth * 0.50,
+		height = 650;
 
 console.log("networks");
-
-
 
     var box = d3.select("network-box")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "box");
+
+	var boxTitle = box.append("text")
+        .attr("x", 40)
+        .attr("y", 30)
+        .attr("class", "boxTitle")
+        .text(expressed + " in each country");
+
 };
-
-
-
-
-
 
 
 
 function highlight(props){
     //change stroke
+		//change stroke
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
-        .style("stroke", "#FF66FF")
-        .style("stroke-width", "4");
-		console.log(props.network_num);
-	setLabel(props);
+        .style("stroke", "blue")
+        .style("stroke-width", "2");
+					setLabel(props);
 };
 
 //function to reset the element style on mouseout
 function dehighlight(props){
-
-    var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
+     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", function(){
             return getStyle(this, "stroke")
         })
-       .style("stroke-width", function(){
+        .style("stroke-width", function(){
             return getStyle(this, "stroke-width")
         });
 
@@ -316,78 +330,48 @@ function dehighlight(props){
         var styleObject = JSON.parse(styleText);
 
         return styleObject[styleName];
-
     };
-	d3.select(".infolabel")
-        .remove();
+
+		d3.select(".infolabel")
+.remove();
 };
 
 
-
-
-function setPanel(props) {
-
-	var labelAttribute = "<h1>" + props[expressed] +
-			"</h1><b>" + expressed + "</b>";
-
-if (Boolean(props[expressed]) == true) {
-			if (expressed == attrArray[0]) {
-					labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-			} else if (expressed == attrArray[1]) {
-					labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-			} else if (expressed == attrArray[2]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-			} else if (expressed == attrArray[3]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-			} else if (expressed == attrArray[4]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-	} else if (expressed == attrArray[5]) {
-					labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
-	} else if (expressed == attrArray[6]) {
-					labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
-	} else if (expressed == attrArray[7]) {
-					labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
-	} else if (expressed == attrArray[8]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
-			} else if (expressed == attrArray[9]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
-	} else if (expressed == attrArray[10]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
-	} else if (expressed == attrArray[11]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
-	} else if (expressed == attrArray[12]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
-	} else if (expressed == attrArray[13]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
-			} else if (expressed == attrArray[14]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
-	} else if (expressed == attrArray[15]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
-	} else if (expressed == attrArray[16]) {
-					labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
-	};
-	} else { //if no data associated with selection, display "No data"
-			labelAttribute = "<h1>No Data</h1>";
-	};
-
-
-	//create info label div
-	var infolabel = d3.select("body")
-			.append("div")
-			.attr("class", "networklabel")
-			.attr("id", props.network_num + "_label")
-			.html(labelAttribute);
-
-	var countryName = infolabel.append("div")
-			.attr("class", "networklabelname")
-			.html(props.network_num);
-
-
-};
-
-
-
+//function to create dynamic label
 function setLabel(props){
+    //label content
+
+
+
+    var labelAttribute = "<h1>" + props[expressed] +
+        "</h1><b>" + expressed + "</b>";
+
+    //create info label div
+    var infolabel = d3.select("body")
+        .append("div")
+        .attr("class", "infolabel")
+        .attr("id", props.network_num + "_label")
+        .html(labelAttribute);
+
+    var regionName = infolabel.append("div")
+        .attr("class", "labelname")
+        .html(props.network_num);
+
+				console.log("ok");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+/*  function setLabel(props){
     //label content
     var labelAttribute = "<h1>" + props[expressed] +
         "</h1><b>" + expressed + "</b>";
@@ -434,7 +418,7 @@ function setLabel(props){
 
 
     //create info label div
-    var networklabel = d3.select("body")
+    var infolabel = d3.select("body")
         .append("div")
         .attr("class", "infolabel")
         .attr("id", props.network_num + "_label")
@@ -443,21 +427,7 @@ function setLabel(props){
     var countryName = infolabel.append("div")
         .attr("class", "labelname")
         .html(props.network_num);
-};
-
-
-function moveNetworkLabel() {
-
-var networkLabelWidth = d3.select("networkLabel");
-
-
-
-};
-
-
-
-
-
+}; */
 
 //function to move info label with mouse
 function moveLabel(){
@@ -557,7 +527,7 @@ function createMenu(csvData, chicagoNets, path, colorScale){
     });
 
 	$(".Closings").click(function(){
-        expressed = attrArray[6];
+        expressed = attrArray[20];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
@@ -569,8 +539,44 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             });
     });
 
-};
+}; //end of create createMenu
 
+//creates overlay of charter and district schools
+function overlay(){
+    $(".charter-section").click(function(){
 
+    });
+
+    $(".district-section").click(function(){
+        var districtDiv = document.getElementById('district-sch');
+		districtPoints(ourmap, dis, path, schoolRadius);
+    });
+}; //end of overlay function
+
+//creates district point data
+function districtPoints(ourmap, dis, path, schoolRadius){
+    //adds district locations
+    ourmap.selectAll(".districtLocations")
+        .data(dis.features)
+        .enter()
+        .append("path")
+        .attr("class", "districtLocations")
+        .attr('d', path.pointRadius(function(d){
+            return schoolRadius;
+        }));
+}; //end districtPoints
+
+//creates charter point data
+function charterPoints(ourmap, chtr, path, schoolRadius){
+    //adds charter locations
+    ourmap.selectAll(".charterLocations")
+        .data(chtr.features)
+        .enter()
+        .append("path")
+        .attr("class", "charterLocations")
+        .attr('d', path.pointRadius(function(d){
+            return schoolRadius;
+        }));
+}; //end charterPoints
 
 })(); //last line of main.js
