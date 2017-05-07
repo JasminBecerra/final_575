@@ -65,12 +65,13 @@ function setMap(){
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
 		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
+        .defer(d3.json, "data/cpsCharterSchools.geojson") //load charter schools spatial data
         .await(callback); //send data to callback function
 		
 
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, chicago, cpsDistricts){
+    function callback(error, csvData, chicago, cpsDistricts, cpsDistrictsRadius){
 
 		//setGraticule(ourmap, path);
 		
@@ -154,7 +155,7 @@ function joinData (chicagoNets, csvData){
 };
 
 
-function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
+function setEnumerationUnits(chicagoNets, ourmap, path, colorScale, cpsDistricts, cpsDistrictsRadius){
         //adding chicago community areas/neighborhoods to ourmap
         var networks = ourmap.selectAll(".networks")
             .data(chicagoNets)
@@ -183,8 +184,8 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
         
 
 
-        // //calling overlay function
-        // overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
+        //calling overlay function
+        overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
 
 
 };
