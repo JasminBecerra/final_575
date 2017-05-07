@@ -89,40 +89,8 @@ function setMap(){
 		//create the color scale
         var colorScale = makeColorScale(csvData);
 
-
-        //adding chicago community areas/neighborhoods to ourmap
-        var networks = ourmap.selectAll(".networks")
-            .data(chicagoNets)
-            .enter()
-            .append("path")
-            .attr("class", function(d){
-                return "networks " + d.properties.network_num.replace(/ /g, '-');
-            })
-            .attr("d", path)
-            .style("fill", function(d){
-            return choropleth(d.properties, colorScale);
-            })
-            .on("mouseover", function(d){
-            highlight(d.properties);
-            })
-            .on("mouseout", function(d){
-            dehighlight(d.properties);
-            })
-            .on("mousemove", moveLabel);
-        var desc = networks.append("desc")
-            .text('{"stroke": "white", "stroke-width": "1px"}');
-
-                    //variable for radius of discrtict high school points (constant)
-        var cpsDistrictsRadius = d3.scaleSqrt(25)
-            .range([0,5]);
-        
-
-
-        //calling overlay function
-        overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
-
-        // //add enumeration units to ourmap
-        // setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+        //add enumeration units to ourmap
+        setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 		
 		//add dropdown menu to the map
 		//createDropdown(csvData);
@@ -186,40 +154,40 @@ function joinData (chicagoNets, csvData){
 };
 
 
-// function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
-//         //adding chicago community areas/neighborhoods to ourmap
-//         var networks = ourmap.selectAll(".networks")
-//             .data(chicagoNets)
-//             .enter()
-//             .append("path")
-//             .attr("class", function(d){
-//                 return "networks " + d.properties.network_num.replace(/ /g, '-');
-//             })
-//             .attr("d", path)
-// 			.style("fill", function(d){
-//             return choropleth(d.properties, colorScale);
-// 			})
-// 			.on("mouseover", function(d){
-//             highlight(d.properties);
-// 			})
-// 			.on("mouseout", function(d){
-//             dehighlight(d.properties);
-// 			})
-// 			.on("mousemove", moveLabel);
-//         var desc = networks.append("desc")
-//             .text('{"stroke": "white", "stroke-width": "1px"}');
+function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
+        //adding chicago community areas/neighborhoods to ourmap
+        var networks = ourmap.selectAll(".networks")
+            .data(chicagoNets)
+            .enter()
+            .append("path")
+            .attr("class", function(d){
+                return "networks " + d.properties.network_num.replace(/ /g, '-');
+            })
+            .attr("d", path)
+			.style("fill", function(d){
+            return choropleth(d.properties, colorScale);
+			})
+			.on("mouseover", function(d){
+            highlight(d.properties);
+			})
+			.on("mouseout", function(d){
+            dehighlight(d.properties);
+			})
+			.on("mousemove", moveLabel);
+        var desc = networks.append("desc")
+            .text('{"stroke": "white", "stroke-width": "1px"}');
 
-//                     //variable for radius of discrtict high school points (constant)
-//         var cpsDistrictsRadius = d3.scaleSqrt(25)
-//             .range([0,5]);
+                    //variable for radius of discrtict high school points (constant)
+        var cpsDistrictsRadius = d3.scaleSqrt(25)
+            .range([0,5]);
         
 
 
-//         //calling overlay function
-//         overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
+        // //calling overlay function
+        // overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
 
 
-// };
+};
 
 //function to create color scale generator
 function makeColorScale(data){
