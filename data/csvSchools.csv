@@ -1,4 +1,4 @@
-school_nm,network_num,school_id,y,sch_type,sch_addr,x,grades,lon,lat
+school_nm,network_num,school_id,y,sch_type,sch_addr,x,grades,longitude,latitude
 ALCOTT PREP HS,Network 4,610524,41.93579456,District,"2957 N Hoyne Ave, 60618",-87.68056201,"9, 10, 11, 12",-87.68056201,41.93579456
 AMUNDSEN HS,Network 2,609695,41.97506726,District,"5110 N Damen Ave, 60625",-87.67948422,"9, 10, 11, 12",-87.67948421,41.97506726
 AUSTIN BUS & ENTRP HS,Network 3,400018,41.88420467,District,"231 N Pine Ave, 60644",-87.76189102,"9, 10, 11, 12",-87.76189102,41.88420467

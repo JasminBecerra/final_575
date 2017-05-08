@@ -21,6 +21,8 @@
         "#756bb1",
         "#54278f"
     ];
+	
+	var schoolRadius = 10;
 
 
 // //list of attributes up there
@@ -59,24 +61,28 @@ function setMap(){
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
-		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsDistricts1.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsCharterSchools.geojson") //load districts spatial data
         .await(callback); //send data to callback function
 		
 
+		
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, chicago){
+    function callback(error, csvData, chicago, dis, chtr){
 
 		//setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
 		var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
-		//var cpsDistricts = topojson.feature(dis, dis.geometry).coordinates;
 
 		/*var chicagoDistricts = ourmap.append("path")
             .datum(cpsDistricts)
             .attr("class", "points")
             .attr("d", path);*/
+			
+		
+			
 			
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
@@ -87,11 +93,28 @@ function setMap(){
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 		
+		var disSchools = ourmap.selectAll(".dis-schools")
+			.data(dis.features)
+			.enter()
+			.append("circle")
+			.attr("class", "dis-schools")
+			.attr("cx", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[0];
+			})
+			.attr("cy", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[1];
+			})
+			.attr("r", 6);
+		
 		//add dropdown menu to the map
 		//createDropdown(csvData);
 		
 		//add menu panel to map
 		createMenu(csvData, chicagoNets, path, colorScale);
+		
+		setNetworkBox();
 		
 		//overlay high school points
 		
@@ -267,7 +290,7 @@ function setInfoBox(csvData){
         .attr("class", "box");
 };
 
-function setNetworkBox(csvData){
+function setNetworkBox(){
     var width = window.innerWidth * 0.50,
 		height = 650;
 
@@ -278,56 +301,16 @@ console.log("networks");
         .attr("width", width)
         .attr("height", height)
         .attr("class", "box");
+		
+	var boxTitle = box.append("text")
+        .attr("x", 40)
+        .attr("y", 30)
+        .attr("class", "boxTitle")
+        .text(expressed + " in each country");
+	
 };
 
-function setPanel(props) {
 
-	var labelAttribute = "<h1>" + props[expressed] +
-			"</h1><b>" + expressed + "</b>";
-
-if (Boolean(props[expressed]) == true) {
-		if (expressed == attrArray[0]) {
-				labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-		} else if (expressed == attrArray[1]) {
-				labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-		} else if (expressed == attrArray[2]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-		} else if (expressed == attrArray[3]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-		} else if (expressed == attrArray[4]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == attrArray[5]) {
-				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == attrArray[6]) {
-				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == attrArray[7]) {
-				labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
-		} else if (expressed == attrArray[8]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
-		} else if (expressed == attrArray[9]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
-		} else if (expressed == attrArray[10]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
-		} else if (expressed == attrArray[11]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
-		} else if (expressed == attrArray[12]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
-		} else if (expressed == attrArray[13]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
-		} else if (expressed == attrArray[14]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
-		} else if (expressed == attrArray[15]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
-		} else if (expressed == attrArray[16]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
-		};
-		} else { //if no data associated with selection, display "No data"
-			labelAttribute = "<h1>No Data</h1>";
-		};
-
-
-
-};
 
 function highlight(props){
     //change stroke
@@ -336,7 +319,6 @@ function highlight(props){
         .style("stroke-width", "4");
 		console.log(props.network_num);
 	setLabel(props);
-	setPanel(props);
 };
 
 //function to reset the element style on mouseout
@@ -532,35 +514,44 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             });
     });
 	
-};
+}; //end of create createMenu
 
 //creates overlay of charter and district schools
 function overlay(){
     $(".charter-section").click(function(){
-        var charterDiv = document.getElementById('charter-sch');
-        if (d3.selectAll(".charterLocations")[0].length > 0){
-            removeCharter = d3.selectAll(".charterLocations").remove();
-            removeCharterInfo = d3.selectAll(".charterMenuInfoBox").remove();
-            charterInsetDiv.style.visibility = "hidden";
-        } else {
-            charterPoints(map, cpc, path, cpcRadius);
-            charterInsetDiv.style.visibility = "visible";
-        }
+        
     });
     
     $(".district-section").click(function(){  
         var districtDiv = document.getElementById('district-sch');
-        if (d3.selectAll(".districtLocations")[0].length > 0){
-            removeDistrict = d3.selectAll(".districtLocations").remove();
-            removeDistrictInfo = d3.selectAll(".districtMenuInfoBox").remove();
-            insetDiv.style.visibility = "hidden";
-        } else {
-            districtPoints(map, abortionprovider, path, abortionRadius);
-            insetDiv.style.visibility = "visible";
-        }
-    }); 
+		districtPoints(ourmap, dis, path, schoolRadius);
+    });
 }; //end of overlay function
 
+//creates district point data
+function districtPoints(ourmap, dis, path, schoolRadius){
+    //adds district locations
+    ourmap.selectAll(".districtLocations")
+        .data(dis.features)
+        .enter()
+        .append("path")
+        .attr("class", "districtLocations")
+        .attr('d', path.pointRadius(function(d){
+            return schoolRadius;
+        }));   
+}; //end districtPoints
 
+//creates charter point data
+function charterPoints(ourmap, chtr, path, schoolRadius){
+    //adds charter locations
+    ourmap.selectAll(".charterLocations")
+        .data(chtr.features)
+        .enter()
+        .append("path")
+        .attr("class", "charterLocations")
+        .attr('d', path.pointRadius(function(d){
+            return schoolRadius;
+        }));   
+}; //end charterPoints
 
 })(); //last line of main.js

@@ -3,15 +3,25 @@
 	/*border: medium solid #999;*/
 	/*background-color: white;*/
 	/*margin: 10px 0 0 20px;*/
-	display: block;
+	/*display: block;*/
 	/*box-shadow: 2px 2px 1px gray;*/
 	border-radius: 8px;
 	position: absolute;
-	top:12%;
-	left:25%;
+	top:10%;
+	left:23%;
 	width: 35%;
 	/*height: 70%;*/
 	opacity:0.95;
+}
+
+.districtLocations {
+	fill: #FA6E39;
+	fill-opacity:0.7;
+}
+
+.charterLocations {
+    fill: #37C4AB;
+	fill-opacity:0.7;
 }
 
 .info-box{
@@ -36,17 +46,17 @@
 }
 
 .network-box{
-background-color: white;
-border: medium solid white;
-box-shadow: 2px 2px 1px #bcbddc;
-display: block;
-position: absolute;
-left: 72%;
-top: 10%;
-height: 80%;
-width: 25%;
-border-radius: 6px;
-opacity:0.85;
+	background-color: white;
+	border: medium solid white;
+	box-shadow: 2px 2px 1px #bcbddc;
+	display: block;
+	position: absolute;
+	left: 67%;
+	top: 10%;
+	height: 75%;
+	width: 30%;
+	border-radius: 6px;
+	opacity:0.85;
 }
 
 div.side-panel{
@@ -106,7 +116,7 @@ div.side-panel{
 .overview-section{
 	position: absolute;
 	width:100%;
-	top: 100%;
+	top: 88%;
 	text-align:center;
 	background-color:#e1e1e1;
 	height:200%;
@@ -415,7 +425,7 @@ option {
 }
 
 .modal-body {
-	height:610px;
+	height:590px;
 	width: 100%;
 	border-top-left-radius : 0;
 	border-top-right-radius : 0;
@@ -529,42 +539,40 @@ i.fa-info-circle:hover{
 
 .school-overlay-menu {
     position: absolute;
-	top: 66%;
+	top: 62%;
 	left:5%;
-    margin-left: 0% !important;
-    color: black;
-	border-radius: 4px;
+	border-radius: 8px;
 }
 
-.charter {
+.charter-section .charter {
     float: left;
     background-color: #062A78;
     color: #fff;
     text-align: center;
-    padding: 9%;
-	border-radius: 4px;
+    padding: 7%;
+	border-radius: 20px;
 	font-size: 16px;
 	font-family: Verdana, Geneva, sans-serif;
 }
 
-.charter:hover {
+.charter-section .charter:hover {
     color: #fff;
     background-color: rgb(78, 91, 178);
 	opacity:0.9;
 }
 
-.district {
+.district-section .district {
     float: left;
     color: #fff;
     background-color: #4997D0;
     text-align: center;
-    padding: 8%;
-	border-radius:4px;
+    padding: 6%;
+	border-radius:20px;
 	font-size: 16px;
 	font-family: Verdana, Geneva, sans-serif;
 }
 
-.district:hover {
+.district-section .district:hover {
     color:  #fff;
 	opacity:0.9;
 	background-color: rgb(127, 187, 232);
@@ -577,4 +585,19 @@ hr.style-one {
 	/*border-top: 1px solid white;*/
 }
 
+.boxTitle {
+    font-family: verdana;
+    font-size: 1.2em;
+    font-weight: bold;
+	fill: black;
+	top: -40px;
+}
 
+footer{
+	position: absolute;
+	width:100%;
+	top: 300%;
+	text-align:center;
+	background-color:#e1e1e1;
+	height:30%;
+}
