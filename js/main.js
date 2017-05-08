@@ -349,22 +349,15 @@ function setLabel(props){
 
 				if (Boolean(props[expressed]) == true) {
 							if (expressed == attrArray[0]) {
-									labelAttribute = "ACT Score Average:" + "<h1>" + props[expressed] + "</h1>"
-							} else if (expressed == attrArray[1]) {
-									
-									labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
+									labelAttribute = "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" +  "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
 							} else if (expressed == attrArray[2]) {
-									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
+									labelAttribute = "Students receiving Free/Reduced Lunches:" + "<h1>" + props[attrArray[2]]+ "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
 							} else if (expressed == attrArray[3]) {
-									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
+									labelAttribute = "Dropout Rate:" + "<h1>" + props[attrArray[3]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
 							} else if (expressed == attrArray[4]) {
-									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-					} else if (expressed == attrArray[5]) {
-									labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
-					} else if (expressed == attrArray[6]) {
-									labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
+									labelAttribute = "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
 					} else if (expressed == attrArray[7]) {
-									labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
+									labelAttribute = "Budget (2016):" + "<h1>$" + props[attrArray[7]]+"</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
 					} else if (expressed == attrArray[8]) {
 									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
 							} else if (expressed == attrArray[9]) {
@@ -558,7 +551,7 @@ function createMenu(csvData, chicagoNets, path, colorScale){
     });
 
 	$(".Budget").click(function(){
-        expressed = attrArray[5];
+        expressed = attrArray[7];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
