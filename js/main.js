@@ -425,7 +425,7 @@ function setLabel(props){
 				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
 			};
 		}else if (props.hasOwnProperty("school_nm")){
-			labelAttribute = "<b>School Name: </b><h1>" + props.school_nm + "</h1>"
+			labelAttribute = "School Name:" + "<h1>" + props.school_nm + "</h1>" + "<br>" + "School Address:" + "<h1>" + props.sch_addr + "</h1>" + "<br>" + "School Type:" + "<h1>" + props.sch_type + "</h1>"
 			
 		} else { //if no data associated with selection, display "No data"
 			labelAttribute = "<h1>No Data</h1>";
