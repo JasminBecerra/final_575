@@ -11,7 +11,7 @@
 	
 
 // //pseudo-global variables
-	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
+	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "Percent College Enrollment 2015", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
 	var expressed = attrArray[0]; //initial attribute
 	
 	var colorClasses = [
@@ -61,10 +61,10 @@ function setMap(){
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
-        .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
+        .defer(d3.csv, "data/data_project2.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
-		.defer(d3.json, "data/cpsDistricts1.geojson") //load districts spatial data
-		.defer(d3.json, "data/cpsCharterData.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsDistrictData_529.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsCharterData2.geojson") //load districts spatial data
         .await(callback); //send data to callback function
 		
 
@@ -402,28 +402,10 @@ function setLabel(props){
 			} else if (expressed == attrArray[4]) {
 				labelAttribute = "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[7]) {
-				labelAttribute = "Budget (2016):" + "<h1>$" + props[attrArray[7]]+"</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
-			} else if (expressed == attrArray[8]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
-			} else if (expressed == attrArray[9]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
-			} else if (expressed == attrArray[10]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
-			} else if (expressed == attrArray[11]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
-			} else if (expressed == attrArray[12]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
-			} else if (expressed == attrArray[13]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
-			} else if (expressed == attrArray[14]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
-			} else if (expressed == attrArray[15]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
-			} else if (expressed == attrArray[16]) {
-				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+				labelAttribute = "College Enrollment 2015:" + "<h1>" + props[attrArray[7]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			};
 		}else if (props.hasOwnProperty("school_nm")){
-			labelAttribute = "School Name:" + "<h1>" + props.school_nm + "</h1>" + "<br>" + "School Address:" + "<h1>" + props.sch_addr + "</h1>" + "<br>" + "School Type:" + "<h1>" + props.sch_type + "</h1>" + "<br>" + "ACT Composite Average:" + "<h1>" + props.act_composite_avg + "</h1>" + "<br>" + "Percent Free/Reduced Lunch:" + "<h1>" + props.pct_free_red_lunch + "</h1>" + "<br>" + "Dropout Rate 2016:" + "<h1>" + props.dropout_rate_16 + "</h1>" + "<br>" + "Graduation Rate 2016:" + "<h1>" + props.grad_rate_16 + "</h1>"
+			labelAttribute = "School Name:" + "<h1>" + props.school_nm + "</h1>" + "<br>" + "School Address:" + "<h1>" + props.sch_addr + "</h1>" + "<br>" + "School Type:" + "<h1>" + props.sch_type + "</h1>" + "<br>" + "ACT Composite Average:" + "<h1>" + props.act_composite_avg + "</h1>" + "<br>" + "Percent Free/Reduced Lunch:" + "<h1>" + props.pct_free_red_lunch + "</h1>" + "<br>" + "Dropout Rate 2016:" + "<h1>" + props.dropout_rate_16 + "</h1>" + "<br>" + "Graduation Rate 2016:" + "<h1>" + props.grad_rate_16 + "</h1>" + "<br>" + "College Enrollment (%) 2015:" + "<h1>" + props.Enrollment_Pct + "</h1>"
 			
 		} else { //if no data associated with selection, display "No data"
 			labelAttribute = "<h1>No Data</h1>";
@@ -529,7 +511,7 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             });
     });
 	
-	$(".Budget").click(function(){ 
+	$(".Enrollment").click(function(){ 
         expressed = attrArray[7];
 
         d3.selectAll(".networks").on("change", function(d){
