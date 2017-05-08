@@ -24,6 +24,12 @@
 	fill-opacity:0.85;
 }
 
+.hover{
+	stroke:yellow;
+	stroke-width:2.5px;
+	fill-opacity:0.7;
+}
+
 .info-box{
     border: medium solid #999;
     background-color: white;

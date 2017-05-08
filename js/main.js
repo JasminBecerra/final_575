@@ -106,7 +106,16 @@ function setMap(){
 				var coords = projection(d.geometry.coordinates);
 				return coords[1];
 			})
-			.attr("r", 6);
+			.attr("r", 6)
+			.on("mouseover", function(d){
+			d3.select("h2").text(d.properties.school_nm);
+			d3.select(this).attr("class","dis-schools hover");
+			})
+			.on("mouseout", function(d){
+			d3.select("h2").text("");
+			d3.select(this).attr("class","dis-schools");
+			});
+		
 			
 		var chtrSchools = ourmap.selectAll(".chtr-schools")
 			.data(chtr.features)
@@ -121,7 +130,15 @@ function setMap(){
 				var coords = projection(d.geometry.coordinates);
 				return coords[1];
 			})
-			.attr("r", 6);
+			.attr("r", 6)
+			.on("mouseover", function(d){
+			d3.select("h2").text(d.properties.school_nm);
+			d3.select(this).attr("class","chtr-schools hover");
+			})
+			.on("mouseout", function(d){
+			d3.select("h2").text("");
+			d3.select(this).attr("class","chtr-schools");
+			});
 		
 		//add dropdown menu to the map
 		//createDropdown(csvData);
@@ -368,15 +385,15 @@ function setLabel(props){
 
 		if (Boolean(props[expressed]) == true) {
 			if (expressed == attrArray[0]) {
-				labelAttribute = "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" +  "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+				labelAttribute = "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" +  "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[2]) {
-				labelAttribute = "Students receiving Free/Reduced Lunches:" + "<h1>" + props[attrArray[2]]+ "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+				labelAttribute = "Students receiving Free/Reduced Lunches:" + "<h1>" + props[attrArray[2]]+ "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[3]) {
-				labelAttribute = "Dropout Rate:" + "<h1>" + props[attrArray[3]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+				labelAttribute = "Dropout Rate:" + "<h1>" + props[attrArray[3]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[4]) {
-				labelAttribute = "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+				labelAttribute = "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[7]) {
-				labelAttribute = "Budget (2016):" + "<h1>$" + props[attrArray[7]]+"</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+				labelAttribute = "Budget (2016):" + "<h1>$" + props[attrArray[7]]+"</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[8]) {
 				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
 			} else if (expressed == attrArray[9]) {
