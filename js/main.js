@@ -107,6 +107,21 @@ function setMap(){
 				return coords[1];
 			})
 			.attr("r", 6);
+			
+		var chtrSchools = ourmap.selectAll(".chtr-schools")
+			.data(chtr.features)
+			.enter()
+			.append("circle")
+			.attr("class", "chtr-schools")
+			.attr("cx", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[0];
+			})
+			.attr("cy", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[1];
+			})
+			.attr("r", 6);
 		
 		//add dropdown menu to the map
 		//createDropdown(csvData);
