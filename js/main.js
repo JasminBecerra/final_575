@@ -188,14 +188,16 @@ function createDistrictSchools (ourmap, dis, projection){
 				var coords = projection(d.geometry.coordinates);
 				return coords[1];
 			})
-			.attr("r", 6)
+			.attr("r", 5)
 			.on("mouseover", function(d){
 			d3.select("h2").text(d.properties.school_nm);
 			d3.select(this).attr("class","dis-schools hover");
+			highlight(d.properties);
 			})
 			.on("mouseout", function(d){
 			d3.select("h2").text("");
 			d3.select(this).attr("class","dis-schools");
+			dehighlight(d.properties);
 			});
 };
 
@@ -213,14 +215,16 @@ function createCharterSchools (ourmap, chtr, projection){
 				var coords = projection(d.geometry.coordinates);
 				return coords[1];
 			})
-			.attr("r", 6)
+			.attr("r", 5)
 			.on("mouseover", function(d){
 			d3.select("h2").text(d.properties.school_nm);
 			d3.select(this).attr("class","chtr-schools hover");
+			highlight(d.properties);
 			})
 			.on("mouseout", function(d){
 			d3.select("h2").text("");
 			d3.select(this).attr("class","chtr-schools");
+			dehighlight(d.properties);
 			});
 };
 
@@ -389,7 +393,7 @@ function setLabel(props){
     var labelAttribute = "<b>"+ expressed +
         "</b><h1>" + props[expressed] + "</h1>";
 
-
+		console.log(props, expressed, attrArray);
 		if (Boolean(props[expressed]) == true) {
 			if (expressed == attrArray[0]) {
 				labelAttribute = "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" +  "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
@@ -420,9 +424,12 @@ function setLabel(props){
 			} else if (expressed == attrArray[16]) {
 				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
 			};
-			} else { //if no data associated with selection, display "No data"
-				labelAttribute = "<h1>No Data</h1>";
-			};
+		}else if (props.hasOwnProperty("school_nm")){
+			labelAttribute = "<b>School Name: </b><h1>" + props.school_nm + "</h1>"
+			
+		} else { //if no data associated with selection, display "No data"
+			labelAttribute = "<h1>No Data</h1>";
+		};
 
 
     //create info label div
