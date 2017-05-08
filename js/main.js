@@ -86,14 +86,46 @@ function setMap(){
 			
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
+		
+		//create the color scale
+        var colorScale = makeColorScale(csvData);
+
+        //add enumeration units to ourmap
+        setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+		
+		//add dropdown menu to the map
+		//createDropdown(csvData);
+		
+		//add menu panel to map
+		createMenu(csvData, chicagoNets, path, colorScale);
+		
+		//////////////overlay high school points
+
+        //variable for radius of discrtict high school points (constant)
+        var cpsDistrictsRadius = d3.scaleSqrt(25)
+            .range([0,5]);
+		
 
 
-        function joinData (chicagoNets, csvData, attributes){
+        //calling overlay function
+        overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
+
+
+        // // check
+        // console.log(illinois);
+        console.log(chicago);
+		console.log(csvData);
+        console.log(cpsDistricts);
+		
+
+
+    };
+
+};
+
+function joinData (chicagoNets, csvData){
     //testing dropout and grad data
     //using two attributes: dropoutr rates 2016, and gradaution rates 2016
-
-    var jsonNetworks = chicago.objects.ChicagoNetworks.geometries;
-
 
     //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
     for (var i=0; i<csvData.length; i++){
@@ -102,8 +134,7 @@ function setMap(){
 
 
         // loop through geojson network regions to find the linked region
-        for (var a=0; a<jsonNetworks.length; a++){
-
+        for (var a=0; a<chicagoNets.length; a++){
 
             var geojsonProps = chicagoNets[a].properties; //geo properties
             var geojsonKey = geojsonProps.network_num.replace(/ /g, '-'); //geojson key
@@ -123,6 +154,7 @@ function setMap(){
     return chicagoNets;
 };
 
+
 function setEnumerationUnits(chicagoNets, ourmap, path, colorScale, cpsDistricts, cpsDistrictsRadius){
         //adding chicago community areas/neighborhoods to ourmap
         var networks = ourmap.selectAll(".networks")
@@ -133,101 +165,30 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale, cpsDistricts
                 return "networks " + d.properties.network_num.replace(/ /g, '-');
             })
             .attr("d", path)
-            .style("fill", function(d){
+			.style("fill", function(d){
             return choropleth(d.properties, colorScale);
-            })
-            .on("mouseover", function(d){
+			})
+			.on("mouseover", function(d){
             highlight(d.properties);
-            })
-            .on("mouseout", function(d){
+			})
+			.on("mouseout", function(d){
             dehighlight(d.properties);
-            })
-            .on("mousemove", moveLabel);
+			})
+			.on("mousemove", moveLabel);
         var desc = networks.append("desc")
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
                     //variable for radius of discrtict high school points (constant)
-        //district schools radius stuff
-        var districtCount = [];
-        for (var b = 0; b < cpsDistricts1.features.length; b++){
-            var district_count = cpsDistricts1.features[b].properties.Count;
-            districtCount.push(Number(district_count));
-        }
-        
-        //creates min and max of abortion providers
-        var districtMin = Math.min.apply(Math, districtCount);
-        var districtMax = Math.max.apply(Math, districtCount);
-        
-        //creates radius 
-        var cpsDistrictsRadius = d3.scaleSqrt()
-            .domain([districtMin, districtMax])
-            .range([0, 30]);
-
+        var cpsDistrictsRadius = d3.scaleSqrt(25)
+            .range([0,5]);
         
 
 
         //calling overlay function
         overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
 
-        console.log(cpsDistricts);
-
 
 };
-		
-		//create the color scale
-        var colorScale = makeColorScale(csvData);
-
-        //add enumeration units to ourmap
-        setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
-		
-		//add dropdown menu to the map
-		//createDropdown(csvData);
-		
-		//add menu panel to map
-		createMenu(csvData, chicagoNets, path, colorScale);
-		
-		//////////////overlay high school points
-
-        // //variable for radius of discrtict high school points (constant)
-        // var cpsDistrictsRadius = d3.scaleSqrt(25)
-        //     .range([0,5]);
-		
-
-        //district schools radius stuff
-        var districtCount = [];
-        for (var b = 0; b < cpsDistricts1.features.length; b++){
-            var district_count = cpsDistricts1.features[b].properties.Count;
-            districtCount.push(Number(district_count));
-        }
-        
-        //creates min and max of abortion providers
-        var districtMin = Math.min.apply(Math, districtCount);
-        var districtMax = Math.max.apply(Math, districtCount);
-        
-        //creates radius 
-        var cpsDistrictsRadius = d3.scaleSqrt()
-            .domain([districtMin, districtMax])
-            .range([0, 30]);
-
-
-        //calling overlay function
-        overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
-
-
-        // // check
-        // console.log(illinois);
-        console.log(chicago);
-		console.log(csvData);
-        console.log(cpsDistricts);
-		
-
-
-    };
-
-};
-
-
-
 
 //function to create color scale generator
 function makeColorScale(data){
@@ -615,7 +576,7 @@ function overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts){
     
     $(".district-section").click(function(){  
         var districtDiv = document.getElementById('district-sch');
-        if (d3.selectAll(".cpsDistrictsLocations").length > 0){
+        if (d3.selectAll(".cpsDistrictsLocations")[0].length > 0){
             removeDistrict = d3.selectAll(".cpsDistrictsLocations").remove();
         } else {
             cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius);
@@ -633,6 +594,7 @@ function cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius){
     .enter()
     .append("path")
     .attr("class", "cpsDistrictsLocations")
+    
     // .attr("cx", function(d, i){
     //     //use the linear scale generator to place each circle horizontally
     //     return cpsDistrictSchools(d.properties.x);
