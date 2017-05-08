@@ -86,93 +86,6 @@ function setMap(){
 			
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
-
-
-        function joinData (chicagoNets, csvData, attributes){
-    //testing dropout and grad data
-    //using two attributes: dropoutr rates 2016, and gradaution rates 2016
-
-    var jsonNetworks = chicago.objects.ChicagoNetworks.geometries;
-
-
-    //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
-    for (var i=0; i<csvData.length; i++){
-        var csvRegion = csvData[i]; //network regions
-        var csvKey = csvRegion.network_num.replace(/ /g, '-'); //replace spaces with dashes
-
-
-        // loop through geojson network regions to find the linked region
-        for (var a=0; a<jsonNetworks.length; a++){
-
-
-            var geojsonProps = chicagoNets[a].properties; //geo properties
-            var geojsonKey = geojsonProps.network_num.replace(/ /g, '-'); //geojson key
-
-
-            //match the keys! transfer the data over to enumeration unit
-            if (geojsonKey == csvKey){
-
-                //assign attributes and values
-                attrArray.forEach(function(attr){
-                    var val = parseFloat(csvRegion[attr]);
-                    geojsonProps[attr] = val;
-                });
-            };
-        };
-    };
-    return chicagoNets;
-};
-
-function setEnumerationUnits(chicagoNets, ourmap, path, colorScale, cpsDistricts, cpsDistrictsRadius){
-        //adding chicago community areas/neighborhoods to ourmap
-        var networks = ourmap.selectAll(".networks")
-            .data(chicagoNets)
-            .enter()
-            .append("path")
-            .attr("class", function(d){
-                return "networks " + d.properties.network_num.replace(/ /g, '-');
-            })
-            .attr("d", path)
-            .style("fill", function(d){
-            return choropleth(d.properties, colorScale);
-            })
-            .on("mouseover", function(d){
-            highlight(d.properties);
-            })
-            .on("mouseout", function(d){
-            dehighlight(d.properties);
-            })
-            .on("mousemove", moveLabel);
-        var desc = networks.append("desc")
-            .text('{"stroke": "white", "stroke-width": "1px"}');
-
-                    //variable for radius of discrtict high school points (constant)
-        //district schools radius stuff
-        var districtCount = [];
-        for (var b = 0; b < cpsDistricts1.features.length; b++){
-            var district_count = cpsDistricts1.features[b].properties.Count;
-            districtCount.push(Number(district_count));
-        }
-        
-        //creates min and max of abortion providers
-        var districtMin = Math.min.apply(Math, districtCount);
-        var districtMax = Math.max.apply(Math, districtCount);
-        
-        //creates radius 
-        var cpsDistrictsRadius = d3.scaleSqrt()
-            .domain([districtMin, districtMax])
-            .range([0, 30]);
-
-        
-
-
-        //calling overlay function
-        overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
-
-        console.log(cpsDistricts);
-
-
-};
 		
 		//create the color scale
         var colorScale = makeColorScale(csvData);
@@ -226,8 +139,91 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale, cpsDistricts
 
 };
 
+function joinData (chicagoNets, csvData, attributes){
+    //testing dropout and grad data
+    //using two attributes: dropoutr rates 2016, and gradaution rates 2016
+
+    var jsonNetworks = chicago.objects.ChicagoNetworks.geometries;
 
 
+    //loop through the dropout/grad csv file to assign each attribute to a netowrk geojson region
+    for (var i=0; i<csvData.length; i++){
+        var csvRegion = csvData[i]; //network regions
+        var csvKey = csvRegion.network_num.replace(/ /g, '-'); //replace spaces with dashes
+
+
+        // loop through geojson network regions to find the linked region
+        for (var a=0; a<chicagoNets.length; a++){
+
+            var geojsonProps = chicagoNets[a].properties; //geo properties
+            var geojsonKey = geojsonProps.network_num.replace(/ /g, '-'); //geojson key
+
+
+            //match the keys! transfer the data over to enumeration unit
+            if (geojsonKey == csvKey){
+
+                //assign attributes and values
+                attrArray.forEach(function(attr){
+                    var val = parseFloat(csvRegion[attr]);
+                    geojsonProps[attr] = val;
+                });
+            };
+        };
+    };
+    return chicagoNets;
+};
+
+
+function setEnumerationUnits(chicagoNets, ourmap, path, colorScale, cpsDistricts, cpsDistrictsRadius){
+        //adding chicago community areas/neighborhoods to ourmap
+        var networks = ourmap.selectAll(".networks")
+            .data(chicagoNets)
+            .enter()
+            .append("path")
+            .attr("class", function(d){
+                return "networks " + d.properties.network_num.replace(/ /g, '-');
+            })
+            .attr("d", path)
+			.style("fill", function(d){
+            return choropleth(d.properties, colorScale);
+			})
+			.on("mouseover", function(d){
+            highlight(d.properties);
+			})
+			.on("mouseout", function(d){
+            dehighlight(d.properties);
+			})
+			.on("mousemove", moveLabel);
+        var desc = networks.append("desc")
+            .text('{"stroke": "white", "stroke-width": "1px"}');
+
+                    //variable for radius of discrtict high school points (constant)
+        //district schools radius stuff
+        var districtCount = [];
+        for (var b = 0; b < cpsDistricts.features.length; b++){
+            var district_count = cpsDistricts.features[b].properties.Count;
+            districtCount.push(Number(district_count));
+        }
+        
+        //creates min and max of abortion providers
+        var districtMin = Math.min.apply(Math, districtCount);
+        var districtMax = Math.max.apply(Math, districtCount);
+        
+        //creates radius 
+        var cpsDistrictsRadius = d3.scaleSqrt()
+            .domain([districtMin, districtMax])
+            .range([0, 30]);
+
+        
+
+
+        //calling overlay function
+        overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts);
+
+        console.log(cpsDistricts);
+
+
+};
 
 //function to create color scale generator
 function makeColorScale(data){
