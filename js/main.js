@@ -64,7 +64,7 @@ function setMap(){
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
-		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsDistricts1.geojson") //load districts spatial data
         .defer(d3.json, "data/cpsCharterSchools.geojson") //load charter schools spatial data
         .await(callback); //send data to callback function
 		
@@ -101,10 +101,26 @@ function setMap(){
 		
 		//////////////overlay high school points
 
-        //variable for radius of discrtict high school points (constant)
-        var cpsDistrictsRadius = d3.scaleSqrt(25)
-            .range([0,5]);
+        // //variable for radius of discrtict high school points (constant)
+        // var cpsDistrictsRadius = d3.scaleSqrt(25)
+        //     .range([0,5]);
 		
+
+        //district schools radius stuff
+        var districtCount = [];
+        for (var b = 0; b < cpsDistricts1.features.length; b++){
+            var district_count = cpsDistricts1.features[b].properties.Count;
+            districtCount.push(Number(district_count));
+        }
+        
+        //creates min and max of abortion providers
+        var districtMin = Math.min.apply(Math, districtCount);
+        var districtMax = Math.max.apply(Math, districtCount);
+        
+        //creates radius 
+        var cpsDistrictsRadius = d3.scaleSqrt()
+            .domain([districtMin, districtMax])
+            .range([0, 30]);
 
 
         //calling overlay function
@@ -179,8 +195,22 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale, cpsDistricts
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
                     //variable for radius of discrtict high school points (constant)
-        var cpsDistrictsRadius = d3.scaleSqrt(25)
-            .range([0,5]);
+        //district schools radius stuff
+        var districtCount = [];
+        for (var b = 0; b < cpsDistricts.features.length; b++){
+            var district_count = cpsDistricts.features[b].properties.Count;
+            districtCount.push(Number(district_count));
+        }
+        
+        //creates min and max of abortion providers
+        var districtMin = Math.min.apply(Math, districtCount);
+        var districtMax = Math.max.apply(Math, districtCount);
+        
+        //creates radius 
+        var cpsDistrictsRadius = d3.scaleSqrt()
+            .domain([districtMin, districtMax])
+            .range([0, 30]);
+
         
 
 
@@ -576,7 +606,7 @@ function overlay(path, cpsDistrictsRadius, ourmap, cpsDistricts){
     
     $(".district-section").click(function(){  
         var districtDiv = document.getElementById('district-sch');
-        if (d3.selectAll(".cpsDistrictsLocations")[0].length > 0){
+        if (d3.selectAll(".cpsDistrictsLocations").length > 0){
             removeDistrict = d3.selectAll(".cpsDistrictsLocations").remove();
         } else {
             cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius);
@@ -594,8 +624,16 @@ function cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius){
     .enter()
     .append("path")
     .attr("class", "cpsDistrictsLocations")
+    // .attr("cx", function(d, i){
+    //     //use the linear scale generator to place each circle horizontally
+    //     return cpsDistrictSchools(d.properties.x);
+    // })
+    //     //apply scale to population values
+    // .attr("cy", function(d){
+    //     return (d.properties.y);
+    // })
     .attr('d', path.pointRadius(function(d){
-        return cpsDistrictsRadius(d.properties);
+        return cpsDistrictsRadius(d.properties.Count);
     }));
 
 

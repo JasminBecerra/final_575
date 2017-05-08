@@ -1,0 +1,103 @@
+SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Graduation Rates 2016
+400034,CICS - NORTHTOWN HS,Network 1,Charter,13.2%,83.3%
+609749,NORTHSIDE PREP HS,Network 1,District,0.7%,97.8%
+609728,ROOSEVELT HS,Network 1,District,28.3%,66.9%
+609729,SCHURZ HS,Network 1,District,21.2%,72.5%
+609734,TAFT HS,Network 1,District,12.6%,85.2%
+609737,VON STEUBEN HS,Network 1,District,9.5%,88.8%
+609698,BOGAN HS,Network 10,District,21.1%,75.7%
+609753,CHICAGO AGRICULTURE HS,Network 10,District,10.3%,74.7%
+609741,HUBBARD HS,Network 10,District,13.8%,82.9%
+609718,KENNEDY HS,Network 10,District,24.7%,68.8%
+609725,MORGAN PARK HS,Network 10,District,15.7%,79.6%
+400032,CICS - ELLISON HS,Network 11,Charter,17.5%,78.6%
+400033,CICS - LONGWOOD,Network 11,Charter,15.2%,82.6%
+400106,NOBLE - JOHNSON HS,Network 11,Charter,18.0%,77.4%
+400061,PERSPECTIVES - LEADERSHIP HS,Network 11,Charter,23.6%,75.2%
+400062,PERSPECTIVES - TECH HS,Network 11,Charter,25.0%,73.1%
+400086,URBAN PREP - ENGLEWOOD HS,Network 11,Charter,23.5%,71.3%
+609711,HARPER HS,Network 11,District,31.9%,62.1%
+609768,HOPE HS,Network 11,District,25.0%,71.4%
+610391,LINDBLOM HS,Network 11,District,5.7%,89.2%
+609707,ROBESON HS,Network 11,District,50.0%,39.4%
+609692,SIMEON HS,Network 11,District,13.8%,80.7%
+610506,TEAM HS,Network 11,District,21.0%,73.9%
+400094,EPIC HS,Network 12,Charter,21.1%,69.9%
+400052,NOBLE - COMER,Network 12,Charter,10.7%,88.1%
+610323,BOWEN HS,Network 12,District,25.3%,63.7%
+609674,CHICAGO VOCATIONAL HS,Network 12,District,20.5%,72.6%
+609710,HARLAN HS,Network 12,District,34.0%,54.6%
+609712,HIRSCH HS,Network 12,District,52.6%,36.1%
+610547,SOUTH SHORE INTL HS,Network 12,District,20.2%,71.0%
+400108,CICS - HAWKINS HS,Network 13,Charter,45.1%,51.2%
+609726,BROOKS HS,Network 13,District,4.4%,93.4%
+609761,CORLISS HS,Network 13,District,26.2%,62.6%
+609705,FENGER HS,Network 13,District,44.3%,49.5%
+609762,JULIAN HS,Network 13,District,20.5%,74.4%
+609739,WASHINGTON HS,Network 13,District,21.0%,72.2%
+400035,CHICAGO MATH & SCIENCE HS,Network 2,Charter,8.6%,85.2%
+609695,AMUNDSEN HS,Network 2,District,14.2%,82.8%
+609719,LAKE VIEW HS,Network 2,District,7.4%,91.2%
+609724,MATHER HS,Network 2,District,23.7%,72.3%
+609730,SENN HS,Network 2,District,15.0%,81.3%
+609733,SULLIVAN HS,Network 2,District,29.6%,64.0%
+610394,UPLIFT HS,Network 2,District,18.8%,74.3%
+400018,AUSTIN BUS & ENTRP HS,Network 3,District,19.1%,76.5%
+610501,AUSTIN POLY HS,Network 3,District,28.3%,60.9%
+610244,CLARK HS,Network 3,District,8.7%,85.8%
+609759,CLEMENTE HS,Network 3,District,14.6%,83.5%
+610245,DOUGLASS HS,Network 3,District,32.2%,56.3%
+609708,FOREMAN HS,Network 3,District,28.2%,65.2%
+609679,PROSSER HS,Network 3,District,9.8%,88.2%
+609732,STEINMETZ HS,Network 3,District,24.9%,71.3%
+610518,VOISE HS,Network 3,District,27.9%,70.9%
+400054,NOBLE - PRITZKER HS,Network 4,Charter,8.8%,90.3%
+610524,ALCOTT HS,Network 4,District,9.7%,87.1%
+609716,KELVYN PARK HS,Network 4,District,24.2%,69.8%
+609720,LANE TECH HS,Network 4,District,2.7%,95.9%
+609738,LINCOLN PARK HS,Network 4,District,8.7%,87.7%
+400056,NOBLE - ROWE CLARK HS,Network 5,Charter,14.5%,82.4%
+400058,NORTH LAWNDALE - CHRISTIANA HS,Network 5,Charter,27.8%,67.1%
+400059,NORTH LAWNDALE - COLLINS HS,Network 5,Charter,20.2%,69.7%
+609722,MANLEY HS,Network 5,District,34.2%,57.9%
+609723,MARSHALL HS,Network 5,District,34.0%,57.7%
+609691,NORTH-GRAND HS,Network 5,District,23.8%,74.3%
+610334,RABY HS,Network 5,District,18.7%,73.4%
+609693,WESTINGHOUSE HS,Network 5,District,1.6%,97.6%
+400097,NOBLE - BULLS HS,Network 6,Charter,23.9%,71.5%
+400053,NOBLE - GOLDER HS,Network 6,Charter,14.9%,81.7%
+400098,NOBLE - MUCHIN HS,Network 6,Charter,12.3%,86.4%
+400051,NOBLE - NOBLE HS,Network 6,Charter,7.2%,92.8%
+400055,NOBLE - RAUNER HS,Network 6,Charter,10.9%,85.6%
+400057,NOBLE - UIC HS,Network 6,Charter,15.8%,83.3%
+400064,PERSPECTIVES - JOSLIN HS,Network 6,Charter,12.5%,85.7%
+400102,URBAN PREP - WEST HS,Network 6,Charter,31.3%,64.1%
+609678,JONES HS,Network 6,District,3.6%,91.8%
+610529,OGDEN HS,Network 6,District,15.8%,83.6%
+609680,PAYTON HS,Network 6,District,4.2%,95.3%
+609740,WELLS HS,Network 6,District,31.5%,62.9%
+609755,YOUNG HS,Network 6,District,2.0%,96.2%
+400104,INSTITUTO - HEALTH,Network 7,Charter,13.6%,82.8%
+609704,FARRAGUT HS,Network 7,District,30.9%,65.3%
+610384,INFINITY HS,Network 7,District,4.8%,94.2%
+609764,JUAREZ HS,Network 7,District,16.6%,80.9%
+610385,MULTICULTURAL HS,Network 7,District,14.7%,80.9%
+610383,SOCIAL JUSTICE HS,Network 7,District,10.2%,87.5%
+610392,WORLD LANGUAGE HS,Network 7,District,19.5%,77.9%
+400085,UNO - GARCIA HS,Network 8,Charter,6.8%,84.5%
+609756,CURIE HS,Network 8,District,17.0%,76.0%
+609709,GAGE PARK HS,Network 8,District,27.9%,68.7%
+609694,HANCOCK HS,Network 8,District,14.9%,84.6%
+609715,KELLY HS,Network 8,District,17.4%,77.8%
+609682,RICHARDS HS,Network 8,District,26.3%,71.7%
+609735,TILDEN HS,Network 8,District,43.6%,50.0%
+400066,PERSPECTIVES - MATH & SCI HS,Network 9,Charter,21.9%,78.1%
+400077,U OF C - WOODLAWN HS,Network 9,Charter,19.6%,76.3%
+400105,URBAN PREP - BRONZEVILLE HS,Network 9,Charter,16.0%,82.4%
+400087,YOUNG WOMENS HS,Network 9,Charter,29.6%,66.7%
+610381,BRONZEVILLE HS,Network 9,District,15.1%,80.6%
+609676,DUNBAR HS,Network 9,District,22.7%,71.5%
+609713,HYDE PARK HS,Network 9,District,35.2%,53.6%
+609746,KENWOOD HS,Network 9,District,10.7%,84.6%
+609751,KING HS,Network 9,District,7.7%,89.4%
+610380,WILLIAMS HS,Network 9,District,14.4%,83.5%
