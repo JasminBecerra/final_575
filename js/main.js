@@ -64,7 +64,7 @@ function setMap(){
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
 		.defer(d3.json, "data/cpsDistricts1.geojson") //load districts spatial data
-		.defer(d3.json, "data/cpsCharterSchools.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsCharterData.geojson") //load districts spatial data
         .await(callback); //send data to callback function
 		
 
@@ -423,7 +423,7 @@ function setLabel(props){
 				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
 			};
 		}else if (props.hasOwnProperty("school_nm")){
-			labelAttribute = "School Name:" + "<h1>" + props.school_nm + "</h1>" + "<br>" + "School Address:" + "<h1>" + props.sch_addr + "</h1>" + "<br>" + "School Type:" + "<h1>" + props.sch_type + "</h1>"
+			labelAttribute = "School Name:" + "<h1>" + props.school_nm + "</h1>" + "<br>" + "School Address:" + "<h1>" + props.sch_addr + "</h1>" + "<br>" + "School Type:" + "<h1>" + props.sch_type + "</h1>" + "<br>" + "ACT Composite Average:" + "<h1>" + props.act_composite_avg + "</h1>" + "<br>" + "Percent Free/Reduced Lunch:" + "<h1>" + props.pct_free_red_lunch + "</h1>" + "<br>" + "Dropout Rate 2016:" + "<h1>" + props.dropout_rate_16 + "</h1>" + "<br>" + "Graduation Rate 2016:" + "<h1>" + props.grad_rate_16 + "</h1>"
 			
 		} else { //if no data associated with selection, display "No data"
 			labelAttribute = "<h1>No Data</h1>";
@@ -530,7 +530,7 @@ function createMenu(csvData, chicagoNets, path, colorScale){
     });
 	
 	$(".Budget").click(function(){ 
-        expressed = attrArray[5];
+        expressed = attrArray[7];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
@@ -560,17 +560,19 @@ function createMenu(csvData, chicagoNets, path, colorScale){
 //creates overlay of charter and district schools
 function overlay(ourmap, chtr, dis, projection){
 	$("#district-sch").click(function(){
-        if (districtSchoolOverlay == true){
+		console.log(districtSchoolOverlay);
+        if (districtSchoolOverlay == false){
 			createDistrictSchools (ourmap, dis, projection);
-			districtSchoolOverlay = false;
+			districtSchoolOverlay = true;
 			
         } else {
 			removeDistrict = d3.selectAll(".dis-schools").remove();
-			districtSchoolOverlay = true;
+			districtSchoolOverlay = false;
         }
     });
     
-    $("#charter-sch").click(function(){  
+    $("#charter-sch").click(function(){
+			console.log(charterSchoolOverlay);
 		if (charterSchoolOverlay == false){
 			createCharterSchools (ourmap, chtr, projection);
 			charterSchoolOverlay = true;
