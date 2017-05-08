@@ -171,7 +171,7 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
 })
 
 var desc = networks.append("desc")
-		.text('{"stroke": "#000", "stroke-width": "0.5px"}');
+		.text('{"stroke": "white", "stroke-width": "0.5px"}');
 
 
 
@@ -343,8 +343,8 @@ function setLabel(props){
 
 
 
-    var labelAttribute = "<h1>" + props[expressed] +
-        "</h1><b>" + expressed + "</b>";
+    var labelAttribute = "<h1>" + expressed +
+        "</h1><b>" + props[expressed] + "</b>";
 
     //create info label div
     var infolabel = d3.select("body")
@@ -353,9 +353,9 @@ function setLabel(props){
         .attr("id", props.network_num + "_label")
         .html(labelAttribute);
 
-    var regionName = infolabel.append("div")
-        .attr("class", "labelname")
-        .html(props.network_num);
+		var regionName = infolabel.append("div")
+		    .attr("class", "labelname")
+		    .html(props.network_num);
 
 				console.log("ok");
 };
