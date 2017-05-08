@@ -5,11 +5,13 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609729,SCHURZ HS,Network 1,District,21.2%,72.5%
 609734,TAFT HS,Network 1,District,12.6%,85.2%
 609737,VON STEUBEN HS,Network 1,District,9.5%,88.8%
+,,Network 1,Average,14.3%,82.4%
 609698,BOGAN HS,Network 10,District,21.1%,75.7%
 609753,CHICAGO AGRICULTURE HS,Network 10,District,10.3%,74.7%
 609741,HUBBARD HS,Network 10,District,13.8%,82.9%
 609718,KENNEDY HS,Network 10,District,24.7%,68.8%
 609725,MORGAN PARK HS,Network 10,District,15.7%,79.6%
+,,Network 10,Average,17.1%,76.3%
 400032,CICS - ELLISON HS,Network 11,Charter,17.5%,78.6%
 400033,CICS - LONGWOOD,Network 11,Charter,15.2%,82.6%
 400106,NOBLE - JOHNSON HS,Network 11,Charter,18.0%,77.4%
@@ -22,6 +24,7 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609707,ROBESON HS,Network 11,District,50.0%,39.4%
 609692,SIMEON HS,Network 11,District,13.8%,80.7%
 610506,TEAM HS,Network 11,District,21.0%,73.9%
+,,Network 11,Average,22.5%,72.9%
 400094,EPIC HS,Network 12,Charter,21.1%,69.9%
 400052,NOBLE - COMER,Network 12,Charter,10.7%,88.1%
 610323,BOWEN HS,Network 12,District,25.3%,63.7%
@@ -29,12 +32,14 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609710,HARLAN HS,Network 12,District,34.0%,54.6%
 609712,HIRSCH HS,Network 12,District,52.6%,36.1%
 610547,SOUTH SHORE INTL HS,Network 12,District,20.2%,71.0%
+,,Network 12,Average,26.3%,65.1%
 400108,CICS - HAWKINS HS,Network 13,Charter,45.1%,51.2%
 609726,BROOKS HS,Network 13,District,4.4%,93.4%
 609761,CORLISS HS,Network 13,District,26.2%,62.6%
 609705,FENGER HS,Network 13,District,44.3%,49.5%
 609762,JULIAN HS,Network 13,District,20.5%,74.4%
 609739,WASHINGTON HS,Network 13,District,21.0%,72.2%
+,,Network 13,Average,26.9%,67.2%
 400035,CHICAGO MATH & SCIENCE HS,Network 2,Charter,8.6%,85.2%
 609695,AMUNDSEN HS,Network 2,District,14.2%,82.8%
 609719,LAKE VIEW HS,Network 2,District,7.4%,91.2%
@@ -42,6 +47,7 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609730,SENN HS,Network 2,District,15.0%,81.3%
 609733,SULLIVAN HS,Network 2,District,29.6%,64.0%
 610394,UPLIFT HS,Network 2,District,18.8%,74.3%
+,,Network 2,Average,16.8%,78.7%
 400018,AUSTIN BUS & ENTRP HS,Network 3,District,19.1%,76.5%
 610501,AUSTIN POLY HS,Network 3,District,28.3%,60.9%
 610244,CLARK HS,Network 3,District,8.7%,85.8%
@@ -51,11 +57,13 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609679,PROSSER HS,Network 3,District,9.8%,88.2%
 609732,STEINMETZ HS,Network 3,District,24.9%,71.3%
 610518,VOISE HS,Network 3,District,27.9%,70.9%
+,,Network 3,Average,21.5%,73.2%
 400054,NOBLE - PRITZKER HS,Network 4,Charter,8.8%,90.3%
 610524,ALCOTT HS,Network 4,District,9.7%,87.1%
 609716,KELVYN PARK HS,Network 4,District,24.2%,69.8%
 609720,LANE TECH HS,Network 4,District,2.7%,95.9%
 609738,LINCOLN PARK HS,Network 4,District,8.7%,87.7%
+,,Network 4,Average,10.8%,86.2%
 400056,NOBLE - ROWE CLARK HS,Network 5,Charter,14.5%,82.4%
 400058,NORTH LAWNDALE - CHRISTIANA HS,Network 5,Charter,27.8%,67.1%
 400059,NORTH LAWNDALE - COLLINS HS,Network 5,Charter,20.2%,69.7%
@@ -64,6 +72,7 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609691,NORTH-GRAND HS,Network 5,District,23.8%,74.3%
 610334,RABY HS,Network 5,District,18.7%,73.4%
 609693,WESTINGHOUSE HS,Network 5,District,1.6%,97.6%
+,,Network 5,Average,21.9%,72.5%
 400097,NOBLE - BULLS HS,Network 6,Charter,23.9%,71.5%
 400053,NOBLE - GOLDER HS,Network 6,Charter,14.9%,81.7%
 400098,NOBLE - MUCHIN HS,Network 6,Charter,12.3%,86.4%
@@ -77,6 +86,7 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609680,PAYTON HS,Network 6,District,4.2%,95.3%
 609740,WELLS HS,Network 6,District,31.5%,62.9%
 609755,YOUNG HS,Network 6,District,2.0%,96.2%
+,,Network 6,Average,14.3%,83.1%
 400104,INSTITUTO - HEALTH,Network 7,Charter,13.6%,82.8%
 609704,FARRAGUT HS,Network 7,District,30.9%,65.3%
 610384,INFINITY HS,Network 7,District,4.8%,94.2%
@@ -84,6 +94,7 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 610385,MULTICULTURAL HS,Network 7,District,14.7%,80.9%
 610383,SOCIAL JUSTICE HS,Network 7,District,10.2%,87.5%
 610392,WORLD LANGUAGE HS,Network 7,District,19.5%,77.9%
+,,Network 7,Average,15.8%,81.4%
 400085,UNO - GARCIA HS,Network 8,Charter,6.8%,84.5%
 609756,CURIE HS,Network 8,District,17.0%,76.0%
 609709,GAGE PARK HS,Network 8,District,27.9%,68.7%
@@ -91,6 +102,7 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609715,KELLY HS,Network 8,District,17.4%,77.8%
 609682,RICHARDS HS,Network 8,District,26.3%,71.7%
 609735,TILDEN HS,Network 8,District,43.6%,50.0%
+,,Network 8,Average,22.0%,73.3%
 400066,PERSPECTIVES - MATH & SCI HS,Network 9,Charter,21.9%,78.1%
 400077,U OF C - WOODLAWN HS,Network 9,Charter,19.6%,76.3%
 400105,URBAN PREP - BRONZEVILLE HS,Network 9,Charter,16.0%,82.4%
@@ -101,3 +113,4 @@ SchoolID,School Name,network_num,sch-type,Cohort Dropout Rates 2016,Cohort Gradu
 609746,KENWOOD HS,Network 9,District,10.7%,84.6%
 609751,KING HS,Network 9,District,7.7%,89.4%
 610380,WILLIAMS HS,Network 9,District,14.4%,83.5%
+,,Network 9,Average,19.3%,76.7%

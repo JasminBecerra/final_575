@@ -67,7 +67,16 @@ function setMap(){
 		.defer(d3.json, "data/cpsDistricts1.geojson") //load districts spatial data
         .defer(d3.json, "data/cpsCharterSchools.geojson") //load charter schools spatial data
         .await(callback); //send data to callback function
-		
+	
+     var cpsDistricts = svg.append( "g" );
+
+    cpsDistricts.selectAll( "path" )
+        .data( districts.features )
+        .enter()
+        .append( "path" )
+        .attr( "fill", "#900" )
+        .attr( "stroke", "#999" )
+        .attr( "d", projection);
 
 
 //function to populate the dom with topojson data
@@ -594,7 +603,7 @@ function cpsDistrictsPoints(ourmap, cpsDistricts, path, cpsDistrictsRadius){
     .enter()
     .append("path")
     .attr("class", "cpsDistrictsLocations")
-    
+
     // .attr("cx", function(d, i){
     //     //use the linear scale generator to place each circle horizontally
     //     return cpsDistrictSchools(d.properties.x);
