@@ -14,36 +14,19 @@
 	opacity:0.95;
 }
 
-
-
-.incident{
-
-	fill: green;
-}
-.hover {
-    fill: yellow;
+.dis-schools {
+	fill: #4997D0;
+	fill-opacity:0.85;
 }
 
 .chtr-schools {
-
-	fill: green;
+    fill: #062A78;
+	fill-opacity:0.85;
 }
 
-.dis-schools {
-
-	fill: blue;
-}
-
-
-
-
-.districtLocations {
-	fill: #FA6E39;
-	fill-opacity:0.7;
-}
-
-.charterLocations {
-    fill: #37C4AB;
+.hover{
+	stroke:yellow;
+	stroke-width:2.5px;
 	fill-opacity:0.7;
 }
 
@@ -111,7 +94,7 @@ div.side-panel{
     stroke-width: 1.75px;
 	stroke-linecap: round;
 	/*fill:gray;*/
-
+	
 }
 
 .unitedStates{
@@ -309,14 +292,11 @@ option {
 	left: 38%;
 	top: -30px;
 
-
-
-
 }
 
 /*  Menu CSS */
 /*  ------ */
-.main-menu {
+.main-menu { 
     position: absolute;
 	top: 15%;
 	left:5%;
@@ -463,7 +443,7 @@ option {
 	position:absolute;
 }
 #myModal.modal-dialog{
-
+	
 }
 
 .modal-body {
@@ -495,14 +475,14 @@ option {
  .modal-footer{
 	width: 100%;
  }
-
+ 
  /* The Close Button */
 button.close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-
+	
 }
 
 .close:hover,
