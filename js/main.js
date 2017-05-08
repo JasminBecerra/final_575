@@ -343,8 +343,51 @@ function setLabel(props){
 
 
 
-    var labelAttribute = "<h1>" + expressed +
-        "</h1><b>" + props[expressed] + "</b>";
+    var labelAttribute = "<b>"+ expressed +
+        "</b><h1>" + props[expressed] + "</h1>";
+
+
+				if (Boolean(props[expressed]) == true) {
+							if (expressed == attrArray[0]) {
+									labelAttribute = "ACT Score Average:" + "<h1>" + props[expressed] + "</h1>"
+							} else if (expressed == attrArray[1]) {
+									
+									labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
+							} else if (expressed == attrArray[2]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
+							} else if (expressed == attrArray[3]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
+							} else if (expressed == attrArray[4]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
+					} else if (expressed == attrArray[5]) {
+									labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
+					} else if (expressed == attrArray[6]) {
+									labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
+					} else if (expressed == attrArray[7]) {
+									labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
+					} else if (expressed == attrArray[8]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
+							} else if (expressed == attrArray[9]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
+					} else if (expressed == attrArray[10]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
+					} else if (expressed == attrArray[11]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
+					} else if (expressed == attrArray[12]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
+					} else if (expressed == attrArray[13]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
+							} else if (expressed == attrArray[14]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
+					} else if (expressed == attrArray[15]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
+					} else if (expressed == attrArray[16]) {
+									labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+					};
+					} else { //if no data associated with selection, display "No data"
+							labelAttribute = "<h1>No Data</h1>";
+					};
+
 
     //create info label div
     var infolabel = d3.select("body")
@@ -356,6 +399,7 @@ function setLabel(props){
 		var regionName = infolabel.append("div")
 		    .attr("class", "labelname")
 		    .html(props.network_num);
+
 
 				console.log("ok");
 };
