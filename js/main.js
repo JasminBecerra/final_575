@@ -143,14 +143,17 @@ function districtSchools(dis, ourmap, projection){
 			return coords[1];
 		})
 		.attr("r", 6)
+
+		
 		.on("mouseover", function(d){
-d3.select("h2").text(d.properties.school_nm);
-d3.select(this).attr("class","incident hover");
+schoolHighlight(d.properties);
 })
+
+
 .on("mouseout", function(d){
 d3.select("h2").text("");
 d3.select(this).attr("class","incident");
-});
+})
 
 };
 
@@ -378,7 +381,39 @@ console.log("networks");
 
 };
 
+function schoolHighlight(props){
 
+	var selected = d3.selectAll("." + props.school_nm)
+			.style("stroke", "blue")
+			.style("stroke-width", "2");
+				setLabel(props);
+
+
+};
+
+
+function schoolDehighlight(props){
+     var selected = d3.selectAll("." + props.school_nm)
+        .style("stroke", function(){
+            return getStyle(this, "stroke")
+        })
+        .style("stroke-width", function(){
+            return getStyle(this, "stroke-width")
+        });
+
+    function getStyle(element, styleName){
+        var styleText = d3.select(element)
+            .select("desc")
+            .text();
+
+        var styleObject = JSON.parse(styleText);
+
+        return styleObject[styleName];
+    };
+
+		d3.select(".infolabel")
+.remove();
+};
 
 function highlight(props){
     //change stroke
