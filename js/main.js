@@ -96,61 +96,10 @@ function setMap(){
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+				districtSchools(dis, ourmap, projection);
+				charterSchools(chtr, ourmap, projection);
 
 
-				var disSchools = ourmap.selectAll(".dis-schools")
-					.data(dis.features)
-					.enter()
-					.append("circle")
-					.attr("class", "dis-schools")
-					.attr("cx", function(d){
-						var coords = projection(d.geometry.coordinates);
-						return coords[0];
-					})
-					.attr("cy", function(d){
-						var coords = projection(d.geometry.coordinates);
-						return coords[1];
-					})
-					.attr("r", 6)
-					.on("mouseover", function(d){
-			d3.select("h2").text(d.properties.school_nm);
-			d3.select(this).attr("class","incident hover");
-		})
-
-
-		.on("mouseout", function(d){
-	d3.select("h2").text("");
-	d3.select(this).attr("class","incident");
-});
-
-
-
-		var chtrSchools = ourmap.selectAll(".chtr-schools")
-			.data(chtr.features)
-			.enter()
-			.append("circle")
-			.attr("class", "chtr-schools")
-			.attr("cx", function(d){
-				var coords = projection(d.geometry.coordinates);
-				return coords[0];
-			})
-			.attr("cy", function(d){
-				var coords = projection(d.geometry.coordinates);
-				return coords[1];
-			})
-			.attr("r", 6)
-
-			.on("mouseover", function(d){
-	d3.select("h2").text(d.properties.school_nm);
-	d3.select(this).attr("class","incident hover");
-
-	console.log("ok");
-})
-
-.on("mouseout", function(d){
-	d3.select("h2").text("");
-	d3.select(this).attr("class","incident");
-});
 
 
 
@@ -176,6 +125,73 @@ function setMap(){
     };
 
 };
+
+
+
+function districtSchools(dis, ourmap, projection){
+	var disSchools = ourmap.selectAll(".dis-schools")
+		.data(dis.features)
+		.enter()
+		.append("circle")
+		.attr("class", "dis-schools")
+		.attr("cx", function(d){
+			var coords = projection(d.geometry.coordinates);
+			return coords[0];
+		})
+		.attr("cy", function(d){
+			var coords = projection(d.geometry.coordinates);
+			return coords[1];
+		})
+		.attr("r", 6)
+		.on("mouseover", function(d){
+d3.select("h2").text(d.properties.school_nm);
+d3.select(this).attr("class","incident hover");
+})
+.on("mouseout", function(d){
+d3.select("h2").text("");
+d3.select(this).attr("class","incident");
+});
+
+};
+
+
+function charterSchools(chtr, ourmap, projection){
+
+
+			var chtrSchools = ourmap.selectAll(".chtr-schools")
+				.data(chtr.features)
+				.enter()
+				.append("circle")
+				.attr("class", "chtr-schools")
+				.attr("cx", function(d){
+					var coords = projection(d.geometry.coordinates);
+					return coords[0];
+				})
+				.attr("cy", function(d){
+					var coords = projection(d.geometry.coordinates);
+					return coords[1];
+				})
+				.attr("r", 6)
+
+				.on("mouseover", function(d){
+		d3.select("h2").text(d.properties.school_nm);
+		d3.select(this).attr("class","incident hover");
+
+		console.log("ok");
+	})
+
+	.on("mouseout", function(d){
+		d3.select("h2").text("");
+		d3.select(this).attr("class","incident");
+	});
+
+
+
+};
+
+
+
+
 
 function joinData (chicagoNets, csvData){
     //testing dropout and grad data
