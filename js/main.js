@@ -22,7 +22,9 @@
         "#54278f"
     ];
 	
-	var schoolRadius = 10;
+	var districtSchoolOverlay = false;
+	var charterSchoolOverlay = false;
+	
 
 
 // //list of attributes up there
@@ -93,9 +95,9 @@ function setMap(){
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
 		//creates district school overlay
-		createDistrictSchools (ourmap, dis, projection);
+		//createDistrictSchools (ourmap, dis, projection);
 		//creates charter school overlay
-		createCharterSchools (ourmap, chtr, projection);
+		//createCharterSchools (ourmap, chtr, projection);
 		
 		//add dropdown menu to the map
 		//createDropdown(csvData);
@@ -106,11 +108,7 @@ function setMap(){
 		setNetworkBox();
 		
 		//overlay high school points
-		
-        // // check
-        // console.log(illinois);
-        console.log(chicago);
-		console.log(csvData);
+		overlay(ourmap, chtr, dis, projection);
 		
 		
     };
@@ -560,41 +558,29 @@ function createMenu(csvData, chicagoNets, path, colorScale){
 }; //end of create createMenu
 
 //creates overlay of charter and district schools
-function overlay(){
-    $(".charter-section").click(function(){
-        
+function overlay(ourmap, chtr, dis, projection){
+	$("#district-sch").click(function(){
+        if (districtSchoolOverlay == true){
+			createDistrictSchools (ourmap, dis, projection);
+			districtSchoolOverlay = false;
+			
+        } else {
+			removeDistrict = d3.selectAll(".dis-schools").remove();
+			districtSchoolOverlay = true;
+        }
     });
     
-    $(".district-section").click(function(){  
-        var districtDiv = document.getElementById('district-sch');
-		districtPoints(ourmap, dis, path, schoolRadius);
+    $("#charter-sch").click(function(){  
+		if (charterSchoolOverlay == false){
+			createCharterSchools (ourmap, chtr, projection);
+			charterSchoolOverlay = true;
+			
+        } else {
+			removeCharter = d3.selectAll(".chtr-schools").remove();
+			charterSchoolOverlay = false;
+        }
     });
+
 }; //end of overlay function
-
-//creates district point data
-function districtPoints(ourmap, dis, path, schoolRadius){
-    //adds district locations
-    ourmap.selectAll(".districtLocations")
-        .data(dis.features)
-        .enter()
-        .append("path")
-        .attr("class", "districtLocations")
-        .attr('d', path.pointRadius(function(d){
-            return schoolRadius;
-        }));   
-}; //end districtPoints
-
-//creates charter point data
-function charterPoints(ourmap, chtr, path, schoolRadius){
-    //adds charter locations
-    ourmap.selectAll(".charterLocations")
-        .data(chtr.features)
-        .enter()
-        .append("path")
-        .attr("class", "charterLocations")
-        .attr('d', path.pointRadius(function(d){
-            return schoolRadius;
-        }));   
-}; //end charterPoints
 
 })(); //last line of main.js
