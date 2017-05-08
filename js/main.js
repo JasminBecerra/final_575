@@ -61,14 +61,16 @@ function setMap(){
     d3.queue()
         .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
-		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
+				.defer(d3.json, "data/cpsDistricts1.geojson") //load districts spatial data
+				.defer(d3.json, "data/cpsCharterSchools.geojson")
+
         .await(callback); //send data to callback function
 
 
 
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, chicago, dis){
+    function callback(error, csvData, chicago, dis, chtr){
 
 		//setGraticule(ourmap, path);
 
@@ -94,6 +96,65 @@ function setMap(){
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+
+
+				var disSchools = ourmap.selectAll(".dis-schools")
+					.data(dis.features)
+					.enter()
+					.append("circle")
+					.attr("class", "dis-schools")
+					.attr("cx", function(d){
+						var coords = projection(d.geometry.coordinates);
+						return coords[0];
+					})
+					.attr("cy", function(d){
+						var coords = projection(d.geometry.coordinates);
+						return coords[1];
+					})
+					.attr("r", 6)
+					.on("mouseover", function(d){
+			d3.select("h2").text(d.properties.school_nm);
+			d3.select(this).attr("class","incident hover");
+		})
+
+
+		.on("mouseout", function(d){
+	d3.select("h2").text("");
+	d3.select(this).attr("class","incident");
+});
+
+
+
+		var chtrSchools = ourmap.selectAll(".chtr-schools")
+			.data(chtr.features)
+			.enter()
+			.append("circle")
+			.attr("class", "chtr-schools")
+			.attr("cx", function(d){
+				var coords = projection(d.geometry.coordinates);
+				return coords[0];
+			})
+			.attr("cy", function(d){
+				var coords = projection(d.geometry.coordinates);
+				return coords[1];
+			})
+			.attr("r", 6)
+
+			.on("mouseover", function(d){
+	d3.select("h2").text(d.properties.school_nm);
+	d3.select(this).attr("class","incident hover");
+
+	console.log("ok");
+})
+
+.on("mouseout", function(d){
+	d3.select("h2").text("");
+	d3.select(this).attr("class","incident");
+});
+
+
+
+
 
 		//add dropdown menu to the map
 		//createDropdown(csvData);
