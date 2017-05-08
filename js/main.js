@@ -194,7 +194,6 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
 			.on("mouseout", function(d){
             dehighlight(d.properties);
 			})
-			.on("mousemove", moveLabel);
         var desc = networks.append("desc")
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
@@ -363,49 +362,44 @@ function dehighlight(props){
 
 function setLabel(props){
     //label content
-    var labelAttribute = "<h1>" + props[expressed] +
-        "</h1><b>" + expressed + "</b>";
-		
-	if (Boolean(props[expressed]) == true) {
-        if (expressed == attrArray[0]) {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-        } else if (expressed == attrArray[1]) {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == attrArray[2]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == attrArray[3]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-        } else if (expressed == attrArray[4]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == attrArray[5]) {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == attrArray[6]) {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == attrArray[7]) {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
-		} else if (expressed == attrArray[8]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
-        } else if (expressed == attrArray[9]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
-		} else if (expressed == attrArray[10]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
-		} else if (expressed == attrArray[11]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
-		} else if (expressed == attrArray[12]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
-		} else if (expressed == attrArray[13]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
-        } else if (expressed == attrArray[14]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
-		} else if (expressed == attrArray[15]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
-		} else if (expressed == attrArray[16]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
-		};
-    } else { //if no data associated with selection, display "No data"
-        labelAttribute = "<h1>No Data</h1>";
-    };
-		
+    var labelAttribute = "<b>"+ expressed +
+        "</b><h1>" + props[expressed] + "</h1>";
+
+
+		if (Boolean(props[expressed]) == true) {
+			if (expressed == attrArray[0]) {
+				labelAttribute = "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" +  "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+			} else if (expressed == attrArray[2]) {
+				labelAttribute = "Students receiving Free/Reduced Lunches:" + "<h1>" + props[attrArray[2]]+ "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+			} else if (expressed == attrArray[3]) {
+				labelAttribute = "Dropout Rate:" + "<h1>" + props[attrArray[3]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+			} else if (expressed == attrArray[4]) {
+				labelAttribute = "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+			} else if (expressed == attrArray[7]) {
+				labelAttribute = "Budget (2016):" + "<h1>$" + props[attrArray[7]]+"</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Asian / Pacific Islander Students:" + "<h1>" + props[attrArray[10]] + "%</h1>" +  "<br>" + "Percentage of Native American / Alaskan Students:" + "<h1>" + props[attrArray[11]] + "%</h1>"
+			} else if (expressed == attrArray[8]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
+			} else if (expressed == attrArray[9]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
+			} else if (expressed == attrArray[10]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
+			} else if (expressed == attrArray[11]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
+			} else if (expressed == attrArray[12]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
+			} else if (expressed == attrArray[13]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
+			} else if (expressed == attrArray[14]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
+			} else if (expressed == attrArray[15]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
+			} else if (expressed == attrArray[16]) {
+				labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+			};
+			} else { //if no data associated with selection, display "No data"
+				labelAttribute = "<h1>No Data</h1>";
+			};
+
 
     //create info label div
     var infolabel = d3.select("body")
@@ -414,9 +408,12 @@ function setLabel(props){
         .attr("id", props.network_num + "_label")
         .html(labelAttribute);
 
-    var countryName = infolabel.append("div")
-        .attr("class", "labelname")
-        .html(props.network_num);
+		var regionName = infolabel.append("div")
+		    .attr("class", "labelname")
+		    .html(props.network_num);
+
+
+				console.log("ok");
 };
 
 //function to move info label with mouse
