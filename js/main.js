@@ -92,53 +92,10 @@ function setMap(){
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
-		
-		var disSchools = ourmap.selectAll(".dis-schools")
-			.data(dis.features)
-			.enter()
-			.append("circle")
-			.attr("class", "dis-schools")
-			.attr("cx", function(d){	
-				var coords = projection(d.geometry.coordinates);
-				return coords[0];
-			})
-			.attr("cy", function(d){	
-				var coords = projection(d.geometry.coordinates);
-				return coords[1];
-			})
-			.attr("r", 6)
-			.on("mouseover", function(d){
-			d3.select("h2").text(d.properties.school_nm);
-			d3.select(this).attr("class","dis-schools hover");
-			})
-			.on("mouseout", function(d){
-			d3.select("h2").text("");
-			d3.select(this).attr("class","dis-schools");
-			});
-		
-			
-		var chtrSchools = ourmap.selectAll(".chtr-schools")
-			.data(chtr.features)
-			.enter()
-			.append("circle")
-			.attr("class", "chtr-schools")
-			.attr("cx", function(d){	
-				var coords = projection(d.geometry.coordinates);
-				return coords[0];
-			})
-			.attr("cy", function(d){	
-				var coords = projection(d.geometry.coordinates);
-				return coords[1];
-			})
-			.attr("r", 6)
-			.on("mouseover", function(d){
-			d3.select("h2").text(d.properties.school_nm);
-			d3.select(this).attr("class","chtr-schools hover");
-			})
-			.on("mouseout", function(d){
-			d3.select("h2").text("");
-			d3.select(this).attr("class","chtr-schools");
-			});
+		//creates district school overlay
+		createDistrictSchools (ourmap, dis, projection);
+		//creates charter school overlay
+		createCharterSchools (ourmap, chtr, projection);
 		
 		//add dropdown menu to the map
 		//createDropdown(csvData);
@@ -215,6 +172,56 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
 
+};
+
+function createDistrictSchools (ourmap, dis, projection){
+		var disSchools = ourmap.selectAll(".dis-schools")
+			.data(dis.features)
+			.enter()
+			.append("circle")
+			.attr("class", "dis-schools")
+			.attr("cx", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[0];
+			})
+			.attr("cy", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[1];
+			})
+			.attr("r", 6)
+			.on("mouseover", function(d){
+			d3.select("h2").text(d.properties.school_nm);
+			d3.select(this).attr("class","dis-schools hover");
+			})
+			.on("mouseout", function(d){
+			d3.select("h2").text("");
+			d3.select(this).attr("class","dis-schools");
+			});
+};
+
+function createCharterSchools (ourmap, chtr, projection){
+		var chtrSchools = ourmap.selectAll(".chtr-schools")
+			.data(chtr.features)
+			.enter()
+			.append("circle")
+			.attr("class", "chtr-schools")
+			.attr("cx", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[0];
+			})
+			.attr("cy", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[1];
+			})
+			.attr("r", 6)
+			.on("mouseover", function(d){
+			d3.select("h2").text(d.properties.school_nm);
+			d3.select(this).attr("class","chtr-schools hover");
+			})
+			.on("mouseout", function(d){
+			d3.select("h2").text("");
+			d3.select(this).attr("class","chtr-schools");
+			});
 };
 
 //function to create color scale generator
