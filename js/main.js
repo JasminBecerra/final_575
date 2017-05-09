@@ -9,9 +9,10 @@
 		$("#myModal").modal('show');
 	});
 	
+	
 
 // //pseudo-global variables
-	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "FY16 Budget", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
+	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "Percent College Enrollment 2015", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
 	var expressed = attrArray[0]; //initial attribute
 	
 	var colorClasses = [
@@ -22,7 +23,9 @@
         "#54278f"
     ];
 	
-	var schoolRadius = 10;
+	var districtSchoolOverlay = false;
+	var charterSchoolOverlay = false;
+	
 
 
 // //list of attributes up there
@@ -59,16 +62,17 @@ function setMap(){
 
     //use d3.queue to parallelize asynchronous data loading
     d3.queue()
-        .defer(d3.csv, "data/data_project.csv") //load attributes from CPS data
+        .defer(d3.csv, "data/data_project2.csv") //load attributes from CPS data
         .defer(d3.json, "data/ChicagoNetworksT.topojson") //load spatial data for choropleth map
-		.defer(d3.json, "data/cpsDistrictSchools.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsDistrictData_529.geojson") //load districts spatial data
+		.defer(d3.json, "data/cpsCharterData2.geojson") //load districts spatial data
         .await(callback); //send data to callback function
 		
 
 		
 
 //function to populate the dom with topojson data
-    function callback(error, csvData, chicago, dis){
+    function callback(error, csvData, chicago, dis, chtr){
 
 		//setGraticule(ourmap, path);
 		
@@ -80,6 +84,7 @@ function setMap(){
             .attr("class", "points")
             .attr("d", path);*/
 			
+		
 			
 			
 		//join csv data to GeoJSON enumeration units
@@ -90,6 +95,10 @@ function setMap(){
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
+		//creates district school overlay
+		//createDistrictSchools (ourmap, dis, projection);
+		//creates charter school overlay
+		//createCharterSchools (ourmap, chtr, projection);
 		
 		//add dropdown menu to the map
 		//createDropdown(csvData);
@@ -100,11 +109,7 @@ function setMap(){
 		setNetworkBox();
 		
 		//overlay high school points
-		
-        // // check
-        // console.log(illinois);
-        console.log(chicago);
-		console.log(csvData);
+		overlay(ourmap, chtr, dis, projection);
 		
 		
     };
@@ -162,11 +167,64 @@ function setEnumerationUnits(chicagoNets, ourmap, path, colorScale){
 			.on("mouseout", function(d){
             dehighlight(d.properties);
 			})
-			.on("mousemove", moveLabel);
         var desc = networks.append("desc")
             .text('{"stroke": "white", "stroke-width": "1px"}');
 
 
+};
+
+function createDistrictSchools (ourmap, dis, projection){
+		var disSchools = ourmap.selectAll(".dis-schools")
+			.data(dis.features)
+			.enter()
+			.append("circle")
+			.attr("class", "dis-schools")
+			.attr("cx", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[0];
+			})
+			.attr("cy", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[1];
+			})
+			.attr("r", 5)
+			.on("mouseover", function(d){
+			d3.select("h2").text(d.properties.school_nm);
+			d3.select(this).attr("class","dis-schools hover");
+			highlight(d.properties);
+			})
+			.on("mouseout", function(d){
+			d3.select("h2").text("");
+			d3.select(this).attr("class","dis-schools");
+			dehighlight(d.properties);
+			});
+};
+
+function createCharterSchools (ourmap, chtr, projection){
+		var chtrSchools = ourmap.selectAll(".chtr-schools")
+			.data(chtr.features)
+			.enter()
+			.append("circle")
+			.attr("class", "chtr-schools")
+			.attr("cx", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[0];
+			})
+			.attr("cy", function(d){	
+				var coords = projection(d.geometry.coordinates);
+				return coords[1];
+			})
+			.attr("r", 5)
+			.on("mouseover", function(d){
+			d3.select("h2").text(d.properties.school_nm);
+			d3.select(this).attr("class","chtr-schools hover");
+			highlight(d.properties);
+			})
+			.on("mouseout", function(d){
+			d3.select("h2").text("");
+			d3.select(this).attr("class","chtr-schools");
+			dehighlight(d.properties);
+			});
 };
 
 //function to create color scale generator
@@ -274,7 +332,7 @@ function setInfoBox(csvData){
 };
 
 function setNetworkBox(){
-    var width = window.innerWidth * 0.50,
+    var width = window.innerWidth * 0.25,
 		height = 650;
 
 console.log("networks");
@@ -283,7 +341,8 @@ console.log("networks");
         .append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("class", "box");
+        .attr("class", "box")
+		.attr("class", "col-md-2");
 		
 	var boxTitle = box.append("text")
         .attr("x", 40)
@@ -331,49 +390,29 @@ function dehighlight(props){
 
 function setLabel(props){
     //label content
-    var labelAttribute = "<h1>" + props[expressed] +
-        "</h1><b>" + expressed + "</b>";
-		
-	if (Boolean(props[expressed]) == true) {
-        if (expressed == attrArray[0]) {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "ACT score average"
-        } else if (expressed == attrArray[1]) {
-            labelAttribute = "<h1>" + props[expressed]+"</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == attrArray[2]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "students receiving free/reduced lunches"
-        } else if (expressed == attrArray[3]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students dropout"
-        } else if (expressed == attrArray[4]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "of students graduating"
-		} else if (expressed == attrArray[5]) {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "personnel"
-		} else if (expressed == attrArray[6]) {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "non-personnel"
-		} else if (expressed == attrArray[7]) {
-            labelAttribute = "<h1>$" + props[expressed]+"</h1>" + "budget (2016)"
-		} else if (expressed == attrArray[8]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "White students"
-        } else if (expressed == attrArray[9]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "African American students"
-		} else if (expressed == attrArray[10]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian / Pacific Islander students"
-		} else if (expressed == attrArray[11]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Native American / Alaskan students"
-		} else if (expressed == attrArray[12]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hispanic students"
-		} else if (expressed == attrArray[13]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Multi-racial students"
-        } else if (expressed == attrArray[14]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Asian students"
-		} else if (expressed == attrArray[15]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Hawaiian / Pacific Islander students"
-		} else if (expressed == attrArray[16]) {
-            labelAttribute = "<h1>" + props[expressed]+"%</h1>" + "Other race students"
+    var labelAttribute = "<b>"+ expressed +
+        "</b><h1>" + props[expressed] + "</h1>";
+
+		console.log(props, expressed, attrArray);
+		if (Boolean(props[expressed]) == true) {
+			if (expressed == attrArray[0]) {
+				labelAttribute = "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" +  "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+			} else if (expressed == attrArray[2]) {
+				labelAttribute = "Students receiving Free/Reduced Lunches:" + "<h1>" + props[attrArray[2]]+ "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+			} else if (expressed == attrArray[3]) {
+				labelAttribute = "Dropout Rate:" + "<h1>" + props[attrArray[3]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+			} else if (expressed == attrArray[4]) {
+				labelAttribute = "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+			} else if (expressed == attrArray[7]) {
+				labelAttribute = "College Enrollment 2015:" + "<h1>" + props[attrArray[7]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+			};
+		}else if (props.hasOwnProperty("school_nm")){
+			labelAttribute = "School Name:" + "<h1>" + props.school_nm + "</h1>" + "<br>" + "School Address:" + "<h1>" + props.sch_addr + "</h1>" + "<br>" + "School Type:" + "<h1>" + props.sch_type + "</h1>" + "<br>" + "ACT Composite Average:" + "<h1>" + props.act_composite_avg + "</h1>" + "<br>" + "Percent Free/Reduced Lunch:" + "<h1>" + props.pct_free_red_lunch + "</h1>" + "<br>" + "Dropout Rate 2016:" + "<h1>" + props.dropout_rate_16 + "</h1>" + "<br>" + "Graduation Rate 2016:" + "<h1>" + props.grad_rate_16 + "</h1>" + "<br>" + "College Enrollment (%) 2015:" + "<h1>" + props.Enrollment_Pct + "</h1>"
+			
+		} else { //if no data associated with selection, display "No data"
+			labelAttribute = "<h1>No Data</h1>";
 		};
-    } else { //if no data associated with selection, display "No data"
-        labelAttribute = "<h1>No Data</h1>";
-    };
-		
+
 
     //create info label div
     var infolabel = d3.select("body")
@@ -382,9 +421,12 @@ function setLabel(props){
         .attr("id", props.network_num + "_label")
         .html(labelAttribute);
 
-    var countryName = infolabel.append("div")
-        .attr("class", "labelname")
-        .html(props.network_num);
+		var regionName = infolabel.append("div")
+		    .attr("class", "labelname")
+		    .html(props.network_num);
+
+
+				console.log("ok");
 };
 
 //function to move info label with mouse
@@ -471,8 +513,8 @@ function createMenu(csvData, chicagoNets, path, colorScale){
             });
     });
 	
-	$(".Budget").click(function(){ 
-        expressed = attrArray[5];
+	$(".Enrollment").click(function(){ 
+        expressed = attrArray[7];
 
         d3.selectAll(".networks").on("change", function(d){
                 changeAttribute(this.value, csvData);
@@ -500,41 +542,31 @@ function createMenu(csvData, chicagoNets, path, colorScale){
 }; //end of create createMenu
 
 //creates overlay of charter and district schools
-function overlay(){
-    $(".charter-section").click(function(){
-        
+function overlay(ourmap, chtr, dis, projection){
+	$("#district-sch").click(function(){
+		console.log(districtSchoolOverlay);
+        if (districtSchoolOverlay == false){
+			createDistrictSchools (ourmap, dis, projection);
+			districtSchoolOverlay = true;
+			
+        } else {
+			removeDistrict = d3.selectAll(".dis-schools").remove();
+			districtSchoolOverlay = false;
+        }
     });
     
-    $(".district-section").click(function(){  
-        var districtDiv = document.getElementById('district-sch');
-		districtPoints(ourmap, dis, path, schoolRadius);
+    $("#charter-sch").click(function(){
+			console.log(charterSchoolOverlay);
+		if (charterSchoolOverlay == false){
+			createCharterSchools (ourmap, chtr, projection);
+			charterSchoolOverlay = true;
+			
+        } else {
+			removeCharter = d3.selectAll(".chtr-schools").remove();
+			charterSchoolOverlay = false;
+        }
     });
+
 }; //end of overlay function
-
-//creates district point data
-function districtPoints(ourmap, dis, path, schoolRadius){
-    //adds district locations
-    ourmap.selectAll(".districtLocations")
-        .data(dis.features)
-        .enter()
-        .append("path")
-        .attr("class", "districtLocations")
-        .attr('d', path.pointRadius(function(d){
-            return schoolRadius;
-        }));   
-}; //end districtPoints
-
-//creates charter point data
-function charterPoints(ourmap, chtr, path, schoolRadius){
-    //adds charter locations
-    ourmap.selectAll(".charterLocations")
-        .data(chtr.features)
-        .enter()
-        .append("path")
-        .attr("class", "charterLocations")
-        .attr('d', path.pointRadius(function(d){
-            return schoolRadius;
-        }));   
-}; //end charterPoints
 
 })(); //last line of main.js
