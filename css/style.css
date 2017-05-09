@@ -12,9 +12,8 @@
 	top:8%;
 	left:23%;
 	width: 35%;
-	/*height: 70%;*/
+	height: auto;
 	opacity:0.95;
-	max-height: 100%;
 }
 
 .dis-schools {
@@ -556,6 +555,8 @@ i.fa{
 .jumbotron{
 	height: 820px;
 	opacity:0.6;
+	background-repeat: no-repeat;
+    background-size: contain;
 }
 
 i.fa-info-circle{
