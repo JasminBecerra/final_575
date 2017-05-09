@@ -11,7 +11,7 @@
 	left:25%;
 	width: 35%;
 	/*height: 70%;*/
-	opacity:0.8;
+	opacity:0.9;
 }
 
 .info-box{
@@ -48,6 +48,30 @@ width: 25%;
 border-radius: 6px;
 opacity:0.85;
 }
+
+.legend-space{
+    background-color:white;
+    position: absolute;
+    border-radius: 6px;
+    left: 5%;
+    top: 77%;
+    height: 11%;
+    width: 20%;
+    border-radius: 3px;
+    opacity:0.9;
+}
+
+.legendSquares{
+    background-color: black;
+    position: absolute;
+    left: 5%;
+    top: 77%;
+    height: 9%;
+    width: 5%;
+    border-radius: 3px;
+    opacity:0.9;
+}
+
 
 div.side-panel{
 	font-family: Verdana, Geneva, sans-serif;
@@ -544,7 +568,7 @@ i.fa-info-circle:hover{
 
 .school-overlay-menu {
     position: absolute;
-	top: 66%;
+	top: 55%;
 	left:5%;
     margin-left: 0% !important;
     color: black;

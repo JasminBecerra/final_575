@@ -27,6 +27,7 @@
 
 
     var removeDistrict;
+    var menuWidth = 200, menuHeight = 300;
 
 // //list of attributes up there
 // var expressed = attrArray[0]; //initial attribute
@@ -53,7 +54,7 @@ function setMap(){
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
         .parallels([41.79, 41.88])
-        .scale(100000.00)
+        .scale(90000.00)
         .translate([width / 2, height / 2]);
 
 	//create path generator for ourmap
@@ -131,6 +132,8 @@ function setMap(){
     };
 
 };
+
+
 
 function joinData (chicagoNets, csvData){
     //testing dropout and grad data
@@ -291,6 +294,32 @@ function changeAttribute(attribute, csvData){
             return choropleth(d.properties, colorScale)
         })
 };
+
+
+function createLegendBox(csvData){
+    var legendBox = d3.select(".legend-space")
+        .append("svg")
+        .attr("width", menuWidth)
+        .attr("height", menuHeight)
+        .attr("class", "legend");
+
+    // for (b = 0; b < attribute.length; b++){
+        var legendSquares = legendBox.selectAll(".legendSquares")
+            // .enter()
+            .append("rect")
+            .attr("class", "legendSquares");
+            // .attr("width", 50)
+            // .attr("height", 50)
+            // .attr("x", 20)
+            // .attr("y", 20);
+    }
+
+        var legendSquare1 = legendSquares.select(."legendSquare1")
+            .append("rect")
+            .attr("class", "legendSquare1");
+
+    console.log(attribute);
+}
 
 function setInfoBox(csvData){
     var width = window.innerWidth * 0.30,
