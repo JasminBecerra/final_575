@@ -9,6 +9,7 @@
 		$("#myModal").modal('show');
 	});
 	
+	
 
 // //pseudo-global variables
 	var attrArray = ["Average ACT Score", "Lunch Total", "Lunch Percent", "Cohort Dropout Rates 2016", "Cohort Graduation Rates 2016", "Personnel", "Non-Personnel", "Percent College Enrollment 2015", "White", "African American", "Asian / Pacific Islander", "Native American / Alaskan", "Hispanic", "Multi-Racial", "Asian", "Hawaiian / Pacific Islander", "Other"]; 
@@ -331,7 +332,7 @@ function setInfoBox(csvData){
 };
 
 function setNetworkBox(){
-    var width = window.innerWidth * 0.50,
+    var width = window.innerWidth * 0.25,
 		height = 650;
 
 console.log("networks");
@@ -340,7 +341,8 @@ console.log("networks");
         .append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("class", "box");
+        .attr("class", "box")
+		.attr("class", "col-md-2");
 		
 	var boxTitle = box.append("text")
         .attr("x", 40)

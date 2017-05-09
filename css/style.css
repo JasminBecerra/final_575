@@ -1,4 +1,6 @@
 /*style sheet for 575 final project*/
+
+
 .ourmap {
 	/*border: medium solid #999;*/
 	/*background-color: white;*/
@@ -12,6 +14,7 @@
 	width: 35%;
 	/*height: 70%;*/
 	opacity:0.95;
+	max-height: 100%;
 }
 
 .dis-schools {
@@ -622,7 +625,7 @@ hr.style-one {
 footer{
 	position: absolute;
 	width:100%;
-	top: 300%;
+	top: 310%;
 	text-align:center;
 	background-color:#e1e1e1;
 	height:35%;
