@@ -1,4 +1,5 @@
 //main js script for 575 Final Project
+//Authors: Alex Nelson, Jasmin Becerra & Jacob Clausen
 
 //topojson for CPS networks included in data folder
 
@@ -53,7 +54,7 @@ function setMap(){
         .center([0, 41.835])
         .rotate([87.75, 0, 0])
         .parallels([41.79, 41.88])
-        .scale(100000.00)
+        .scale(85000.00)
         .translate([width / 2, height / 2]);
 
 	//create path generator for ourmap
@@ -73,20 +74,10 @@ function setMap(){
 
 //function to populate the dom with topojson data
     function callback(error, csvData, chicago, dis, chtr){
-
-		//setGraticule(ourmap, path);
 		
     	//translate chicago comm areas to topojson
 		var chicagoNets = topojson.feature(chicago, chicago.objects.ChicagoNetworks).features;
 
-		/*var chicagoDistricts = ourmap.append("path")
-            .datum(cpsDistricts)
-            .attr("class", "points")
-            .attr("d", path);*/
-			
-		
-			
-			
 		//join csv data to GeoJSON enumeration units
         chicagoNets = joinData(chicagoNets, csvData);
 		
@@ -95,13 +86,6 @@ function setMap(){
 
         //add enumeration units to ourmap
         setEnumerationUnits(chicagoNets, ourmap, path, colorScale);
-		//creates district school overlay
-		//createDistrictSchools (ourmap, dis, projection);
-		//creates charter school overlay
-		//createCharterSchools (ourmap, chtr, projection);
-		
-		//add dropdown menu to the map
-		//createDropdown(csvData);
 		
 		//add menu panel to map
 		createMenu(csvData, chicagoNets, path, colorScale);
@@ -258,51 +242,6 @@ function choropleth(props, colorScale){
     };
 };
 
-function setGraticule(ourmap, path){
-    //...GRATICULE BLOCKS FROM MODULE 8
-		var graticule = d3.geoGraticule()
-            .step([0.5, 0.5]); //place graticule lines every 5 degrees of longitude and latitude
-			
-		//create graticule background
-        var gratBackground = ourmap.append("path")
-            .datum(graticule.outline()) //bind graticule background
-            .attr("class", "gratBackground") //assign class for styling
-            .attr("d", path) //project graticule
-			
-		//create graticule lines
-        var gratLines = ourmap.selectAll(".gratLines") //select graticule elements that will be created
-            .data(graticule.lines()) //bind graticule lines to each element to be created
-            .enter() //create an element for each datum
-            .append("path") //append each element to the svg as a path element
-            .attr("class", "gratLines") //assign class for styling
-            .attr("d", path); //project graticule lines
-};
-
-//function to create a dropdown menu for attribute selection
-function createDropdown(csvData){
-   //add select element
-    var dropdown = d3.select("body")
-        .append("select")
-        .attr("class", "dropdown")
-        .on("change", function(){
-            changeAttribute(this.value, csvData)
-        });
-
-    //add initial option
-    var titleOption = dropdown.append("option")
-        .attr("class", "titleOption")
-        .attr("disabled", "true")
-        .text("Select Attribute");
-
-    //add attribute name options
-    var attrOptions = dropdown.selectAll("attrOptions")
-        .data(attrArray)
-        .enter()
-        .append("option")
-        .attr("value", function(d){ return d })
-        .text(function(d){ return d });
-};
-
 //dropdown change listener handler
 function changeAttribute(attribute, csvData){
 //change the expressed attribute
@@ -335,8 +274,6 @@ function setNetworkBox(){
     var width = window.innerWidth * 0.25,
 		height = 650;
 
-console.log("networks");
-
     var box = d3.select("network-box")
         .append("svg")
         .attr("width", width)
@@ -359,7 +296,6 @@ function highlight(props){
     var selected = d3.selectAll("." + props.network_num.replace(/ /g, '-'))
         .style("stroke", "#FF66FF")
         .style("stroke-width", "4");
-		console.log(props.network_num);
 	setLabel(props);
 };
 
@@ -393,18 +329,17 @@ function setLabel(props){
     var labelAttribute = "<b>"+ expressed +
         "</b><h1>" + props[expressed] + "</h1>";
 
-		console.log(props, expressed, attrArray);
 		if (Boolean(props[expressed]) == true) {
 			if (expressed == attrArray[0]) {
-				labelAttribute = "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" +  "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+				labelAttribute = "<b>Network Atrribute:</b><br>" + "ACT Score Average:" + "<h1>" + props[attrArray[0]] + "</h1>" + "<br><br>" + "<b>Network Race Demographics:</b>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[2]) {
-				labelAttribute = "Students receiving Free/Reduced Lunches:" + "<h1>" + props[attrArray[2]]+ "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+				labelAttribute = "<b>Network Atrribute:</b><br>" + "Students receiving Free/Reduced Lunches:" + "<h1>" + props[attrArray[2]]+ "%</h1>" + "<br><br>"  + "<b>Network Race Demographics:</b>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[3]) {
-				labelAttribute = "Dropout Rate:" + "<h1>" + props[attrArray[3]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+				labelAttribute = "<b>Network Atrribute:</b><br>" + "Dropout Rate:" + "<h1>" + props[attrArray[3]]+"%</h1>" + "<br><br>" + "<b>Network Race Demographics:</b>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[4]) {
-				labelAttribute = "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+				labelAttribute = "<b>Network Atrribute:</b><br>" + "Graduation Rate:" + "<h1>" + props[attrArray[4]] + "%</h1>" + "<br><br>" + "<b>Network Race Demographics:</b>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			} else if (expressed == attrArray[7]) {
-				labelAttribute = "College Enrollment 2015:" + "<h1>" + props[attrArray[7]]+"%</h1>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
+				labelAttribute = "<b>Network Atrribute:</b><br>" + "College Enrollment 2015:" + "<h1>" + props[attrArray[7]]+"%</h1>" + "<br><br>" + "<b>Network Race Demographics:</b>" + "<br>" + "Percentage of White Students:" + "<h1>" + props[attrArray[8]] + "%</h1>" +  "<br>" + "Percentage of African American Students:" + "<h1>" + props[attrArray[9]] + "%</h1>" +  "<br>" + "Percentage of Hispanic Students:" + "<h1>" + props[attrArray[12]] + "%</h1>" +  "<br>" + "Percentage of Asian Students:" + "<h1>" + props[attrArray[14]] + "%</h1>"
 			};
 		}else if (props.hasOwnProperty("school_nm")){
 			labelAttribute = "School Name:" + "<h1>" + props.school_nm + "</h1>" + "<br>" + "School Address:" + "<h1>" + props.sch_addr + "</h1>" + "<br>" + "School Type:" + "<h1>" + props.sch_type + "</h1>" + "<br>" + "ACT Composite Average:" + "<h1>" + props.act_composite_avg + "</h1>" + "<br>" + "Percent Free/Reduced Lunch:" + "<h1>" + props.pct_free_red_lunch + "</h1>" + "<br>" + "Dropout Rate 2016:" + "<h1>" + props.dropout_rate_16 + "</h1>" + "<br>" + "Graduation Rate 2016:" + "<h1>" + props.grad_rate_16 + "</h1>" + "<br>" + "College Enrollment (%) 2015:" + "<h1>" + props.Enrollment_Pct + "</h1>"
@@ -425,35 +360,7 @@ function setLabel(props){
 		    .attr("class", "labelname")
 		    .html(props.network_num);
 
-
-				console.log("ok");
 };
-
-//function to move info label with mouse
-function moveLabel(){
-    //get width of label
-    var labelWidth = d3.select(".infolabel")
-        .node()
-        .getBoundingClientRect()
-        .width;
-
-    //use coordinates of mousemove event to set label coordinates
-    var x1 = d3.event.clientX + 10,
-        y1 = d3.event.clientY - 75,
-        x2 = d3.event.clientX - labelWidth - 10,
-        y2 = d3.event.clientY + 25;
-
-    //horizontal label coordinate, testing for overflow
-    var x = d3.event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1; 
-    //vertical label coordinate, testing for overflow
-    var y = d3.event.clientY < 75 ? y2 : y1; 
-
-    d3.select(".infolabel")
-        .style("left", x + "px")
-        .style("top", y + "px");
-};
-
-
 
 //menu items function
 function createMenu(csvData, chicagoNets, path, colorScale){
@@ -544,7 +451,6 @@ function createMenu(csvData, chicagoNets, path, colorScale){
 //creates overlay of charter and district schools
 function overlay(ourmap, chtr, dis, projection){
 	$("#district-sch").click(function(){
-		console.log(districtSchoolOverlay);
         if (districtSchoolOverlay == false){
 			createDistrictSchools (ourmap, dis, projection);
 			districtSchoolOverlay = true;
@@ -556,7 +462,6 @@ function overlay(ourmap, chtr, dis, projection){
     });
     
     $("#charter-sch").click(function(){
-			console.log(charterSchoolOverlay);
 		if (charterSchoolOverlay == false){
 			createCharterSchools (ourmap, chtr, projection);
 			charterSchoolOverlay = true;
