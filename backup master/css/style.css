@@ -61,7 +61,7 @@ opacity:0.85;
     opacity:0.9;
 }
 
-.legendSquares{
+/*.legendSquares{
     background-color: black;
     position: absolute;
     left: 5%;
@@ -70,7 +70,7 @@ opacity:0.85;
     width: 5%;
     border-radius: 3px;
     opacity:0.9;
-}
+}*/
 
 
 div.side-panel{
